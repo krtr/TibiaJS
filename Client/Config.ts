@@ -6,6 +6,6 @@
 	MapHeight: 100
 	},
 	Animations:[
-		{StartSprite: 49, SpriteCount: 3}
+		{StartSprite: 48, SpriteCount: 7}
 	]
 }
