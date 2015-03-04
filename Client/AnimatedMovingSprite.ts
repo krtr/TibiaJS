@@ -12,7 +12,7 @@ class AnimatedMovingSprite extends StaticSprite implements OnTickListener {
 			var len = Math.sqrt(V.x * V.x + V.y * V.y);
 			V.x /= len;
 			V.y /= len;
-			console.log(len);
+			
 			this.Position.x += V.x * this.speed;
 			this.Position.y += V.y * this.speed;
 			DrawSprite(this.Sprite + (this.Rotation * 3) + this.AnimPos, this.Position.x, this.Position.y);
@@ -24,6 +24,8 @@ class AnimatedMovingSprite extends StaticSprite implements OnTickListener {
 		} else {
 			DrawSprite(this.Sprite + this.Rotation * 3, this.TilePosion.x * config.TileSize, this.TilePosion.y * config.TileSize);
 		}
+
+		DrawHealthBar(100, this.Position.x, this.Position.y + 7);
 	}
 
 	Move(rot: Rotation) {
@@ -42,7 +44,7 @@ class AnimatedMovingSprite extends StaticSprite implements OnTickListener {
 		this.IsMoving = true;
 		this.Rotation = rot;
 		this.targetPos.x = this.TilePosion.x * config.TileSize;
-		this.targetPos.y = this.TilePosion.y * config.TileSize;
+		this.targetPos.y = this.TilePosion.y * config.TileSize
 	}
 
 	OnTick() {
