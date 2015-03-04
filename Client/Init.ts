@@ -28,5 +28,9 @@ function DrawSprite(index:number, posx:number, posy:number) {
 	renderer.DrawSpr((index % 32) * 32, ((index / 32) | 0) * 32, 32, 32, posx, posy, config.TileSize, config.TileSize);
 }
 
+function DrawHealthBar(percent: number, posx: number, posy: number) {
+	renderer.DrawSpr(129, 386, 26, 4, posx, posy, 26, 4);
+}
+
 enum Rotation { Down, Top, Right, Left };
 enum Mob { Dwarf = 56, Ghul = 193, Minotaur = 223, Troll = 238 }
