@@ -2,7 +2,7 @@
 
 	constructor() {
 		super();
-		this.Sprite = Mob.Minotaur;
+		this.Sprite = config.Mobs.Orc.StartSprite;
 	}
 
 	CheckKeyPress() {
@@ -20,6 +20,4 @@
 			super.Move(Rotation.Down);
 		}
 	}
-
-
 }

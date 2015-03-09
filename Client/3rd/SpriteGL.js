@@ -2941,7 +2941,7 @@ var SpriteGL;
             "varying vec2 vtexCoord;",
             "void main(void) {",
             "	gl_FragColor = texture2D(sampler2d, vec2(vtexCoord.s,vtexCoord.t));",
-            "   if(gl_FragColor.a < 0.01) discard;",
+            "  // if(gl_FragColor.a < 1.0) discard;",
             "}"
         ].join("\n");
         return Shader;
@@ -2961,8 +2961,8 @@ var SpriteGL;
             this.CreateTexture(Image);
             this.vbo.SetupForDraw(this.Shader.VertexPosAttribute, this.Shader.TexCoordAttribute, Image.width);
             this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
-            this.gl.enable(this.gl.BLEND);
             this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
+            this.gl.enable(this.gl.BLEND);
         }
         SpriteRenderer.prototype.RenderAll = function () {
             this.gl.clear(this.gl.COLOR_BUFFER_BIT);
@@ -2980,8 +2980,9 @@ var SpriteGL;
         SpriteRenderer.prototype.DrawSpr = function (AtlasX, AtlasY, AtlasWidth, AtlasHeigh, ScreenX, ScreenY, ScreenWidth, ScreenHeight) {
             this.vbo.DrawSpr(AtlasX, AtlasY, AtlasWidth, AtlasHeigh, ScreenX, ScreenY, ScreenWidth, ScreenHeight);
         };
-        SpriteRenderer.prototype.PrepareTxt = function (str, color, fontSize) {
-            return this.Text.PrepareTxt(str, color, fontSize);
+        SpriteRenderer.prototype.PrepareTxt = function (str, color, fontSize, outLine) {
+            if (outLine === void 0) { outLine = false; }
+            return this.Text.PrepareTxt(str, color, fontSize, outLine);
         };
         SpriteRenderer.prototype.DrawTxt = function (txtObj, PosX, PosY) {
             this.vbo.DrawTxt(txtObj.Pos.x, txtObj.Pos.y, txtObj.Size.Width, txtObj.Size.Height, PosX, PosY, txtObj.Size.Width, txtObj.Size.Height);
@@ -2993,8 +2994,8 @@ var SpriteGL;
             this.texture = this.gl.createTexture();
             this.gl.bindTexture(this.gl.TEXTURE_2D, this.texture);
             this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.gl.RGBA, this.gl.UNSIGNED_BYTE, image);
-            this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.NEAREST);
-            this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.NEAREST);
+            this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.LINEAR);
+            this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.LINEAR);
         };
         SpriteRenderer.fromCanvas = function (canvas, Image) {
             try {
@@ -3021,34 +3022,43 @@ var TextDrawer = (function () {
         this.canvas = document.createElement("canvas");
         this.canvas.width = 1024;
         this.canvas.height = 1024;
+        this.canvas.style.backgroundColor = "black";
         this.ctx = this.canvas.getContext("2d");
+        this.ctx.textBaseline = "top";
         this.texture = this.gl.createTexture();
         this.gl.bindTexture(this.gl.TEXTURE_2D, this.texture);
-        this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.gl.RGBA, this.gl.UNSIGNED_BYTE, this.ctx.getImageData(0, 0, 1024, 1024));
-        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.NEAREST);
-        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.NEAREST);
+        this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.gl.RGBA, this.gl.UNSIGNED_BYTE, this.canvas);
+        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.LINEAR);
+        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.LINEAR);
     }
-    TextDrawer.prototype.PrepareTxt = function (str, color, fontSize) {
-        this.ctx.font = fontSize + "px Arial";
+    TextDrawer.prototype.PrepareTxt = function (str, color, fontSize, outline) {
+        this.ctx.font = "bold " + fontSize + "px Tahoma";
         var size = this.ctx.measureText(str);
         var currStartY = 0;
         for (var i = 0; i < this.txtsList.length; i++) {
-            currStartY += fontSize * 1.5;
+            currStartY += this.txtsList[i].Size.Height;
         }
-        var test = { str: str, Pos: { x: 0, y: currStartY }, Size: { Width: size.width, Height: fontSize * 1.5 }, Color: color, FontSize: fontSize };
+        var test = { str: str, Pos: { x: 0, y: currStartY }, Size: { Width: size.width + Math.sqrt(fontSize) * 2, Height: fontSize + Math.sqrt(fontSize) * 2 }, Color: color, FontSize: fontSize, OutLine: outline };
         this.txtsList.push(test);
         this.BakeTexture();
         return test;
     };
     TextDrawer.prototype.BakeTexture = function () {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.ctx.miterLimit = 1;
+        this.ctx.lineJoin = "round";
         for (var i = 0; i < this.txtsList.length; i++) {
             this.ctx.fillStyle = this.txtsList[i].Color;
-            this.ctx.font = this.txtsList[i].FontSize + "px Tahoma";
-            this.ctx.fillText(this.txtsList[i].str, 0, this.txtsList[i].Pos.y + this.txtsList[i].FontSize, 1024);
+            this.ctx.font = "bold " + this.txtsList[i].FontSize + "px Tahoma";
+            if (this.txtsList[i].OutLine) {
+                this.ctx.lineWidth = Math.sqrt(this.txtsList[i].FontSize) * 1.5;
+                this.ctx.strokeStyle = "black";
+                this.ctx.strokeText(this.txtsList[i].str, 5, this.txtsList[i].Pos.y, 1024);
+            }
+            this.ctx.fillText(this.txtsList[i].str, 5, this.txtsList[i].Pos.y, 1024);
         }
         this.gl.bindTexture(this.gl.TEXTURE_2D, this.texture);
-        this.gl.texSubImage2D(this.gl.TEXTURE_2D, 0, 0, 0, this.gl.RGBA, this.gl.UNSIGNED_BYTE, this.ctx.getImageData(0, 0, 1024, 1024));
+        this.gl.texSubImage2D(this.gl.TEXTURE_2D, 0, 0, 0, this.gl.RGBA, this.gl.UNSIGNED_BYTE, this.canvas);
     };
     return TextDrawer;
 })();
@@ -3070,15 +3080,16 @@ var SpriteGL;
             this.gl.vertexAttribPointer(vertexPositionAttr, 2, this.gl.FLOAT, false, 16, 0);
             this.gl.enableVertexAttribArray(textureCoordAttr);
             this.gl.vertexAttribPointer(textureCoordAttr, 2, this.gl.FLOAT, false, 16, 8);
+            this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(24 * 10000), this.gl.STREAM_DRAW);
             this.AtlasSize = AtlasSize;
         };
         VBO.prototype.RenderAllSpr = function () {
-            this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(this.sprVerts), this.gl.STREAM_DRAW);
+            this.gl.bufferSubData(this.gl.ARRAY_BUFFER, 0, new Float32Array(this.sprVerts));
             this.gl.drawArrays(this.gl.TRIANGLES, 0, this.sprVerts.length / 4);
             this.sprVerts = [];
         };
         VBO.prototype.RenderAllTxt = function () {
-            this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(this.txtVerts), this.gl.STREAM_DRAW);
+            this.gl.bufferSubData(this.gl.ARRAY_BUFFER, 0, new Float32Array(this.txtVerts));
             this.gl.drawArrays(this.gl.TRIANGLES, 0, this.txtVerts.length / 4);
             this.txtVerts = [];
         };
