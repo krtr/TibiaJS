@@ -33,4 +33,3 @@ function DrawHealthBar(percent: number, posx: number, posy: number) {
 }
 
 enum Rotation { Down, Top, Right, Left };
-enum Mob { Dwarf = 56, Ghul = 193, Minotaur = 223, Troll = 238 }
