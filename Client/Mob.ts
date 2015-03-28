@@ -1,6 +1,6 @@
 ﻿class Mob extends AnimatedMovingSprite {
 
-	constructor(test: MobData) {
+	constructor(test) {
 		this.Sprite = test.StartSprite;
 		super();
 	}
