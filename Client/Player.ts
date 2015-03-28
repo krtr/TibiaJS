@@ -1,8 +1,8 @@
 ﻿class Player extends AnimatedMovingSprite {
 
-	constructor() {
+	constructor(startSprite:number) {
 		super();
-		this.Sprite = config.Mobs.Orc.StartSprite;
+		this.Sprite = startSprite;
 	}
 
 	CheckKeyPress() {

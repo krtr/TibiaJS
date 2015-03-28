@@ -27,10 +27,8 @@
     <TypeScriptCompile Include="Game.ts" />
     <TypeScriptCompile Include="Init.ts" />
     <TypeScriptCompile Include="Camera.ts" />
-    <TypeScriptCompile Include="Config.ts" />
     <TypeScriptCompile Include="KeyboardManager.ts" />
     <TypeScriptCompile Include="Ground.ts" />
-    <TypeScriptCompile Include="MapConfig.ts" />
     <TypeScriptCompile Include="Mob.ts" />
     <TypeScriptCompile Include="Player.ts" />
     <TypeScriptCompile Include="StaticSprite.ts" />

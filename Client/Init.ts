@@ -5,17 +5,30 @@
 ///<reference path='game.ts' />
 
 var renderer: SpriteGL.SpriteRenderer;
-var game = new Game();
-
+var game;
+var config;
 window.onload = function () {
+	GET("data.json", function (err, data) {
+		//if (!err) return;
+		config = JSON.parse(data); 
+		console.log(data);
+		if (renderer) Start();
+	});
+
 	var image = new Image();
 	image.src = "sprites.png";
 	image.onload = function () {
 		renderer = SpriteGL.SpriteRenderer.fromCanvas(<HTMLCanvasElement>document.getElementById("GameCanvas"), image);
-		requestAnimationFrame(Loop);
+		console.log("image");
+		if (config) Start();
 	}
-	KeyboardManager.Start();
-	Ticker.Start();
+
+	function Start() {
+		game = new Game();
+		requestAnimationFrame(Loop);
+		KeyboardManager.Start();
+		Ticker.Start();
+	}
 }
 
 function Loop() {
@@ -24,7 +37,7 @@ function Loop() {
 	requestAnimationFrame(Loop);
 }
 
-function DrawSprite(index:number, posx:number, posy:number) {
+function DrawSprite(index: number, posx: number, posy: number) {
 	renderer.DrawSpr((index % 32) * 32, ((index / 32) | 0) * 32, 32, 32, posx, posy, config.TileSize, config.TileSize);
 }
 
@@ -33,3 +46,19 @@ function DrawHealthBar(percent: number, posx: number, posy: number) {
 }
 
 enum Rotation { Down, Top, Right, Left };
+
+function GET(path: string, fn: (err, res) => void) {
+	var req = new XMLHttpRequest();
+	req.open("GET", path, true);
+	//req.setRequestHeader('Content-Type', 'application/json');
+	req.send();
+
+	req.onreadystatechange = function () {
+		if (req.readyState == 4 && req.status == 200) {
+			fn(null, req.responseText);
+		} else if (req.readyState == 4) {
+			var err = req.response;
+			fn(err, "");
+		}
+	}
+}
