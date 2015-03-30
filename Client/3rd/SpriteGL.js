@@ -2973,7 +2973,7 @@ var SpriteGL;
         };
         SpriteRenderer.prototype.UpdateViewPort = function (width, height) {
             this.gl.viewport(0, 0, width, height);
-            var projmatrix = TSM.mat4.orthographic(-width / 2, width / 2, -height / 2, height / 2, 0.1, 2.0);
+            var projmatrix = TSM.mat4.orthographic(-width / 2, width / 2, height / 2, -height / 2, 0.1, 2.0);
             var cameramatrix = TSM.mat4.lookAt(new TSM.vec3([0.0, 0.0, 1.0]), new TSM.vec3([0.0, 0.0, 0.0]), new TSM.vec3([0.0, 1.0, 0.0]));
             this.Shader.updateMatrix(projmatrix.multiply(cameramatrix));
         };
@@ -3096,7 +3096,7 @@ var SpriteGL;
         VBO.prototype.DrawSpr = function (AtlasX, AtlasY, AtlasWidth, AtlasHeigh, ScreenX, ScreenY, ScreenWidth, ScreenHeight) {
             for (var i = 0; i < VBO.defaultVerts.length; i += 2) {
                 this.sprVerts.push(VBO.defaultVerts[i] * ScreenWidth + ScreenX | 0);
-                this.sprVerts.push(-VBO.defaultVerts[i + 1] * ScreenHeight + ScreenY | 0);
+                this.sprVerts.push(VBO.defaultVerts[i + 1] * ScreenHeight + ScreenY | 0);
                 this.sprVerts.push(VBO.defaultVerts[i] * (AtlasWidth / this.AtlasSize) + (AtlasX / this.AtlasSize));
                 this.sprVerts.push(VBO.defaultVerts[i + 1] * (AtlasHeigh / this.AtlasSize) + (AtlasY / this.AtlasSize));
             }
@@ -3104,7 +3104,7 @@ var SpriteGL;
         VBO.prototype.DrawTxt = function (AtlasX, AtlasY, AtlasWidth, AtlasHeigh, ScreenX, ScreenY, ScreenWidth, ScreenHeight) {
             for (var i = 0; i < VBO.defaultVerts.length; i += 2) {
                 this.txtVerts.push(VBO.defaultVerts[i] * ScreenWidth + ScreenX | 0);
-                this.txtVerts.push(-VBO.defaultVerts[i + 1] * ScreenHeight + ScreenY | 0);
+                this.txtVerts.push(VBO.defaultVerts[i + 1] * ScreenHeight + ScreenY | 0);
                 this.txtVerts.push(VBO.defaultVerts[i] * (AtlasWidth / 1024) + (AtlasX / 1024));
                 this.txtVerts.push(VBO.defaultVerts[i + 1] * (AtlasHeigh / 1024) + (AtlasY / 1024));
             }

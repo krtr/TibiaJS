@@ -9,9 +9,7 @@ var game;
 var config;
 window.onload = function () {
 	GET("data.json", function (err, data) {
-		//if (!err) return;
 		config = JSON.parse(data); 
-		console.log(data);
 		if (renderer) Start();
 	});
 
@@ -19,7 +17,6 @@ window.onload = function () {
 	image.src = "sprites.png";
 	image.onload = function () {
 		renderer = SpriteGL.SpriteRenderer.fromCanvas(<HTMLCanvasElement>document.getElementById("GameCanvas"), image);
-		console.log("image");
 		if (config) Start();
 	}
 
@@ -46,19 +43,3 @@ function DrawHealthBar(percent: number, posx: number, posy: number) {
 }
 
 enum Rotation { Down, Top, Right, Left };
-
-function GET(path: string, fn: (err, res) => void) {
-	var req = new XMLHttpRequest();
-	req.open("GET", path, true);
-	//req.setRequestHeader('Content-Type', 'application/json');
-	req.send();
-
-	req.onreadystatechange = function () {
-		if (req.readyState == 4 && req.status == 200) {
-			fn(null, req.responseText);
-		} else if (req.readyState == 4) {
-			var err = req.response;
-			fn(err, "");
-		}
-	}
-}
