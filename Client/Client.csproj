@@ -21,7 +21,7 @@
     <TypeScriptCompile Include="..\typings\SpriteGL.d.ts">
       <Link>SpriteGL.d.ts</Link>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="AnimatedMovingSprite.ts" />
+    <TypeScriptCompile Include="Character.ts" />
     <TypeScriptCompile Include="Animation.ts" />
     <TypeScriptCompile Include="AnimationContainer.ts" />
     <TypeScriptCompile Include="Game.ts" />
@@ -29,6 +29,7 @@
     <TypeScriptCompile Include="Camera.ts" />
     <TypeScriptCompile Include="KeyboardManager.ts" />
     <TypeScriptCompile Include="Ground.ts" />
+    <TypeScriptCompile Include="Misc.ts" />
     <TypeScriptCompile Include="Mob.ts" />
     <TypeScriptCompile Include="Player.ts" />
     <TypeScriptCompile Include="StaticSprite.ts" />

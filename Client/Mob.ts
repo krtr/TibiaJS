@@ -1,4 +1,4 @@
-﻿class Mob extends AnimatedMovingSprite {
+﻿class Mob extends Character {
 
 	constructor(test) {
 		this.Sprite = test.StartSprite;
