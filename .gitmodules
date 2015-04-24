@@ -1,0 +1,3 @@
+[submodule "resources/3rd/SpriteGL"]
+	path = resources/3rd/SpriteGL
+	url = https://github.com/RemoveIt/SpriteGL.git
