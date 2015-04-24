@@ -6,12 +6,12 @@ var open = require("open");
 var runSequence = require("run-sequence");
 
 gulp.task("build", function () {
-	gulp.src(["./Client/**/*.ts", "./typings/**/*.ts"])
+	gulp.src(["./Client/**/*.ts", "./typings/**/*.ts", "./resources/3rd/SpriteGL/bin/SpriteGL.d.ts"])
 		.pipe(typescript({ sortOutput: true, target: "ES5" }))
 		.pipe(concat("client.js"))
 		.pipe(gulp.dest("./out/static"));
 
-	gulp.src(["./Client/**/*.html", "./Client/**/*.js", "./resources/*.png", "./resources/*.json"])
+	gulp.src(["./Client/**/*.html", "./Client/**/*.js", "./resources/*.png", "./resources/*.json", "./resources/3rd/SpriteGL/bin/SpriteGL.js"])
 		.pipe(gulp.dest("./out/static"));
 
 	gulp.src(["./Server/**/*.ts", "./typings/**/*.ts"])
