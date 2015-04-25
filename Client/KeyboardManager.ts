@@ -11,7 +11,7 @@
 			keyEvent.preventDefault();
 			if (KeyboardManager.keys[keyEvent.keyCode]) return;
 			KeyboardManager.keys[keyEvent.keyCode] = true;
-			if (keyEvent.keyCode == 13) config.TileSize--;
+			//if (keyEvent.keyCode == 13) config.TileSize--;
 			for (var i = 0; i < KeyboardManager.listenerList.length; i++) {
 				KeyboardManager.listenerList[i].OnKeyPress(keyEvent);
 			}
