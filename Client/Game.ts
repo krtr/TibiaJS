@@ -11,8 +11,9 @@
 		this.player.Teleport(59, 50);
 		this.animations = new AnimationContainer();
 		this.camera.SetCameraTarget(this.player);
-		Ticker.Add(this.player);
-		Ticker.Add(this.animations);
+		Ticker.Add(this.player,150);
+		Ticker.Add(this.animations,50);
+		this.animations.Add(config.Animations.Beam, this.player.TilePosion);
 	}
 
 	Render() {

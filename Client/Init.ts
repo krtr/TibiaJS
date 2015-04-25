@@ -7,6 +7,8 @@
 var renderer: SpriteGL.SpriteRenderer;
 var game;
 var config;
+
+//TODO loader for assets
 window.onload = function () {
 	GET("data.json", function (err, data) {
 		config = JSON.parse(data); 

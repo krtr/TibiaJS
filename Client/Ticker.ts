@@ -3,16 +3,20 @@
 }
 
 class Ticker {
-	static ListenersList = new Array<OnTickListener>();
-	static Add(listner: OnTickListener) {
-		this.ListenersList.push(listner);
+	private static counter = 0;
+	static ListenersList = new Array<{ obj: OnTickListener; interval: number }>();
+	static Add(listner: OnTickListener, interval: number) {
+		this.ListenersList.push({ obj: listner, interval: (interval/10)|0 });
 	}
 
 	static Start() {
 		setInterval(() => {
 			for (var i = 0; i < Ticker.ListenersList.length; i++) {
-				Ticker.ListenersList[i].OnTick();
+				if (Ticker.counter % Ticker.ListenersList[i].interval === 0) {
+					Ticker.ListenersList[i].obj.OnTick();
+				}
 			}
-		}, 150);
+			this.counter++;
+		}, 10);
 	}
 }
