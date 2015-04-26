@@ -1,7 +1,7 @@
 ﻿class Mob extends Character {
 
-	constructor(test) {
-		this.Sprite = test.StartSprite;
+	constructor(spr: number) {
 		super();
+		this.Sprite = spr;
 	}
 }

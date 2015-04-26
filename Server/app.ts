@@ -1,7 +1,15 @@
-﻿var express = require('express')
+﻿import express = require("express");
+import http = require("http");
+var app = express();
+var server = app.listen(2137);
+import socketio = require("socket.io");
 var serveStatic = require('serve-static')
-
-var app = express()
-
+import PlayerList = require("./PlayerList");
+var io = socketio(server);
 app.use(serveStatic("./static", { index: ["index.html"] }));
-app.listen(2137);
+
+var playerList = new PlayerList();
+io.on('connection', function (socket) {
+	playerList.AddNew(socket);
+});
+

@@ -6,12 +6,13 @@
 
 var renderer: SpriteGL.SpriteRenderer;
 var game;
-var config;
+var config: Config;
 
 //TODO loader for assets
 window.onload = function () {
 	GET("data.json", function (err, data) {
 		config = JSON.parse(data); 
+		console.log("CONFIG");
 		if (renderer) Start();
 	});
 
@@ -44,4 +45,3 @@ function DrawHealthBar(percent: number, posx: number, posy: number) {
 	renderer.DrawSpr(129, 386, 26, 4, posx, posy, 26, 4);
 }
 
-enum Rotation { Down, Top, Right, Left };
