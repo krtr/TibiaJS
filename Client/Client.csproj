@@ -10,7 +10,7 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
-    <TypeScriptToolsVersion>1.1</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>1.4</TypeScriptToolsVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
@@ -18,8 +18,14 @@
     <IISExpressUseClassicPipelineMode />
   </PropertyGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="..\Interchange\DataStructures.ts">
+      <Link>DataStructures.ts</Link>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="..\resources\3rd\SpriteGL\bin\SpriteGL.d.ts">
       <Link>SpriteGL.d.ts</Link>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="..\typings\socket.io-client\socket.io-client.d.ts">
+      <Link>socket.io-client.d.ts</Link>
     </TypeScriptCompile>
     <TypeScriptCompile Include="Character.ts" />
     <TypeScriptCompile Include="Animation.ts" />
@@ -31,7 +37,9 @@
     <TypeScriptCompile Include="Ground.ts" />
     <TypeScriptCompile Include="Misc.ts" />
     <TypeScriptCompile Include="Mob.ts" />
+    <TypeScriptCompile Include="Network.ts" />
     <TypeScriptCompile Include="Player.ts" />
+    <TypeScriptCompile Include="PlayersList.ts" />
     <TypeScriptCompile Include="StaticSprite.ts" />
     <TypeScriptCompile Include="Ticker.ts" />
   </ItemGroup>

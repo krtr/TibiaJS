@@ -10,7 +10,7 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
-    <TypeScriptToolsVersion>1.1</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>1.4</TypeScriptToolsVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
@@ -23,6 +23,9 @@
     </TypeScriptCompile>
     <TypeScriptCompile Include="..\typings\node\node.d.ts">
       <Link>typings\node.d.ts</Link>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="..\typings\socket.io\socket.io.d.ts">
+      <Link>typings\socket.io.d.ts</Link>
     </TypeScriptCompile>
     <TypeScriptCompile Include="app.ts" />
   </ItemGroup>

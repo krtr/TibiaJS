@@ -1,6 +1,7 @@
 ﻿///<reference path='staticSprite.ts' />
 class Character extends StaticSprite implements OnTickListener {
 	IsMoving = false;
+	ID: string;
 	private AnimPos = 1;
 	private Rotation = Rotation.Top;
 	private speed = 1.25;
@@ -61,6 +62,12 @@ class Character extends StaticSprite implements OnTickListener {
 		if (this.AnimPos > 2) {
 			this.AnimPos = 1;
 		}
+	}
+
+	Sync(data) {
+		this.Teleport(data.Position.x, data.Position.y);
+		this.Sprite = data.StartSprite;
+		this.ID = data.ID;
 	}
 
 }
