@@ -1,10 +1,18 @@
 ﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title></title>
+    <title>TibiaJS client</title>
+    <style>
+        body {
+            padding: 0px;
+        }
+    </style>
 </head>
 <body>
-    <canvas id="GameCanvas" width="1000" height="800"></canvas>
+    <div id="GameArea" style="width:800px; left:-400px; margin:auto;">
+        <canvas id="GameCanvas" width="800" height="600"></canvas>
+        <input type="text" id="ChatInput" style="width:796px; background-color:white;" value="" />
+    </div>
     <script src="/socket.io/socket.io.js"></script>
     <script src="SpriteGL.js"></script>
     <script src="client.js"></script>

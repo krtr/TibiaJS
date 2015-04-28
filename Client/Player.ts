@@ -11,19 +11,19 @@
 
 	CheckKeyPress() {
 		if (this.IsMoving) return;
-		if (KeyboardManager.keys[37] && !this.ground.GetCollision(this.TilePosion.x - 1, this.TilePosion.y)) {
+		if (GameServices.IsKeyPressed(37) && !this.ground.GetCollision(this.TilePosion.x - 1, this.TilePosion.y)) {
 			super.Move(Rotation.Left);
 			this.network.socket.emit("PlayerMove", { Rot: Rotation.Left, Pos: this.TilePosion });
 		}
-		if (KeyboardManager.keys[38] && !this.ground.GetCollision(this.TilePosion.x, this.TilePosion.y - 1)) {
+		if (GameServices.IsKeyPressed(38) && !this.ground.GetCollision(this.TilePosion.x, this.TilePosion.y - 1)) {
 			super.Move(Rotation.Top);
 			this.network.socket.emit("PlayerMove", { Rot: Rotation.Top, Pos: this.TilePosion });
 		}
-		if (KeyboardManager.keys[39] && !this.ground.GetCollision(this.TilePosion.x + 1, this.TilePosion.y)) {
+		if (GameServices.IsKeyPressed(39) && !this.ground.GetCollision(this.TilePosion.x + 1, this.TilePosion.y)) {
 			super.Move(Rotation.Right);
 			this.network.socket.emit("PlayerMove", { Rot: Rotation.Right, Pos: this.TilePosion });
 		}
-		if (KeyboardManager.keys[40] && !this.ground.GetCollision(this.TilePosion.x, this.TilePosion.y + 1)) {
+		if (GameServices.IsKeyPressed(40) && !this.ground.GetCollision(this.TilePosion.x, this.TilePosion.y + 1)) {
 			super.Move(Rotation.Down);
 			this.network.socket.emit("PlayerMove", { Rot: Rotation.Down, Pos: this.TilePosion });
 		}

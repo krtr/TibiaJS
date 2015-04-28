@@ -1,9 +1,10 @@
-﻿class Game {
+﻿
+class Game {
 	private ground: Ground;
 	private camera = new Camera();
-	private animations = new AnimationContainer();
 	private network: Network;
 	private playerList = new PlayersList();
+	private chatConsole = new ChatConsole();
 	constructor() {
 		this.ground = new Ground(this.camera);
 		this.network = new Network(this.playerList);
@@ -13,17 +14,13 @@
 		this.network.Connect();
 		this.camera.SetCameraTarget(player);
 
-		Ticker.Add(this.playerList, 150);
-		Ticker.Add(this.animations, 50);
-
-		player.Teleport(59, 50);
-		this.animations.Add(config.Animations.Beam, player.TilePosion);
+		GameServices.AddTickListener(this.playerList, 150);
+		GameServices.AddKeyboardListener(this.chatConsole);
 	}
 
 	Render() {
 		this.ground.Render();
 		this.playerList.Render();
-		this.animations.Render();
 		this.camera.UpdateCamera();
 	}
 }

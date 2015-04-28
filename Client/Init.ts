@@ -1,7 +1,6 @@
-﻿///<reference path='ticker.ts' />
+﻿
 ///<reference path='ground.ts' />
 ///<reference path='player.ts' />
-///<reference path='KeyboardManager.ts' />
 ///<reference path='game.ts' />
 
 var renderer: SpriteGL.SpriteRenderer;
@@ -26,13 +25,13 @@ window.onload = function () {
 	function Start() {
 		game = new Game();
 		requestAnimationFrame(Loop);
-		KeyboardManager.Start();
-		Ticker.Start();
+		GameServices.InitServices();
 	}
 }
 
 function Loop() {
 	game.Render();
+	GameServices.ProcessServces();
 	renderer.RenderAll();
 	requestAnimationFrame(Loop);
 }
