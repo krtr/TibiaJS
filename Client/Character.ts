@@ -49,12 +49,14 @@ class Character extends StaticSprite implements OnTickListener {
 	}
 
 	Teleport(x: number, y: number) {
+		GameServices.PutAnimation(config.Animations.Beam, this.TilePosion);
 		this.TilePosion.x = x;
 		this.TilePosion.y = y;
 		this.PixelPosition.x = x * config.TileSize;
 		this.PixelPosition.y = y * config.TileSize;
 		this.targetPixelPos.x = this.PixelPosition.x;
 		this.targetPixelPos.y = this.PixelPosition.y;
+		GameServices.PutAnimation(config.Animations.Beam, this.TilePosion);
 	}
 
 	OnTick() {

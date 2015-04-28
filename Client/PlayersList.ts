@@ -1,5 +1,4 @@
 ﻿class PlayersList implements OnTickListener {
-
 	private list = new Array<Character>();
 	thisPlayer: Player;
 
@@ -26,6 +25,7 @@
 			}
 		}
 	}
+
 	Render() {
 		this.thisPlayer.CheckKeyPress();
 		for (var i = 0; i < this.list.length; i++) {
