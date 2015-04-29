@@ -7,16 +7,22 @@
 		if (evt.keyCode === 8) {
 			if (this.chatInput.value.length > 0) {
 				this.chatInput.value = this.chatInput.value.substr(0, this.chatInput.value.length - 1);
+				return;
 			}
 		}
 	}
 
 	OnKeyPress(evt: KeyboardEvent) {
-		if (evt.keyCode === 13) {
+
+		var key = evt.keyCode || evt.which;
+		if (key === 13) {
 			//TODO: some sending some displaying
 			this.chatInput.value = "";
+			return;
 		}
-		this.chatInput.value += String.fromCharCode(evt.charCode);
+		if (key === 8) return;
+		if (key > 36 && key < 41) return;
+		this.chatInput.value += String.fromCharCode(key);
 	}
 
 	OnKeyUp(evt: KeyboardEvent) {}
