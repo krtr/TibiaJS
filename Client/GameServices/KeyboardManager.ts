@@ -8,7 +8,9 @@
 
 	Start() {
 		addEventListener("keydown", (keyEvent) => {
-			
+			if (keyEvent.keyCode == 8) {
+				keyEvent.preventDefault();
+			}
 			if (this.keys[keyEvent.keyCode]) return;
 			this.keys[keyEvent.keyCode] = true;
 			//if (keyEvent.keyCode == 13) config.TileSize--;
