@@ -4,10 +4,11 @@ class Game {
 	private camera = new Camera();
 	private network: Network;
 	private playerList = new PlayersList();
-	private chatConsole = new ChatConsole();
+	private chatConsole: ChatConsole;
 	constructor() {
 		this.ground = new Ground(this.camera);
 		this.network = new Network(this.playerList);
+		this.chatConsole = new ChatConsole(this.network);
 		var player = new Player(this.ground, this.network, config.Mobs.Dwarf.StartSprite);
 		this.playerList.SetCurrentPlayer(player);
 		

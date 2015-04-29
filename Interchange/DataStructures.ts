@@ -1,8 +1,8 @@
 enum Rotation { Down, Top, Right, Left };
 
-interface Position { x: number; y: number; }
+interface Vector2D { x: number; y: number; }
 
-interface MoveData { Rot: Rotation; Pos: Position }
+interface MoveData { Rot: Rotation; Pos: Vector2D }
 
 
 interface Config {
