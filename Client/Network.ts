@@ -36,6 +36,13 @@
 			}
 		});
 
+		this.socket.on("PlayerMessage",(data: any) => {
+			var plr = this.playerList.GetByID(data.ID);
+			if (plr == null) return;
+
+			plr.ShowMsg(data.Msg);
+		});
+
 		this.socket.on("PlayerDisconnected",(data: { ID: string }) => {
 			this.playerList.Remove(data.ID);
 		});

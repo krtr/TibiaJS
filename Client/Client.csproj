@@ -33,6 +33,7 @@
     <TypeScriptCompile Include="GameServices\AnimationContainer.ts" />
     <TypeScriptCompile Include="Game.ts" />
     <TypeScriptCompile Include="GameServices.ts" />
+    <TypeScriptCompile Include="GameServices\TextDisplayer.ts" />
     <TypeScriptCompile Include="Init.ts" />
     <TypeScriptCompile Include="Camera.ts" />
     <TypeScriptCompile Include="GameServices\KeyboardManager.ts" />

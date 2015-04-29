@@ -13,7 +13,6 @@ class Character extends StaticSprite implements OnTickListener {
 			var len = Math.sqrt(V.x * V.x + V.y * V.y);
 			V.x /= len;
 			V.y /= len;
-			
 			this.PixelPosition.x += V.x * this.speed;
 			this.PixelPosition.y += V.y * this.speed;
 			DrawSprite(this.Sprite + (this.Rotation * 3) + this.AnimPos, this.PixelPosition.x, this.PixelPosition.y);
@@ -57,6 +56,10 @@ class Character extends StaticSprite implements OnTickListener {
 		this.targetPixelPos.x = this.PixelPosition.x;
 		this.targetPixelPos.y = this.PixelPosition.y;
 		GameServices.PutAnimation(config.Animations.Beam, this.TilePosion);
+	}
+
+	ShowMsg(str: string) {
+		GameServices.PutText(str, { x: this.PixelPosition.x, y: this.PixelPosition.y - 30 });
 	}
 
 	OnTick() {

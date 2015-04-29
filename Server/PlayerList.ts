@@ -19,6 +19,11 @@ class PlayerList {
 			socket.broadcast.emit("PlayerMove", { ID: socket.id, Data: data });
 		});
 
+		socket.on("PlayerMessage", function (data: { Msg: string }) {
+			socket.broadcast.emit("PlayerMessage", { Msg: data.Msg, ID: socket.id });
+			socket.emit("PlayerMessage", { Msg: data.Msg, ID: socket.id });
+		});
+
 		socket.on("disconnect", () =>{
 			for (var i = 0; i < this.list.length; i++) {
 				if (this.list[i].GetID() === socket.id) {
