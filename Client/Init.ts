@@ -5,6 +5,7 @@
 
 var renderer: SpriteGL.SpriteRenderer;
 var game;
+var FPS = 10;
 var config: Config;
 
 //TODO loader for assets
@@ -30,6 +31,7 @@ window.onload = function () {
 }
 
 function Loop() {
+	FPS = GetFPS();
 	game.Render();
 	GameServices.ProcessServces();
 	renderer.RenderAll();

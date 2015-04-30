@@ -14,3 +14,10 @@ function GET(path: string, fn: (err, res) => void) {
 	}
 }
  
+var _lastmeasure = Date.now();
+function GetFPS(): number {
+	var curmeasure = Date.now();
+	var delta = curmeasure - _lastmeasure;
+	_lastmeasure = curmeasure;
+	return 1000.0 / delta;
+}

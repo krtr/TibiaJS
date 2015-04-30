@@ -1,6 +1,6 @@
 ﻿class Network {
 
-	socket: SocketIOClient.Socket;
+	private socket: SocketIOClient.Socket;
 	playerList: PlayersList;
 	constructor(playerList: PlayersList) {
 		this.playerList = playerList;
@@ -10,6 +10,15 @@
 		this.socket = io.connect();
 		console.log("Connection");
 		this.SetupConn();
+	}
+
+
+	SendMoveData(data: MoveData) {
+		this.socket.emit("PlayerMove", data);
+	}
+
+	SendChatMsg(data) {
+		this.socket.emit("PlayerMessage", data);
 	}
 
 	private SetupConn() {
@@ -28,6 +37,11 @@
 
 		this.socket.on("PlayerNew",(data) => {
 			this.playerList.Add(data);
+			this.playerList.GetByID(data.ID).Hit(25);
+		});
+
+		this.socket.on("PlayerHit",(data) => {
+			this.playerList.GetByID(data.ID).Hit(data.Dmg);
 		});
 
 		this.socket.on("PlayerCurrentList",(data: Array<any>) => {
