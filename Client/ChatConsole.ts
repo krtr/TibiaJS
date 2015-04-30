@@ -18,7 +18,7 @@
 
 		var key = evt.keyCode || evt.which;
 		if (key === 13) {
-			this.network.socket.emit("PlayerMessage", { Msg: this.chatInput.value });
+			this.network.SendChatMsg({ Msg: this.chatInput.value });
 			this.chatInput.value = "";
 			return;
 		}

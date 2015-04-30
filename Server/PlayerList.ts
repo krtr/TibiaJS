@@ -24,6 +24,7 @@ class PlayerList {
 			socket.emit("PlayerMessage", { Msg: data.Msg, ID: socket.id });
 		});
 
+		
 		socket.on("disconnect", () =>{
 			for (var i = 0; i < this.list.length; i++) {
 				if (this.list[i].GetID() === socket.id) {
@@ -36,6 +37,12 @@ class PlayerList {
 		});
 	}
 
+	ForEach(callback: (plr: Player) => void) {
+		for (var i = 0; i < this.list.length; i++) {
+			callback(this.list[i]);
+		}
+	}
+
 	private GetAllSyncData(): Array<Player> {
 		var result = [];
 		for (var i = 0; i < this.list.length; i++) {
@@ -43,6 +50,8 @@ class PlayerList {
 		}
 		return result;
 	}
+
+	
 }
 
 export = PlayerList;

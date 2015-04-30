@@ -11,5 +11,12 @@ app.use(serveStatic("./static", { index: ["index.html"] }));
 var playerList = new PlayerList();
 io.on('connection', function (socket) {
 	playerList.AddNew(socket);
+
+
 });
 
+setInterval(() => {
+	playerList.ForEach((plr) => {
+		io.sockets.emit("PlayerHit", { ID: plr.GetID(), Dmg: 10 });
+	});
+}, 1000);

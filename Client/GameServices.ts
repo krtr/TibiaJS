@@ -17,6 +17,10 @@ module GameServices {
 		textDisplayer.AddTxt(str, "#FFFFFF", pos);
 	}
 
+	export function PutMovingText(str: string, pos: Vector2D, movingV: Vector2D) {
+		textDisplayer.AddMovingTxt(str, "#FFFFFF", pos, movingV);
+	}
+
 	export function AddTickListener(listener: OnTickListener, interval: number) {
 		ticker.Add(listener, interval);
 	}

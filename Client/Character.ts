@@ -4,19 +4,19 @@ class Character extends StaticSprite implements OnTickListener {
 	ID: string;
 	private AnimPos = 1;
 	private Rotation = Rotation.Top;
-	private speed = 1.25;
+	private speed = 80.0;
 	private targetPixelPos = { x: 0, y: 0 };
-
+	private hp = 100;
 	Render() {
 		if (this.IsMoving) {
 			var V = { x: this.targetPixelPos.x - this.PixelPosition.x, y: this.targetPixelPos.y - this.PixelPosition.y };
 			var len = Math.sqrt(V.x * V.x + V.y * V.y);
 			V.x /= len;
 			V.y /= len;
-			this.PixelPosition.x += V.x * this.speed;
-			this.PixelPosition.y += V.y * this.speed;
+			this.PixelPosition.x += V.x * this.speed / FPS;
+			this.PixelPosition.y += V.y * this.speed / FPS;
 			DrawSprite(this.Sprite + (this.Rotation * 3) + this.AnimPos, this.PixelPosition.x, this.PixelPosition.y);
-			if (len < this.speed) {
+			if (len < 2.0) {
 				this.IsMoving = false;
 				this.PixelPosition.x = this.targetPixelPos.x;
 				this.PixelPosition.y = this.targetPixelPos.y;
@@ -25,7 +25,7 @@ class Character extends StaticSprite implements OnTickListener {
 			DrawSprite(this.Sprite + this.Rotation * 3, this.TilePosion.x * config.TileSize, this.TilePosion.y * config.TileSize);
 		}
 
-		DrawHealthBar(100, this.PixelPosition.x, this.PixelPosition.y - 7);
+		DrawHealthBar(this.hp, this.PixelPosition.x, this.PixelPosition.y - 7);
 	}
 
 	Move(rot: Rotation) {
@@ -60,6 +60,11 @@ class Character extends StaticSprite implements OnTickListener {
 
 	ShowMsg(str: string) {
 		GameServices.PutText(str, { x: this.PixelPosition.x, y: this.PixelPosition.y - 30 });
+	}
+
+	Hit(hitpoints: number) {
+		GameServices.PutMovingText(hitpoints.toString(), { x: this.PixelPosition.x, y: this.PixelPosition.y - 20 }, { x: 0, y: -20 });
+		this.hp -= 10;
 	}
 
 	OnTick() {
