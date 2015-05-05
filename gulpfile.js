@@ -21,7 +21,7 @@ gulp.task("build", function () {
 });
 
 gulp.task("run", function () {
-	nodemon({ script: "app.js", cwd: "./out", ext: "html js css", ignore: ["ignored.js"] })
+	nodemon({ script: "Server.js", cwd: "./out", ext: "html js css", ignore: ["ignored.js"] })
 		.on("restart", function () {
     		console.log("Restarted")
 		})
