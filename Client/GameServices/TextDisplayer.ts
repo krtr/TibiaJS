@@ -19,8 +19,11 @@
 	Render() {
 		var curTime = Date.now();
 		for (var i = 0; i < this.textList.length; i++) {
-			if (curTime > this.textList[i].startTime + this.textList[i].durationTime) { continue; }
-			//continue;
+			if (curTime > this.textList[i].startTime + this.textList[i].durationTime) {
+				this.textList.splice(i, 1);
+				i--;
+				continue;
+			}
 			this.textList[i].pos.x += this.textList[i].movingVector.x / FPS;
 			this.textList[i].pos.y += this.textList[i].movingVector.y / FPS;
 			renderer.DrawTxt(this.textList[i].txtObj, this.textList[i].pos.x, this.textList[i].pos.y);

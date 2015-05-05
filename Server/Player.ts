@@ -1,7 +1,4 @@
 ﻿
-
-
-
 var startSprites = [56, 113, 223, 238];
 
 class PlayerDataToSync {
