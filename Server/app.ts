@@ -17,6 +17,6 @@ io.on('connection', function (socket) {
 
 setInterval(() => {
 	playerList.ForEach((plr) => {
-		io.sockets.emit("PlayerHit", { ID: plr.GetID(), Dmg: 10 });
+		io.sockets.emit("CharacterHit", { ID: plr.GetID(), Dmg: 10 });
 	});
 }, 1000);

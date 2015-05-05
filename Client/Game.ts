@@ -3,7 +3,7 @@ class Game {
 	private ground: Ground;
 	private camera = new Camera();
 	private network: Network;
-	private playerList = new PlayersList();
+	private playerList = new CharacterList();
 	private chatConsole: ChatConsole;
 	constructor() {
 		this.ground = new Ground(this.camera);
