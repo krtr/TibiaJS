@@ -19,13 +19,13 @@
   </PropertyGroup>
   <ItemGroup>
     <TypeScriptCompile Include="..\Interchange\DataStructures.ts">
-      <Link>DataStructures.ts</Link>
+      <Link>Definitions\DataStructures.ts</Link>
     </TypeScriptCompile>
     <TypeScriptCompile Include="..\resources\3rd\SpriteGL\bin\SpriteGL.d.ts">
-      <Link>SpriteGL.d.ts</Link>
+      <Link>Definitions\SpriteGL.d.ts</Link>
     </TypeScriptCompile>
     <TypeScriptCompile Include="..\typings\socket.io-client\socket.io-client.d.ts">
-      <Link>socket.io-client.d.ts</Link>
+      <Link>Definitions\socket.io-client.d.ts</Link>
     </TypeScriptCompile>
     <TypeScriptCompile Include="Character.ts" />
     <TypeScriptCompile Include="ChatConsole.ts" />
@@ -42,7 +42,7 @@
     <TypeScriptCompile Include="Mob.ts" />
     <TypeScriptCompile Include="Network.ts" />
     <TypeScriptCompile Include="Player.ts" />
-    <TypeScriptCompile Include="PlayersList.ts" />
+    <TypeScriptCompile Include="CharacterList.ts" />
     <TypeScriptCompile Include="StaticSprite.ts" />
     <TypeScriptCompile Include="GameServices\Ticker.ts" />
   </ItemGroup>

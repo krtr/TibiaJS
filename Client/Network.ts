@@ -1,8 +1,8 @@
 ﻿class Network {
 
 	private socket: SocketIOClient.Socket;
-	playerList: PlayersList;
-	constructor(playerList: PlayersList) {
+	playerList: CharacterList;
+	constructor(playerList: CharacterList) {
 		this.playerList = playerList;
 	}
 
@@ -14,11 +14,11 @@
 
 
 	SendMoveData(data: MoveData) {
-		this.socket.emit("PlayerMove", data);
+		this.socket.emit("CharacterMove", data);
 	}
 
 	SendChatMsg(data) {
-		this.socket.emit("PlayerMessage", data);
+		this.socket.emit("CharacterMessage", data);
 	}
 
 	private SetupConn() {
@@ -28,36 +28,36 @@
 			this.playerList.SyncCurrentPlayer(data);
 		});
 
-		this.socket.on("PlayerMove",(data: { ID: string; Data: MoveData }) => {
+		this.socket.on("CharacterMove",(data: { ID: string; Data: MoveData }) => {
 			var plr = this.playerList.GetByID(data.ID);
 			if (plr) {
 				plr.Move(data.Data.Rot);
 			}
 		});
 
-		this.socket.on("PlayerNew",(data) => {
+		this.socket.on("CharacterNew",(data) => {
 			this.playerList.Add(data);
 			this.playerList.GetByID(data.ID).Hit(25);
 		});
 
-		this.socket.on("PlayerHit",(data) => {
+		this.socket.on("CharacterHit",(data) => {
 			this.playerList.GetByID(data.ID).Hit(data.Dmg);
 		});
 
-		this.socket.on("PlayerCurrentList",(data: Array<any>) => {
+		this.socket.on("CharacterCurrentList",(data: Array<any>) => {
 			for (var i = 0; i < data.length; i++) {
 				this.playerList.Add(data[i]);
 			}
 		});
 
-		this.socket.on("PlayerMessage",(data: any) => {
+		this.socket.on("CharacterMessage",(data: any) => {
 			var plr = this.playerList.GetByID(data.ID);
 			if (plr == null) return;
 
 			plr.ShowMsg(data.Msg);
 		});
 
-		this.socket.on("PlayerDisconnected",(data: { ID: string }) => {
+		this.socket.on("CharacterRemove",(data: { ID: string }) => {
 			this.playerList.Remove(data.ID);
 		});
 

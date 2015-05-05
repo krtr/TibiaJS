@@ -1,4 +1,4 @@
-﻿class PlayersList implements OnTickListener {
+﻿class CharacterList implements OnTickListener {
 	private list = new Array<Character>();
 	thisPlayer: Player;
 

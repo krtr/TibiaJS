@@ -8,20 +8,20 @@ class PlayerList {
 	AddNew(socket: SocketIO.Socket) {
 		var plr = new Player(socket);
 		plr.Sync();
-		socket.emit("PlayerCurrentList", this.GetAllSyncData());
+		socket.emit("CharacterCurrentList", this.GetAllSyncData());
 		this.list.push(plr);
 		console.log("connected:" + this.list.length);
 
-		socket.broadcast.emit("PlayerNew", plr.GetSyncData());
+		socket.broadcast.emit("CharacterNew", plr.GetSyncData());
 
 		socket.on("PlayerMove", function (data: MoveData) {
 			plr.Move(data);
-			socket.broadcast.emit("PlayerMove", { ID: socket.id, Data: data });
+			socket.broadcast.emit("CharacterMove", { ID: socket.id, Data: data });
 		});
 
-		socket.on("PlayerMessage", function (data: { Msg: string }) {
-			socket.broadcast.emit("PlayerMessage", { Msg: data.Msg, ID: socket.id });
-			socket.emit("PlayerMessage", { Msg: data.Msg, ID: socket.id });
+		socket.on("CharacterMessage", function (data: { Msg: string }) {
+			socket.broadcast.emit("CharacterMessage", { Msg: data.Msg, ID: socket.id });
+			socket.emit("CharacterMessage", { Msg: data.Msg, ID: socket.id });
 		});
 
 		
@@ -30,7 +30,7 @@ class PlayerList {
 				if (this.list[i].GetID() === socket.id) {
 					this.list.splice(i, 1);
 					console.log("disconnect:" + this.list.length);
-					socket.broadcast.emit("PlayerDisconnected", { ID: socket.id });
+					socket.broadcast.emit("CharacterRemove", { ID: socket.id });
 					break;
 				}
 			}
