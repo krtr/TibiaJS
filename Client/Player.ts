@@ -1,4 +1,4 @@
-﻿Sclass Player extends Character {
+﻿class Player extends Character {
 	private ground: Ground;
 	private network: Network;
 	constructor(ground: Ground, network:Network, startSprite:number) {
