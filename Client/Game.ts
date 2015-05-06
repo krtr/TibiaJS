@@ -1,4 +1,4 @@
-﻿
+﻿S
 class Game {
 	private ground: Ground;
 	private camera = new Camera();

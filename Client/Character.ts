@@ -15,17 +15,17 @@ class Character extends StaticSprite implements OnTickListener {
 			V.y /= len;
 			this.PixelPosition.x += V.x * this.speed / FPS;
 			this.PixelPosition.y += V.y * this.speed / FPS;
-			DrawSprite(this.Sprite + (this.Rotation * 3) + this.AnimPos, this.PixelPosition.x, this.PixelPosition.y);
+            DrawSprite(this.Sprite + (this.Rotation * 3) + this.AnimPos, this.PixelPosition.x - 10, this.PixelPosition.y - 10);
 			if (len < 2.0) {
 				this.IsMoving = false;
 				this.PixelPosition.x = this.targetPixelPos.x;
 				this.PixelPosition.y = this.targetPixelPos.y;
 			}
 		} else {
-			DrawSprite(this.Sprite + this.Rotation * 3, this.TilePosion.x * config.TileSize, this.TilePosion.y * config.TileSize);
+            DrawSprite(this.Sprite + this.Rotation * 3, this.TilePosion.x * config.TileSize - 10, this.TilePosion.y * config.TileSize - 10);
 		}
 
-		DrawHealthBar(this.hp, this.PixelPosition.x, this.PixelPosition.y - 7);
+        DrawHealthBar(this.hp, this.PixelPosition.x - 10 , this.PixelPosition.y - 7 - 10);
 	}
 
 	Move(rot: Rotation) {

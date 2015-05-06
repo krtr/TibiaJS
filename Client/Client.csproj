@@ -10,12 +10,13 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
-    <TypeScriptToolsVersion>1.4</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>1.5</TypeScriptToolsVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <ItemGroup>
     <TypeScriptCompile Include="..\Interchange\DataStructures.ts">
@@ -23,6 +24,12 @@
     </TypeScriptCompile>
     <TypeScriptCompile Include="..\resources\3rd\SpriteGL\bin\SpriteGL.d.ts">
       <Link>Definitions\SpriteGL.d.ts</Link>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="..\typings\createjs-lib\createjs-lib.d.ts">
+      <Link>Definitions\createjs-lib.d.ts</Link>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="..\typings\preloadjs\preloadjs.d.ts">
+      <Link>Definitions\preloadjs.d.ts</Link>
     </TypeScriptCompile>
     <TypeScriptCompile Include="..\typings\socket.io-client\socket.io-client.d.ts">
       <Link>Definitions\socket.io-client.d.ts</Link>
