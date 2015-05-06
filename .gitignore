@@ -226,7 +226,7 @@ $RECYCLE.BIN/
 *.msi
 *.msm
 *.msp
-
+.vs/
 # Windows shortcuts
 *.lnk
 Out/

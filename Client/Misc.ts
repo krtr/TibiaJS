@@ -21,3 +21,14 @@ function GetFPS(): number {
 	_lastmeasure = curmeasure;
 	return 1000.0 / delta;
 }
+
+
+function DrawSprite(index: number, posx: number, posy: number) {
+    renderer.DrawSpr((index % 32) * 32, ((index / 32) | 0) * 32, 32, 32, posx, posy, config.TileSize, config.TileSize);
+}
+
+function DrawHealthBar(percent: number, posx: number, posy: number) {
+    renderer.DrawSpr(129, 386, 26, 4, posx, posy, 26, 4);
+}
+
+

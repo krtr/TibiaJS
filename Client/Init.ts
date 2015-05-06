@@ -4,45 +4,35 @@
 ///<reference path='game.ts' />
 
 var renderer: SpriteGL.SpriteRenderer;
-var game;
 var FPS = 10;
 var config: Config;
 
-//TODO loader for assets
 window.onload = function () {
-	GET("data.json", function (err, data) {
-		config = JSON.parse(data); 
-		console.log("CONFIG");
-		if (renderer) Start();
-	});
+    var game;
+    var queue = new createjs.LoadQueue(true);
+    queue.loadFile({ src: "data.json", id: "config" });
+    queue.loadFile({ src: "sprites.png", id: "sprites" });
 
-	var image = new Image();
-	image.src = "sprites.png";
-	image.onload = function () {
-		renderer = SpriteGL.SpriteRenderer.fromCanvas(<HTMLCanvasElement>document.getElementById("GameCanvas"), image);
-		if (config) Start();
-	}
+    queue.on("fileload", function (data: any) {
+        if (data.item.id === "config") config = data.result;
+        if (data.item.id === "sprites") {
+            var canvas = <HTMLCanvasElement>document.getElementById("GameCanvas");
+            renderer = SpriteGL.SpriteRenderer.fromCanvas(canvas, data.result);
+        }
+    });
 
-	function Start() {
-		game = new Game();
-		requestAnimationFrame(Loop);
-		GameServices.InitServices();
-	}
-}
+    queue.on("complete", function () {
+        game = new Game();
+        requestAnimationFrame(Loop);
+        GameServices.InitServices();
+    });
 
-function Loop() {
-	FPS = GetFPS();
-	game.Render();
-	GameServices.ProcessServces();
-	renderer.RenderAll();
-	requestAnimationFrame(Loop);
-}
-
-function DrawSprite(index: number, posx: number, posy: number) {
-	renderer.DrawSpr((index % 32) * 32, ((index / 32) | 0) * 32, 32, 32, posx, posy, config.TileSize, config.TileSize);
-}
-
-function DrawHealthBar(percent: number, posx: number, posy: number) {
-	renderer.DrawSpr(129, 386, 26, 4, posx, posy, 26, 4);
+    function Loop() {
+        FPS = GetFPS();
+        game.Render();
+        GameServices.ProcessServces();
+        renderer.RenderAll();
+        requestAnimationFrame(Loop);
+    }
 }
 
