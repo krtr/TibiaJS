@@ -14,7 +14,7 @@
 
 
 	SendMoveData(data: MoveData) {
-		this.socket.emit("CharacterMove", data);
+		this.socket.emit("PlayerMove", data);
 	}
 
 	SendChatMsg(data) {
@@ -31,13 +31,13 @@
 		this.socket.on("CharacterMove",(data: { ID: string; Data: MoveData }) => {
 			var plr = this.playerList.GetByID(data.ID);
 			if (plr) {
-				plr.Move(data.Data.Rot);
+				plr.Move(data.Data);
 			}
 		});
 
 		this.socket.on("CharacterNew",(data) => {
 			this.playerList.Add(data);
-			this.playerList.GetByID(data.ID).Hit(25);
+			
 		});
 
 		this.socket.on("CharacterHit",(data) => {

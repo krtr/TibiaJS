@@ -11,10 +11,13 @@
 		this.thisPlayer.Sync(data);
 	}
 
-	Add(data) {
-		var char = new Mob(data.StartSprite);
-		char.Sync(data);
-		this.list.push(char);
+    Add(data) {
+        if (!this.GetByID(data.ID)) {
+            var char = new Mob(data.StartSprite);
+            char.Sync(data);
+            this.list.push(char);
+            char.Hit(25);
+        }
 	}
 
 	Remove(ID: string) {
