@@ -1,4 +1,5 @@
 ﻿///<reference path='staticSprite.ts' />
+
 class Character extends StaticSprite implements OnTickListener {
 	IsMoving = false;
 	ID: string;
@@ -28,7 +29,7 @@ class Character extends StaticSprite implements OnTickListener {
         DrawHealthBar(this.hp, this.PixelPosition.x - 10 , this.PixelPosition.y - 7 - 10);
 	}
 
-	Move(rot: Rotation) {
+    MoveDir(rot: Rotation) {
 		if (rot === Rotation.Left) {
 			this.TilePosion.x--;
 		}
@@ -47,12 +48,22 @@ class Character extends StaticSprite implements OnTickListener {
 		this.targetPixelPos.y = this.TilePosion.y * config.TileSize
 	}
 
-	Teleport(x: number, y: number) {
+    Move(data: MoveData) {
+      
+        if ((data.Pos.x !== this.TilePosion.x) || (data.Pos.y !== this.TilePosion.y)) {
+            console.log(this.TilePosion, data.Pos);
+            this.Teleport(data.Pos);
+        }
+        this.MoveDir(data.Rot);
+    }
+
+
+    Teleport(newPos: Vector2D) {
 		GameServices.PutAnimation(config.Animations.Beam, this.TilePosion);
-		this.TilePosion.x = x;
-		this.TilePosion.y = y;
-		this.PixelPosition.x = x * config.TileSize;
-		this.PixelPosition.y = y * config.TileSize;
+		this.TilePosion.x = newPos.x;
+        this.TilePosion.y = newPos.y;
+        this.PixelPosition.x = newPos.x * config.TileSize;
+        this.PixelPosition.y = newPos.y * config.TileSize;
 		this.targetPixelPos.x = this.PixelPosition.x;
 		this.targetPixelPos.y = this.PixelPosition.y;
 		GameServices.PutAnimation(config.Animations.Beam, this.TilePosion);
@@ -63,7 +74,7 @@ class Character extends StaticSprite implements OnTickListener {
 	}
 
 	Hit(hitpoints: number) {
-		GameServices.PutMovingText(hitpoints.toString(), { x: this.PixelPosition.x, y: this.PixelPosition.y - 20 }, { x: 0, y: -20 });
+		GameServices.PutMovingText(hitpoints.toString(), { x: this.PixelPosition.x - 10, y: this.PixelPosition.y - 20 - 10 }, { x: 0, y: -20 });
 		this.hp -= 10;
 	}
 
@@ -74,8 +85,9 @@ class Character extends StaticSprite implements OnTickListener {
 		}
 	}
 
-	Sync(data) {
-		this.Teleport(data.Position.x, data.Position.y);
+    Sync(data) {
+        console.log(data);
+		this.Teleport(data.Position);
 		this.Sprite = data.StartSprite;
 		this.ID = data.ID;
 	}

@@ -10,12 +10,13 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
-    <TypeScriptToolsVersion>1.4</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>1.5</TypeScriptToolsVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <ItemGroup>
     <TypeScriptCompile Include="..\Interchange\DataStructures.ts">
@@ -30,9 +31,14 @@
     <TypeScriptCompile Include="..\typings\socket.io\socket.io.d.ts">
       <Link>typings\socket.io.d.ts</Link>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="app.ts" />
-    <TypeScriptCompile Include="Player.ts" />
-    <TypeScriptCompile Include="PlayerList.ts" />
+    <TypeScriptCompile Include="classes\Character.ts" />
+    <TypeScriptCompile Include="GameState.ts" />
+    <TypeScriptCompile Include="Geometry.ts" />
+    <TypeScriptCompile Include="OnConnect.ts" />
+    <TypeScriptCompile Include="Server.ts" />
+    <TypeScriptCompile Include="classes\Player.ts" />
+    <TypeScriptCompile Include="classes\CharacterList.ts" />
+    <TypeScriptCompile Include="ServerLoop.ts" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">12.0</VisualStudioVersion>
@@ -65,6 +71,7 @@
     <TypeScriptSourceMap>False</TypeScriptSourceMap>
     <TypeScriptCompileOnSaveEnabled>False</TypeScriptCompileOnSaveEnabled>
     <TypeScriptModuleKind>commonjs</TypeScriptModuleKind>
+    <TypeScriptTarget>ES5</TypeScriptTarget>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <TypeScriptRemoveComments>true</TypeScriptRemoveComments>

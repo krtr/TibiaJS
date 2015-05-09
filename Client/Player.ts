@@ -12,20 +12,20 @@
 	CheckKeyPress() {
 		if (this.IsMoving) return;
 		if (GameServices.IsKeyPressed(37) && !this.ground.GetCollision(this.TilePosion.x - 1, this.TilePosion.y)) {
-			super.Move(Rotation.Left);
+			//super.MoveDir(Rotation.Left);
 			this.network.SendMoveData({ Rot: Rotation.Left, Pos: this.TilePosion });
 		}
 		if (GameServices.IsKeyPressed(38) && !this.ground.GetCollision(this.TilePosion.x, this.TilePosion.y - 1)) {
-			super.Move(Rotation.Top);
+			//super.MoveDir(Rotation.Top);
 			this.network.SendMoveData({ Rot: Rotation.Top, Pos: this.TilePosion });
 		}
 		if (GameServices.IsKeyPressed(39) && !this.ground.GetCollision(this.TilePosion.x + 1, this.TilePosion.y)) {
-			super.Move(Rotation.Right);
+			//super.MoveDir(Rotation.Right);
 			this.network.SendMoveData({ Rot: Rotation.Right, Pos: this.TilePosion });
 		}
 		if (GameServices.IsKeyPressed(40) && !this.ground.GetCollision(this.TilePosion.x, this.TilePosion.y + 1)) {
-			super.Move(Rotation.Down);
+			//super.MoveDir(Rotation.Down);
 			this.network.SendMoveData({ Rot: Rotation.Down, Pos: this.TilePosion });
-		}
+        }
 	}
 }

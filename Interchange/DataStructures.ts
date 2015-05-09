@@ -1,4 +1,4 @@
-enum Rotation { Down, Top, Right, Left };
+const enum Rotation { Down, Top, Right, Left };
 
 interface Vector2D { x: number; y: number; }
 
