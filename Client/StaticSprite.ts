@@ -3,8 +3,8 @@
 	TilePosion = { x: 0, y: 0 };
 	Sprite = 0;
 
-	Render() {
-		DrawSprite(this.Sprite, this.PixelPosition.x, this.PixelPosition.y);
+    Render(spriteDrawer: SpriteDrawer, FPS: number) {
+		spriteDrawer.DrawSprite(this.Sprite, this.PixelPosition.x, this.PixelPosition.y);
 	}
 
 }

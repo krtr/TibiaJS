@@ -16,9 +16,9 @@
 		}
 	}
 
-	Render() {
+    Render(spriteDrawer: SpriteDrawer, FPS: number) {
 		for (var i = 0; i < this.animationsList.length; i++) {
-			this.animationsList[i].Render();
+            this.animationsList[i].Render(spriteDrawer, FPS);
 		}
 	}
 

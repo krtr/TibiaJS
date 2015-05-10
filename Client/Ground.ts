@@ -5,7 +5,7 @@
 		this.camera = camera;
 	}
 
-	Render() {
+    Render(spriteDrawer, FPS) {
 		var cameraPos = this.camera.GetCameraPos();
 		var startX = ((cameraPos.x - 400) / config.TileSize) | 0;
 		//startX -= 1;
@@ -21,7 +21,7 @@
 		if (endY > config.MapHeight - 1) endY = config.MapHeight - 1;
 		for (var i = startY; i < endY; i++)
 			for (var j = startX; j < endX; j++) {
-				DrawSprite(config.Data[i * config.MapWidth + j] - 1, (j * config.TileSize), i * config.TileSize);
+				spriteDrawer.DrawSprite(config.Data[i * config.MapWidth + j] - 1, (j * config.TileSize), i * config.TileSize);
 			}
 	}
 

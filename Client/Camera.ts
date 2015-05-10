@@ -6,8 +6,8 @@
 		this.cameraTarget = CameraTarget;
 	}
 
-	UpdateCamera() {
-		renderer.UpdateCamera(this.cameraTarget.PixelPosition.x | 0, this.cameraTarget.PixelPosition.y | 0);
+    UpdateCamera(spriteDrawer: SpriteDrawer) {
+		spriteDrawer.renderer.UpdateCamera(this.cameraTarget.PixelPosition.x | 0, this.cameraTarget.PixelPosition.y | 0);
 	}
 
 	SetCameraTarget(Cameratarget: ICameraTarget) {

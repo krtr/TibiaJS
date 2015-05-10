@@ -8,7 +8,7 @@ class Character extends StaticSprite implements OnTickListener {
 	private speed = 80.0;
 	private targetPixelPos = { x: 0, y: 0 };
 	private hp = 100;
-	Render() {
+    Render(spriteDrawer: SpriteDrawer, FPS: number) {
 		if (this.IsMoving) {
 			var V = { x: this.targetPixelPos.x - this.PixelPosition.x, y: this.targetPixelPos.y - this.PixelPosition.y };
 			var len = Math.sqrt(V.x * V.x + V.y * V.y);
@@ -16,17 +16,17 @@ class Character extends StaticSprite implements OnTickListener {
 			V.y /= len;
 			this.PixelPosition.x += V.x * this.speed / FPS;
 			this.PixelPosition.y += V.y * this.speed / FPS;
-            DrawSprite(this.Sprite + (this.Rotation * 3) + this.AnimPos, this.PixelPosition.x - 10, this.PixelPosition.y - 10);
+            spriteDrawer.DrawSprite(this.Sprite + (this.Rotation * 3) + this.AnimPos, this.PixelPosition.x - 10, this.PixelPosition.y - 10);
 			if (len < 2.0) {
 				this.IsMoving = false;
 				this.PixelPosition.x = this.targetPixelPos.x;
 				this.PixelPosition.y = this.targetPixelPos.y;
 			}
 		} else {
-            DrawSprite(this.Sprite + this.Rotation * 3, this.TilePosion.x * config.TileSize - 10, this.TilePosion.y * config.TileSize - 10);
+            spriteDrawer.DrawSprite(this.Sprite + this.Rotation * 3, this.TilePosion.x * config.TileSize - 10, this.TilePosion.y * config.TileSize - 10);
 		}
 
-        DrawHealthBar(this.hp, this.PixelPosition.x - 10 , this.PixelPosition.y - 7 - 10);
+        spriteDrawer.DrawHealthBar(this.hp, this.PixelPosition.x - 10 , this.PixelPosition.y - 7 - 10);
 	}
 
     MoveDir(rot: Rotation) {
