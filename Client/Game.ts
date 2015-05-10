@@ -19,9 +19,9 @@ class Game {
 		GameServices.AddKeyboardListener(this.chatConsole);
 	}
 
-	Render() {
-		this.ground.Render();
-		this.playerList.Render();
-		this.camera.UpdateCamera();
+    Render(spriteDrawer: SpriteDrawer, FPS: number) {
+		this.ground.Render(spriteDrawer, FPS);
+        this.playerList.Render(spriteDrawer, FPS);
+        this.camera.UpdateCamera(spriteDrawer);
 	}
 }

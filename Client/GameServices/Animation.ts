@@ -12,9 +12,9 @@
 		this.TilePosition.y = pos.y;
 	}
 
-	Render() {
+    Render(spriteDrawer: SpriteDrawer,FPS: number) {
 		if (!this.Dead) {
-			DrawSprite(this.Sprite + this.AnimFrame, this.TilePosition.x * config.TileSize, this.TilePosition.y * config.TileSize);
+			spriteDrawer.DrawSprite(this.Sprite + this.AnimFrame, this.TilePosition.x * config.TileSize, this.TilePosition.y * config.TileSize);
 		}
 	}
 

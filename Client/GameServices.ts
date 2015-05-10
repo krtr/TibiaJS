@@ -3,7 +3,8 @@
 ///<reference path='./GameServices/keyboardManager.ts' />
 ///<reference path='./GameServices/TextDisplayer.ts' />
 module GameServices {
-	export function InitServices() {
+    export function InitServices(spriteDisplayer: SpriteDrawer) {
+        textDisplayer = new TextDisplayer(spriteDisplayer);
 		ticker.Start();
 		keyboardManager.Start();
 		ticker.Add(animationContainer, 50);
@@ -33,13 +34,13 @@ module GameServices {
 		return keyboardManager.keys[keyCode];
 	}
 
-	export function ProcessServces() {
-		animationContainer.Render();
-		textDisplayer.Render();
+    export function ProcessServces(spriteDrawer: SpriteDrawer, FPS: number) {
+        animationContainer.Render(spriteDrawer, FPS);
+        textDisplayer.Render(spriteDrawer, FPS);
 	}
 
 	var animationContainer = new AnimationContainer();
 	var keyboardManager = new KeyboardManager();
-	var ticker = new Ticker();
-	var textDisplayer = new TextDisplayer();
+    var ticker = new Ticker();
+    var textDisplayer: TextDisplayer;
 } 

@@ -50,6 +50,7 @@
     <TypeScriptCompile Include="Network.ts" />
     <TypeScriptCompile Include="Player.ts" />
     <TypeScriptCompile Include="CharacterList.ts" />
+    <TypeScriptCompile Include="SpriteDrawer.ts" />
     <TypeScriptCompile Include="StaticSprite.ts" />
     <TypeScriptCompile Include="GameServices\Ticker.ts" />
   </ItemGroup>

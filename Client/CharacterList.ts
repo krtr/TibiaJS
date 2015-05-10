@@ -29,10 +29,10 @@
 		}
 	}
 
-	Render() {
+    Render(spriteDrawer: SpriteDrawer, FPS: number) {
 		this.thisPlayer.CheckKeyPress();
 		for (var i = 0; i < this.list.length; i++) {
-			this.list[i].Render();
+            this.list[i].Render(spriteDrawer, FPS);
 		}
 	}
 
