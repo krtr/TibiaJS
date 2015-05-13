@@ -34,8 +34,12 @@
     <TypeScriptCompile Include="..\typings\socket.io-client\socket.io-client.d.ts">
       <Link>Definitions\socket.io-client.d.ts</Link>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="BasicComponents.ts" />
+    <TypeScriptCompile Include="Systems\CharacterAnimationSystem.ts" />
+    <TypeScriptCompile Include="Systems\CameraSystem.ts" />
     <TypeScriptCompile Include="Character.ts" />
     <TypeScriptCompile Include="ChatConsole.ts" />
+    <TypeScriptCompile Include="GameObj.ts" />
     <TypeScriptCompile Include="GameServices\Animation.ts" />
     <TypeScriptCompile Include="GameServices\AnimationContainer.ts" />
     <TypeScriptCompile Include="Game.ts" />
@@ -44,13 +48,14 @@
     <TypeScriptCompile Include="Init.ts" />
     <TypeScriptCompile Include="Camera.ts" />
     <TypeScriptCompile Include="GameServices\KeyboardManager.ts" />
-    <TypeScriptCompile Include="Ground.ts" />
     <TypeScriptCompile Include="Misc.ts" />
-    <TypeScriptCompile Include="Mob.ts" />
     <TypeScriptCompile Include="Network.ts" />
-    <TypeScriptCompile Include="Player.ts" />
     <TypeScriptCompile Include="CharacterList.ts" />
-    <TypeScriptCompile Include="SpriteDrawer.ts" />
+    <TypeScriptCompile Include="Systems\CollisionSystem.ts" />
+    <TypeScriptCompile Include="Systems\InputSystem.ts" />
+    <TypeScriptCompile Include="Systems\MovementSystem.ts" />
+    <TypeScriptCompile Include="Systems\NetworkSystem.ts" />
+    <TypeScriptCompile Include="Systems\RenderingSystem.ts" />
     <TypeScriptCompile Include="StaticSprite.ts" />
     <TypeScriptCompile Include="GameServices\Ticker.ts" />
   </ItemGroup>

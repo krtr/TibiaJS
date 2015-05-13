@@ -1,8 +1,8 @@
-﻿class ChatConsole implements IKeyboardListener {
+﻿class ChatConsole {
 	private chatInput: HTMLInputElement;
-	private network: Network;
-	constructor(network: Network) {
-		this.network = network;
+
+	constructor() {
+	
 		this.chatInput = <HTMLInputElement>document.getElementById("ChatInput");
 	}
 	OnKeyDown(evt: KeyboardEvent) {
@@ -18,7 +18,7 @@
 
 		var key = evt.keyCode || evt.which;
 		if (key === 13) {
-			this.network.SendChatMsg({ Msg: this.chatInput.value });
+			
 			this.chatInput.value = "";
 			return;
 		}

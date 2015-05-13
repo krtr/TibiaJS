@@ -32,6 +32,7 @@
       <Link>typings\socket.io.d.ts</Link>
     </TypeScriptCompile>
     <TypeScriptCompile Include="classes\Character.ts" />
+    <TypeScriptCompile Include="classes\Ground.ts" />
     <TypeScriptCompile Include="GameState.ts" />
     <TypeScriptCompile Include="Geometry.ts" />
     <TypeScriptCompile Include="OnConnect.ts" />
@@ -39,6 +40,11 @@
     <TypeScriptCompile Include="classes\Player.ts" />
     <TypeScriptCompile Include="classes\CharacterList.ts" />
     <TypeScriptCompile Include="ServerLoop.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\resources\data.json">
+      <Link>data.json</Link>
+    </Content>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">12.0</VisualStudioVersion>

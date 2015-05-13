@@ -12,7 +12,7 @@ gulp.task("build", function () {
 		.pipe(concat("client.js"))
 		.pipe(gulp.dest("out/static"));
 
-	gulp.src(["Client/**/*.html", "Client/**/*.js", "resources/*.png", "resources/*.json",
+	gulp.src(["Client/**/*.html", "Client/**/*.js", "resources/*.png","resources/data.json",
 		"resources/3rd/SpriteGL/bin/SpriteGL.js", "resources/3rd/PreloadJS/lib/preloadjs-0.6.0.min.js"])
 		.pipe(gulp.dest("./out/static"));
 

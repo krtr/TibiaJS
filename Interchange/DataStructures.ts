@@ -4,16 +4,21 @@ interface Vector2D { x: number; y: number; }
 
 interface MoveData { Rot: Rotation; Pos: Vector2D }
 
+interface NewCharacterData {
+    Position: Vector2D;
+    Race: string;
+    ID: string;
+}
 
 interface Config {
 	TileSize: number;
 	MapWidth: number;
 	MapHeight: number;
 	Mobs: {
-		Dwarf: { StartSprite: number; };
-		Orc: { StartSprite: number; };
-		Minotaur: { StartSprite: number; };
-		Troll: { StartSprite: number; };
+        Dwarf: { Sprites: number[]; };
+        Orc: { Sprites: number[]; };
+        Minotaur: { Sprites: number[]; };
+        Troll: { Sprites: number[]; };
 	};
 	Animations: {
 		Beam: {
