@@ -2,7 +2,8 @@
 
     RequiredSygnature = Componenets.Position + Componenets.Movement;
 
-    Process(gameObjList: GameObj[]) {
+    Process(world: World) {
+        var gameObjList = world.entityList;
         for (var i = 0; i < gameObjList.length; i++) {
             if ((gameObjList[i].ComponentSygnature & this.RequiredSygnature) !== this.RequiredSygnature) continue;
 

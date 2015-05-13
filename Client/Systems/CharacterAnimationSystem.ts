@@ -8,7 +8,8 @@
         setInterval(() => { if (this.tick === 1) this.tick = 2; else this.tick = 1; }, 150);
     }
 
-    Process(objList: GameObj[]) {
+    Process(world: World) {
+        var objList = world.entityList;
         for (var i = 0; i < objList.length; i++) {
             if ((objList[i].ComponentSygnature & this.RequiredSygnature) !== this.RequiredSygnature) continue;
 

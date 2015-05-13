@@ -5,7 +5,8 @@
         this.Setup();
     }
 
-    Process(gameObjList: GameObj[]) {
+    Process(world: World) {
+        var gameObjList = world.entityList;
         for (var i = 0; i < gameObjList.length; i++) {
 
             if ((gameObjList[i].ComponentSygnature & this.RequiredSygnature) !== this.RequiredSygnature) continue;
@@ -23,7 +24,9 @@
     private processGameObj(movementComponent: MovementComponent, positionComponent: PositionComponent, playerNetwork: PlayerNetworkComponent) {
         if (this.keys[37]) {
             positionComponent.Rotation = Rotation.Left;
-            if (playerNetwork) playerNetwork.SendMove(positionComponent.TilePosition, positionComponent.Rotation);
+            if (playerNetwork) {
+                console.log("LEFIT DITY"); playerNetwork.IsCurrentMoveSynchronisedWithServer = false;
+            }
             movementComponent.SetTarget(positionComponent.TilePosition.x - 1, positionComponent.TilePosition.y);
             movementComponent.IsMoving = true;
 
@@ -31,7 +34,8 @@
         }
         if (this.keys[38]) {
             positionComponent.Rotation = Rotation.Top;
-            if (playerNetwork) playerNetwork.SendMove(positionComponent.TilePosition, positionComponent.Rotation);
+            if (playerNetwork) playerNetwork.IsCurrentMoveSynchronisedWithServer = false;
+
             movementComponent.SetTarget(positionComponent.TilePosition.x, positionComponent.TilePosition.y - 1);
             movementComponent.IsMoving = true;
 
@@ -39,7 +43,7 @@
         }
         if (this.keys[39]) {
             positionComponent.Rotation = Rotation.Right;
-            if (playerNetwork) playerNetwork.SendMove(positionComponent.TilePosition, positionComponent.Rotation);
+            if (playerNetwork) playerNetwork.IsCurrentMoveSynchronisedWithServer = false;
             movementComponent.SetTarget(positionComponent.TilePosition.x + 1, positionComponent.TilePosition.y);
             movementComponent.IsMoving = true;
 
@@ -47,7 +51,7 @@
         }
         if (this.keys[40]) {
             positionComponent.Rotation = Rotation.Down;
-            if (playerNetwork) playerNetwork.SendMove(positionComponent.TilePosition, positionComponent.Rotation);
+            if (playerNetwork) playerNetwork.IsCurrentMoveSynchronisedWithServer = false;
             movementComponent.SetTarget(positionComponent.TilePosition.x, positionComponent.TilePosition.y + 1);
             movementComponent.IsMoving = true;
         }

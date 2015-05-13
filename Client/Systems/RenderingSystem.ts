@@ -6,7 +6,8 @@
         this.renderer = SpriteGL.SpriteRenderer.fromCanvas(canvas, textureAtlas);
     }
 
-    Process(gameObjList: GameObj[]) {
+    Process(world: World) {
+        var gameObjList = world.entityList;
         for (var i = 0; i < gameObjList.length; i++) {
             if ((gameObjList[i].ComponentSygnature & Componenets.Position) !== Componenets.Position) continue;
             var positionComponent = <PositionComponent> gameObjList[i].ComponentList[Componenets.Position];

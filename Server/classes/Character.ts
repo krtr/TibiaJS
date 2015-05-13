@@ -59,10 +59,10 @@ export class Character {
     }
 
     Dispose() {
-        Server.io.emit("CharacterRemove", { ID: this.syncData.ID });
+        Server.io.emit("DeleteCharacters", [this.syncData.ID]);
     }
 
     SelfAnnouce() {
-        Server.io.emit("CharacterNew", this.GetJSON());
+        Server.io.emit("NewCharacters", [this.GetJSON()]);
     }
 }

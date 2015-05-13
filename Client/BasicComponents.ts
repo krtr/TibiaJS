@@ -1,4 +1,7 @@
-﻿const enum Componenets { Position = 1, Movement = 2, Sprite = 4, CharacterAnimation = 8, Camera = 16, AnimationCaster = 32, Input = 64, RenderMap = 128, PlayerNetwork = 256 }
+﻿const enum Componenets {
+    Position = 1, Movement = 2, Sprite = 4, CharacterAnimation = 8,
+    Camera = 16, AnimationCaster = 32, Input = 64, RenderMap = 128, PlayerNetwork = 256
+}
 
 class PositionComponent implements IComponent {
     Name = Componenets.Position;
@@ -94,9 +97,5 @@ class RenderMapComponent implements IComponent {
 
 class PlayerNetworkComponent implements IComponent {
     Name = Componenets.PlayerNetwork;
-    actionToSendList = new Array<{ Event: string, Data }>();
-
-    SendMove(curPos: Vector2D, rotation: Rotation) {
-        this.actionToSendList.push({ Event: "PlayerMove", Data: { Rot: rotation, Pos: curPos } });
-    }
+    IsCurrentMoveSynchronisedWithServer = false;
 }

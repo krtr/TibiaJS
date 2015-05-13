@@ -4,5 +4,5 @@ interface IComponent {
 }
 
 interface ISystem {
-    Process(entityList: Array<GameObj>);
+    Process(world: World);
 }

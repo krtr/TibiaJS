@@ -1,6 +1,7 @@
 ﻿class MovementSystem {
     RequiredSygnature = Componenets.Position + Componenets.Movement;
-    Process(gameObjList: GameObj[]) {
+    Process(world: World) {
+        var gameObjList = world.entityList;
         for (var i = 0; i < gameObjList.length; i++) {
             if ((gameObjList[i].ComponentSygnature & this.RequiredSygnature) !== this.RequiredSygnature) continue;
             var positionComponent = <PositionComponent> gameObjList[i].ComponentList[Componenets.Position];

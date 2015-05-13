@@ -5,7 +5,7 @@ import Player = require("./classes/Player");
 function OnConnection(socket: SocketIO.Socket) {
     var plr = new Player(socket);
     plr.Sync();
-    socket.emit("CharacterCurrentList", GameState.CharacterList.GetAllSyncData());
+    socket.emit("NewCharacters", GameState.CharacterList.GetAllSyncData());
     plr.SelfAnnouce();
 
     socket.on("PlayerMove", function (data: MoveData) {
