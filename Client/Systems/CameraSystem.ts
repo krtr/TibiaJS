@@ -3,7 +3,8 @@
     RequiredSygnature = Componenets.Camera + Componenets.Position;
 
 
-    Process(objList: GameObj[]) {
+    Process(world: World) {
+        var objList = world.entityList;
         for (var i = 0; i < objList.length; i++) {
             if ((objList[i].ComponentSygnature & this.RequiredSygnature) !== this.RequiredSygnature) continue;
 

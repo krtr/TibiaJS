@@ -10,7 +10,7 @@ window.onload = function () {
     var collisionSystem = new ColliisonSystem();
     var networkSystem = new NetworkSystem();
     var characterAnimationSystem = new CharacterAnimationSystem();
-    var GameObjList = new Array<GameObj>();
+    var world = new World();
 
 
 
@@ -28,9 +28,10 @@ window.onload = function () {
 
     queue.on("complete", function () {
         var map = new GameObj();
+        map.ID = 1541515125;
         map.AddComponent(new PositionComponent(0, 0, Rotation.Down));
         map.AddComponent(new RenderMapComponent(config.Data, config.MapWidth, config.MapHeight));
-        GameObjList.push(map);
+        world.Add(map);
         networkSystem.connect();
         requestAnimationFrame(Loop);
     });
@@ -39,13 +40,13 @@ window.onload = function () {
 
     function Loop() {
         var FPS = GetFPS();
-        inputSystem.Process(GameObjList);
-        networkSystem.Process(GameObjList);
-        collisionSystem.Process(GameObjList);
-        characterAnimationSystem.Process(GameObjList);
-        movemnetSystem.Process(GameObjList);
-        cameraSystem.Process(GameObjList);
-        renderingSystem.Process(GameObjList);
+        inputSystem.Process(world);
+        networkSystem.Process(world);
+        collisionSystem.Process(world);
+        characterAnimationSystem.Process(world);
+        movemnetSystem.Process(world);
+        cameraSystem.Process(world);
+        renderingSystem.Process(world);
         
 
         renderingSystem.RenderAll(cameraSystem.GetCamerasList());
