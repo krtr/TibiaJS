@@ -1,4 +1,5 @@
 ﻿import Server = require("../Server");
+import GameState = require("../GameState");
 
 var startSprites = ["Orc", "Minotaur", "Troll", "Dwarf"];
 
@@ -30,7 +31,7 @@ export class Character {
 
     Move(data: MoveData) {
         Server.io.emit("CharacterMove", { ID: this.syncData.ID, Data: data });
-
+        GameState.Ground.FreeCollision(this.syncData.Position.x, this.syncData.Position.y);
         if (data.Rot === Rotation.Left) {
             this.syncData.Position.x--;
         }
@@ -43,6 +44,7 @@ export class Character {
         if (data.Rot === Rotation.Down) {
             this.syncData.Position.y++;
         }
+        GameState.Ground.SetCollision(this.syncData.Position.x, this.syncData.Position.y);
     }
 
     MoveDir(rot: Rotation) {

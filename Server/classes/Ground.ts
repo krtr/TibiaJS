@@ -16,4 +16,14 @@ class Ground {
         return this.collisionMap[y * this.width + x];
     }
 
+    SetCollision(x: number, y: number) {
+        this.collisionMap[y * this.width + x] = 1;
+    }
+
+    FreeCollision(x: number, y: number) {
+        this.collisionMap[y * this.width + x] = 0;
+    }
+
 }
+
+export = Ground;
