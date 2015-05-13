@@ -1,14 +1,14 @@
 ﻿import Server = require("../Server");
 
-var startSprites = [56, 113, 223, 238];
+var startSprites = ["Orc", "Minotaur", "Troll", "Dwarf"];
 
 export class CharacterDataToSync {
     Position = { x: 60, y: 50 };
-    StartSprite: number;
+    Race: string;
     ID: string;
 
     toJSON() {
-        return { Position: this.Position, StartSprite: this.StartSprite, ID: this.ID };
+        return { Position: this.Position, Race: this.Race, ID: this.ID };
     }
 
     constructor() {
@@ -25,7 +25,7 @@ export class Character {
 
     constructor(pos: Vector2D) {
         this.syncData.Position = pos;
-        this.syncData.StartSprite = startSprites[(Math.random() * 4) | 0];
+        this.syncData.Race = startSprites[(Math.random() * 4) | 0];
     }
 
     Move(data: MoveData) {

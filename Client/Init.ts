@@ -1,36 +1,54 @@
 ﻿
-///<reference path='ground.ts' />
-///<reference path='player.ts' />
-///<reference path='game.ts' />
 var config: Config;
 
 window.onload = function () {
-    var game;
-    var spritedrawer: SpriteDrawer
+
+    var renderingSystem: RenderingSystem;
+    var cameraSystem = new CameraSystem();
+    var inputSystem = new InputSystem();
+    var movemnetSystem = new MovementSystem();
+    var collisionSystem = new ColliisonSystem();
+    var networkSystem = new NetworkSystem();
+    var characterAnimationSystem = new CharacterAnimationSystem();
+    var GameObjList = new Array<GameObj>();
+
+
+
     var queue = new createjs.LoadQueue(true);
     queue.loadFile({ src: "data.json", id: "config" });
     queue.loadFile({ src: "sprites.png", id: "sprites" });
 
     queue.on("fileload", function (data: any) {
-        if (data.item.id === "config") config = data.result;
+        if (data.item.id === "config") { console.log("config loaded"); config = data.result; }
         if (data.item.id === "sprites") {
             var canvas = <HTMLCanvasElement>document.getElementById("GameCanvas");
-            var renderer = SpriteGL.SpriteRenderer.fromCanvas(canvas, data.result);
-            spritedrawer = new SpriteDrawer(renderer);
+            renderingSystem = new RenderingSystem(canvas, data.result);
         }
     });
 
     queue.on("complete", function () {
-        game = new Game();
+        var map = new GameObj();
+        map.AddComponent(new PositionComponent(0, 0, Rotation.Down));
+        map.AddComponent(new RenderMapComponent(config.Data, config.MapWidth, config.MapHeight));
+        GameObjList.push(map);
+        networkSystem.connect();
         requestAnimationFrame(Loop);
-        GameServices.InitServices(spritedrawer);
     });
+
+    queue.load();
 
     function Loop() {
         var FPS = GetFPS();
-        game.Render(spritedrawer, FPS);
-        GameServices.ProcessServces(spritedrawer, FPS);
-        spritedrawer.renderer.RenderAll();
+        inputSystem.Process(GameObjList);
+        networkSystem.Process(GameObjList);
+        collisionSystem.Process(GameObjList);
+        characterAnimationSystem.Process(GameObjList);
+        movemnetSystem.Process(GameObjList);
+        cameraSystem.Process(GameObjList);
+        renderingSystem.Process(GameObjList);
+        
+
+        renderingSystem.RenderAll(cameraSystem.GetCamerasList());
         requestAnimationFrame(Loop);
     }
 }
