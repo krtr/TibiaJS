@@ -19,6 +19,10 @@ gulp.task("build", function () {
 	gulp.src(["!typings/socket.io-client/socket.io-client.d.ts", "Server/**/*.ts", "typings/**/*.d.ts", "Interchange/*.ts"])
 		.pipe(typescript({ typescript: require("typescript"), module: "commonjs", target: "ES5" }))
 		.pipe(gulp.dest("out"));
+
+	gulp.src(["resources/data.json"])
+	.pipe(gulp.dest("out"));
+
 });
 
 gulp.task("run", function () {
