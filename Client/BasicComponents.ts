@@ -1,6 +1,6 @@
 ﻿const enum Componenets {
     Position = 1, Movement = 2, Sprite = 4, CharacterAnimation = 8,
-    Camera = 16, AnimationCaster = 32, Input = 64, RenderMap = 128, PlayerNetwork = 256
+    Camera = 16, SimpleAnimation = 32, Input = 64, RenderMap = 128, PlayerNetwork = 256
 }
 
 class PositionComponent implements IComponent {
@@ -10,9 +10,16 @@ class PositionComponent implements IComponent {
     Rotation: Rotation;
 
     constructor(TilePosX: number, TilePosY: number, rot: Rotation) {
-        this.TilePosition = { x: TilePosX, y: TilePosY };
+        this.TilePosition = { x: TilePosX|0, y: TilePosY|0 };
         this.PixelPosition = { x: this.TilePosition.x * config.TileSize, y: this.TilePosition.y * config.TileSize };
         this.Rotation = rot;
+    }
+
+    SetPosition(tilePosX: number, tilePosY: number) {
+        this.TilePosition.x = tilePosX;
+        this.TilePosition.y = tilePosY;
+        this.PixelPosition.x = tilePosX * config.TileSize;
+        this.PixelPosition.y = tilePosY * config.TileSize;
     }
 }
 
@@ -23,19 +30,15 @@ class MovementComponent implements IComponent {
     TargetPixelPosition = { x: 0, y: 0 };
 
     SetTarget(tileX: number, tileY: number) {
+        if (this.IsMoving) return;
         this.TargetTilePosition.x = tileX;
         this.TargetTilePosition.y = tileY;
         this.TargetPixelPosition.x = tileX * config.TileSize;
         this.TargetPixelPosition.y = tileY * config.TileSize;
-    }
-
-    MoveByRotation(startTilePosX: number, startTilePosY: number, rot: Rotation) {
-        if (rot === Rotation.Left) this.SetTarget(startTilePosX - 1, startTilePosY);
-        if (rot === Rotation.Top) this.SetTarget(startTilePosX, startTilePosY - 1);
-        if (rot === Rotation.Right) this.SetTarget(startTilePosX + 1, startTilePosY);
-        if (rot === Rotation.Down) this.SetTarget(startTilePosX, startTilePosY + 1);
         this.IsMoving = true;
     }
+
+  
 }
 
 class SpriteComponent implements IComponent {
@@ -48,33 +51,19 @@ class SpriteComponent implements IComponent {
     }
 }
 
-const enum AnimationPattern { CharacterMovement, Iteration };
 class CharacterAnimationComponent implements IComponent {
     Name = Componenets.CharacterAnimation;
     IsAnimating: boolean;
-    AnimationPattern: AnimationPattern;
     SpriteList: Array<number>;
 
-    constructor(array: Array<number>, animPattern: AnimationPattern) {
+    constructor(array: Array<number>) {
         this.SpriteList = array;
-        this.AnimationPattern = animPattern;
         this.IsAnimating = false;
     }
 }
 
-
 class CameraComponent implements IComponent {
     Name = Componenets.Camera;
-
-}
-
-interface AnimationCasterEvent {
-    AnimType: number;
-    Position: Vector2D;
-}
-
-class AnimationCasterComponent implements IComponent {
-    Name = Componenets.AnimationCaster;
 
 }
 
@@ -95,7 +84,14 @@ class RenderMapComponent implements IComponent {
     }
 }
 
-class PlayerNetworkComponent implements IComponent {
-    Name = Componenets.PlayerNetwork;
-    IsCurrentMoveSynchronisedWithServer = false;
+class SimpleAnimationComponent implements IComponent {
+    Name = Componenets.SimpleAnimation;
+    AnimationList = new Array<number>();
+    IsContinuous = false;
+    StartTick = 0;
+
+    constructor(spriteArray: Array<number>, IsContinous: boolean) {
+        this.AnimationList = spriteArray;
+        this.IsContinuous = IsContinous;
+    }
 }

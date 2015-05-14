@@ -30,25 +30,34 @@ export class Character {
     }
 
     Move(data: MoveData) {
-        Server.io.emit("CharacterMove", { ID: this.syncData.ID, Data: data });
+        if (GameState.Ground.GetCollision(data.Pos.x, data.Pos.y)) {
+            Server.io.emit("CharacterTeleport", { ID: this.syncData.ID, Data: { Rot: 0, Pos: this.syncData.Position } });
+            console.log("Collision");
+            return;
+        }
         GameState.Ground.FreeCollision(this.syncData.Position.x, this.syncData.Position.y);
-        if (data.Rot === Rotation.Left) {
-            this.syncData.Position.x--;
-        }
-        if (data.Rot === Rotation.Top) {
-            this.syncData.Position.y--;
-        }
-        if (data.Rot === Rotation.Right) {
-            this.syncData.Position.x++;
-        }
-        if (data.Rot === Rotation.Down) {
-            this.syncData.Position.y++;
-        }
+        this.syncData.Position.x = data.Pos.x;
+        this.syncData.Position.y = data.Pos.y;
         GameState.Ground.SetCollision(this.syncData.Position.x, this.syncData.Position.y);
+        Server.io.emit("CharacterMove", { ID: this.syncData.ID, Data: data });
     }
 
     MoveDir(rot: Rotation) {
-        var data = { Rot: rot, Pos: this.syncData.Position };
+        var tmpPos = { x: this.syncData.Position.x, y: this.syncData.Position.y };
+        if (rot === Rotation.Left) {
+            tmpPos.x--;
+        }
+        if (rot === Rotation.Top) {
+            tmpPos.y--;
+        }
+        if (rot === Rotation.Right) {
+            tmpPos.x++;
+        }
+        if (rot === Rotation.Down) {
+            tmpPos.y++;
+        }
+
+        var data = { Rot: rot, Pos: tmpPos };
         this.Move(data);
     }
 
@@ -62,9 +71,11 @@ export class Character {
 
     Dispose() {
         Server.io.emit("DeleteCharacters", [this.syncData.ID]);
+        GameState.Ground.FreeCollision(this.syncData.Position.x, this.syncData.Position.y);
     }
 
     SelfAnnouce() {
         Server.io.emit("NewCharacters", [this.GetJSON()]);
+        GameState.Ground.SetCollision(this.syncData.Position.x, this.syncData.Position.y);
     }
 }

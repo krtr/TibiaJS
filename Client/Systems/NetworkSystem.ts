@@ -1,10 +1,17 @@
 ﻿class NetworkSystem {
     private socket: SocketIOClient.Socket;
     private newEntityList = [];
+    private EntityToRemove = [];
     private entityToModification = new Array< { ID; Type; Data; }>();
 
     Process(world: World) {
         var gameObjList = world.entityList;
+
+        for (var i = 0; i < this.EntityToRemove.length; i++) {
+            world.RemoveEntity(this.EntityToRemove[i]);
+            console.log(this.EntityToRemove[i]);
+        }
+
         for (var i = 0; i < this.newEntityList.length; i++) {
             world.Add(this.newEntityList[i]);
         }
@@ -13,38 +20,32 @@
         for (var j = 0; j < gameObjList.length; j++) {
             var movement = <MovementComponent>gameObjList[j].ComponentList[Componenets.Movement];
             var position = <PositionComponent>gameObjList[j].ComponentList[Componenets.Position];
-            var network = <PlayerNetworkComponent> gameObjList[j].ComponentList[Componenets.PlayerNetwork];
 
-
-            if (network) {
-
-                if (!network.IsCurrentMoveSynchronisedWithServer) {
-                    this.socket.emit("PlayerMove", { Rot: position.Rotation, Pos: position.TilePosition });
-                    console.log("MoveData sent");
-                    network.IsCurrentMoveSynchronisedWithServer = true;
-                }
-
-            }
-
-
-
-
-            if (!movement) continue
             for (var i = 0; i < this.entityToModification.length; i++) {
                 if (this.entityToModification[i].ID !== gameObjList[j].ID) continue;
                 if (this.entityToModification[i].Type === ModType.Move) {
-
                     if (!movement) continue;
-
-                    movement.MoveByRotation(position.TilePosition.x, position.TilePosition.y, this.entityToModification[i].Data.Rot);
+                    movement.SetTarget(this.entityToModification[i].Data.Pos.x, this.entityToModification[i].Data.Pos.y);
                     position.Rotation = this.entityToModification[i].Data.Rot;
+                }
 
+                if (this.entityToModification[i].Type === ModType.Teleport) {
+                    if (!movement) continue;
+                    movement.IsMoving = false;
+                    movement.SetTarget(this.entityToModification[i].Data.Pos.x, this.entityToModification[i].Data.Pos.y);
+                    position.SetPosition(this.entityToModification[i].Data.Pos.x, this.entityToModification[i].Data.Pos.y);
                 }
 
             }
         }
         this.newEntityList = [];
         this.entityToModification = [];
+        this.EntityToRemove = [];
+        var eventList = world.GetEventByType(Events.PlayerMove);
+        for (var i = 0; i < eventList.length; i++) {
+            //console.log(eventList[i].Payload);
+            this.socket.emit("PlayerMove", eventList[i].Payload);
+        }
     }
 
     connect(url = null) {
@@ -66,7 +67,7 @@
                 gameObj.AddComponent(new PositionComponent(data[i].Position.x, data[i].Position.y, Rotation.Down));
                 gameObj.AddComponent(new MovementComponent());
                 gameObj.AddComponent(new SpriteComponent(config.Mobs[data[i].Race].Sprites[0], { x: -10, y: -10 }));
-                gameObj.AddComponent(new CharacterAnimationComponent(config.Mobs[data[i].Race].Sprites, AnimationPattern.CharacterMovement));
+                gameObj.AddComponent(new CharacterAnimationComponent(config.Mobs[data[i].Race].Sprites));
                 this.newEntityList.push(gameObj);
             }
         });
@@ -77,10 +78,9 @@
             gameObj.ID = data.ID;
             gameObj.AddComponent(new PositionComponent(data.Position.x, data.Position.y, Rotation.Down));
             gameObj.AddComponent(new MovementComponent());
-            gameObj.AddComponent(new CharacterAnimationComponent(config.Mobs[data.Race].Sprites, AnimationPattern.CharacterMovement));
+            gameObj.AddComponent(new CharacterAnimationComponent(config.Mobs[data.Race].Sprites));
             gameObj.AddComponent(new SpriteComponent(config.Mobs[data.Race].Sprites[0], { x: -10, y: -10 }));
             gameObj.AddComponent(new InputComponent());
-            gameObj.AddComponent(new PlayerNetworkComponent());
             gameObj.AddComponent(new CameraComponent());
             this.newEntityList.push(gameObj);
             console.log("New Player");
@@ -90,7 +90,18 @@
             this.entityToModification.push({ ID: data.ID, Type: ModType.Move, Data: data.Data });
 
         });
+
+        this.socket.on("CharacterTeleport", (data: { ID; Data: MoveData }) => {
+            this.entityToModification.push({ ID: data.ID, Type: ModType.Teleport, Data: data.Data });
+        });
+
+        this.socket.on("DeleteCharacters", (data: any[]) => {
+            console.log(data);
+            for (var i = 0; i < data.length; i++) {
+                this.EntityToRemove.push(data[i]);
+            }
+        });
     }
 }
 
-const enum ModType { Move };
+const enum ModType { Move, Teleport };

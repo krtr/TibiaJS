@@ -36,7 +36,7 @@
     </TypeScriptCompile>
     <TypeScriptCompile Include="BasicComponents.ts" />
     <TypeScriptCompile Include="Game.ts" />
-    <TypeScriptCompile Include="Systems\CharacterAnimationSystem.ts" />
+    <TypeScriptCompile Include="Systems\AnimationSystem.ts" />
     <TypeScriptCompile Include="Systems\CameraSystem.ts" />
     <TypeScriptCompile Include="ChatConsole.ts" />
     <TypeScriptCompile Include="GameObj.ts" />
@@ -47,6 +47,7 @@
     <TypeScriptCompile Include="Systems\MovementSystem.ts" />
     <TypeScriptCompile Include="Systems\NetworkSystem.ts" />
     <TypeScriptCompile Include="Systems\RenderingSystem.ts" />
+    <TypeScriptCompile Include="World.ts" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="index.html" />

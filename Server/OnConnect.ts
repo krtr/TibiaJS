@@ -20,6 +20,7 @@ function OnConnection(socket: SocketIO.Socket) {
         var char = GameState.CharacterList.RemoveByID(socket.id);
         if (char) {
             char.Dispose();
+            console.log("DISPOSED", socket.id);
         }
     });
 

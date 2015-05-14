@@ -57,21 +57,20 @@ class CharacterList {
     }
 
     RemoveByID(ID: string): Character.Character {
+        var tmpChar;
         for (var i = 0; i < this.moblist.length; i++) {
             if (this.moblist[i].GetID() === ID) {
-                var tmpChar = null;
                 tmpChar = this.moblist[i];
                 this.moblist.splice(i, 1);
-                return this.moblist[i];
+                return tmpChar;
             }
         }
 
         for (var i = 0; i < this.plrlist.length; i++) {
             if (this.plrlist[i].GetID() === ID) {
-                var tmpChar = null;
                 tmpChar = this.plrlist[i];
                 this.plrlist.splice(i, 1);
-                return this.plrlist[i];
+                return tmpChar;
             }
         }
 

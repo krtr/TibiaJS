@@ -5,8 +5,8 @@ import Geometry = require("./Geometry");
 var intervalHandle: NodeJS.Timer;
 var moblist = new Array<Character.Character>();
 export function Start() {
-    intervalHandle = setInterval(Loop, 500);
-    for (var i = 0; i < 100; i++) {
+    intervalHandle = setInterval(Loop, 2000);
+    for (var i = 0; i < 1; i++) {
         AddNew();
     }
 }
@@ -42,19 +42,19 @@ function GetRotation(desiredMoveV: Vector2D, position: Vector2D) {
         can: GameState.Ground.GetCollision(position.x, position.y + 1),
         desire: Math.cos(radians + (Math.PI / 2))
     });
-    dataArr[Rotation.Top] = ({
-        can: GameState.Ground.GetCollision(position.x, position.y - 1),
-        desire: Math.cos(radians + Math.PI)
-    });
     dataArr[Rotation.Right] = ({
         can: GameState.Ground.GetCollision(position.x + 1, position.y),
+        desire: Math.cos(radians + Math.PI)
+    });
+    dataArr[Rotation.Top] = ({
+        can: GameState.Ground.GetCollision(position.x, position.y - 1),
         desire: Math.cos(radians + (Math.PI / 2 * 3))
     });
 
     var mostdesire = -1;
     var result = -1;
     for (var i = 0; i < 4; i++) {
-        if (!dataArr[i].can) {
+        if (!dataArr[i].can && dataArr[i].desire > -0.1) {
             if (dataArr[i].desire > mostdesire) {
                 result = i;
                 mostdesire = dataArr[i].desire;
@@ -62,24 +62,19 @@ function GetRotation(desiredMoveV: Vector2D, position: Vector2D) {
         }
     }
 
-    console.log(dataArr);
+
     return result;
 }
 
-
 function Loop() {
     for (var i = 0; i < moblist.length; i++) {
-
         var plr = GetNearestPlayer(moblist[i]);
         if (!plr) continue;
         var plrPos = plr.GetJSON().Position;
         var charPos = moblist[i].GetJSON().Position;
         var rot = GetRotation({ x: charPos.x - plrPos.x, y: charPos.y - plrPos.y }, charPos);
-        console.log(rot);
         if (rot !== -1)
             moblist[i].MoveDir(rot);
-
-
     }
 }
 

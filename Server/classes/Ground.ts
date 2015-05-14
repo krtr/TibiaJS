@@ -13,6 +13,10 @@ class Ground {
     }
 
     GetCollision(x: number, y: number) {
+        if (x > this.width) return 1;
+        if (x < 0) return 1;
+        if (y > this.height) return 1;
+        if (y < 0) return 1;
         return this.collisionMap[y * this.width + x];
     }
 
