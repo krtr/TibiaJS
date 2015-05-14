@@ -9,6 +9,7 @@
 
             var positionComponent = <PositionComponent> gameObjList[i].ComponentList[Componenets.Position];
             var movementComponent = <MovementComponent> gameObjList[i].ComponentList[Componenets.Movement];
+            if (!movementComponent) continue;
             if (!movementComponent.IsMoving) continue;
 
             if (this.GetCollision(movementComponent.TargetTilePosition.x, movementComponent.TargetTilePosition.y)) {

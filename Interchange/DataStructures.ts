@@ -22,8 +22,7 @@ interface Config {
 	};
 	Animations: {
 		Beam: {
-			StartSprite: number;
-			SpriteCount: number;
+            Sprites: number[];
 		};
 	};
 	Data: number[];

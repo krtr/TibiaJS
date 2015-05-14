@@ -9,7 +9,7 @@ window.onload = function () {
     var movemnetSystem = new MovementSystem();
     var collisionSystem = new ColliisonSystem();
     var networkSystem = new NetworkSystem();
-    var characterAnimationSystem = new CharacterAnimationSystem();
+    var characterAnimationSystem = new AnimationSystem();
     var world = new World();
 
 
@@ -33,15 +33,23 @@ window.onload = function () {
         map.AddComponent(new RenderMapComponent(config.Data, config.MapWidth, config.MapHeight));
         world.Add(map);
         networkSystem.connect();
+
+        setInterval(() => {
+            var test = new GameObj();
+            test.ID = Math.random() * 10000;
+            test.AddComponent(new PositionComponent(50 + Math.random() * 30, 60+ Math.random() * 30, Rotation.Down));
+            test.AddComponent(new SpriteComponent(config.Animations.Beam.Sprites[0]));
+            test.AddComponent(new SimpleAnimationComponent(config.Animations.Beam.Sprites, false));
+            world.Add(test); }, 10000);
         requestAnimationFrame(Loop);
     });
 
     queue.load();
 
     function Loop() {
-        var FPS = GetFPS();
+        world.FPS = GetFPS();
         inputSystem.Process(world);
-        networkSystem.Process(world);
+        
         collisionSystem.Process(world);
         characterAnimationSystem.Process(world);
         movemnetSystem.Process(world);
@@ -50,6 +58,8 @@ window.onload = function () {
         
 
         renderingSystem.RenderAll(cameraSystem.GetCamerasList());
+        networkSystem.Process(world);
+        world.ClearEvets();
         requestAnimationFrame(Loop);
     }
 }

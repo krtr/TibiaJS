@@ -11,50 +11,59 @@
 
             if ((gameObjList[i].ComponentSygnature & this.RequiredSygnature) !== this.RequiredSygnature) continue;
 
-            var movementComponent = <MovementComponent> gameObjList[i].ComponentList[Componenets.Movement];
 
-            var positionComponent = <PositionComponent> gameObjList[i].ComponentList[Componenets.Position];
-            var networkComponent = <PlayerNetworkComponent> gameObjList[i].ComponentList[Componenets.PlayerNetwork];
-            if (movementComponent.IsMoving) continue;
-            this.processGameObj(movementComponent, positionComponent, networkComponent);
+            this.processGameObj(gameObjList[i], world);
         }
 
     }
 
-    private processGameObj(movementComponent: MovementComponent, positionComponent: PositionComponent, playerNetwork: PlayerNetworkComponent) {
+    private processGameObj(gameObj: GameObj, world: World) {
+
+        var movementComponent = <MovementComponent> gameObj.ComponentList[Componenets.Movement];
+        var positionComponent = <PositionComponent> gameObj.ComponentList[Componenets.Position];
+        if (movementComponent.IsMoving) return;
+
         if (this.keys[37]) {
             positionComponent.Rotation = Rotation.Left;
-            if (playerNetwork) {
-                console.log("LEFIT DITY"); playerNetwork.IsCurrentMoveSynchronisedWithServer = false;
-            }
+            world.PushEvent(gameObj, Events.PlayerMove, {
+                Rot: Rotation.Left,
+                Pos: { x: positionComponent.TilePosition.x - 1, y: positionComponent.TilePosition.y }
+            });
             movementComponent.SetTarget(positionComponent.TilePosition.x - 1, positionComponent.TilePosition.y);
-            movementComponent.IsMoving = true;
-
-
+            return;
         }
+
         if (this.keys[38]) {
             positionComponent.Rotation = Rotation.Top;
-            if (playerNetwork) playerNetwork.IsCurrentMoveSynchronisedWithServer = false;
+            world.PushEvent(gameObj, Events.PlayerMove, {
+                Rot: Rotation.Top,
+                Pos: { x: positionComponent.TilePosition.x, y: positionComponent.TilePosition.y - 1 }
+            });
 
             movementComponent.SetTarget(positionComponent.TilePosition.x, positionComponent.TilePosition.y - 1);
-            movementComponent.IsMoving = true;
-
-
+            return;
         }
+
         if (this.keys[39]) {
             positionComponent.Rotation = Rotation.Right;
-            if (playerNetwork) playerNetwork.IsCurrentMoveSynchronisedWithServer = false;
+            world.PushEvent(gameObj, Events.PlayerMove, {
+                Rot: Rotation.Right,
+                Pos: { x: positionComponent.TilePosition.x + 1, y: positionComponent.TilePosition.y }
+            });
             movementComponent.SetTarget(positionComponent.TilePosition.x + 1, positionComponent.TilePosition.y);
-            movementComponent.IsMoving = true;
-
-
+            return;
         }
+
         if (this.keys[40]) {
             positionComponent.Rotation = Rotation.Down;
-            if (playerNetwork) playerNetwork.IsCurrentMoveSynchronisedWithServer = false;
+            world.PushEvent(gameObj, Events.PlayerMove, {
+                Rot: Rotation.Down,
+                Pos: { x: positionComponent.TilePosition.x, y: positionComponent.TilePosition.y + 1 }
+            });
             movementComponent.SetTarget(positionComponent.TilePosition.x, positionComponent.TilePosition.y + 1);
-            movementComponent.IsMoving = true;
+            return;
         }
+
     }
 
     PerformsOver(componentList: IComponent[]): boolean {
