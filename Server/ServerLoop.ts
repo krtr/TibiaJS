@@ -1,7 +1,7 @@
 ﻿import GameState = require("./GameState");
 import Character = require("./classes/Character");
 import Geometry = require("./Geometry");
-
+import Mob = require("./classes/Mob");
 var intervalHandle: NodeJS.Timer;
 var moblist = new Array<Character.Character>();
 export function Start() {
@@ -79,7 +79,7 @@ function Loop() {
 }
 
 function AddNew() {
-    var char = new Character.Character({ x: ((Math.random() - 0.5) * 20 + 60) | 0, y: ((Math.random() - 0.5) * 20 + 50) | 0 });
+    var char = new Mob({ x: ((Math.random() - 0.5) * 20 + 60) | 0, y: ((Math.random() - 0.5) * 20 + 50) | 0 });
     moblist.push(char);
     char.SelfAnnouce();
     GameState.CharacterList.AddNewMob(char);
