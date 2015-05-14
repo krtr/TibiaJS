@@ -30,7 +30,7 @@ class MovementComponent implements IComponent {
     TargetPixelPosition = { x: 0, y: 0 };
 
     SetTarget(tileX: number, tileY: number) {
-        if (this.IsMoving) return;
+        //if (this.IsMoving) return;
         this.TargetTilePosition.x = tileX;
         this.TargetTilePosition.y = tileY;
         this.TargetPixelPosition.x = tileX * config.TileSize;

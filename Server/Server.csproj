@@ -35,6 +35,7 @@
     <TypeScriptCompile Include="classes\Ground.ts" />
     <TypeScriptCompile Include="GameState.ts" />
     <TypeScriptCompile Include="Geometry.ts" />
+    <TypeScriptCompile Include="classes\Mob.ts" />
     <TypeScriptCompile Include="OnConnect.ts" />
     <TypeScriptCompile Include="PathFinding.ts" />
     <TypeScriptCompile Include="Server.ts" />
