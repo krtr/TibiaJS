@@ -6,7 +6,7 @@ const enum ObjType { Mob, Player };
 
 class CharacterList {
     private moblist = new Array<Character.Character>();
-    private plrlist = new Array<Player>();
+    private plrlist = new Array<Character.Character>();
     AddNewPlayer(plr: Player) {
         this.plrlist.push(plr);
     }

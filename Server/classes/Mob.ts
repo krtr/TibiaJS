@@ -4,28 +4,22 @@ import GameState = require("../GameState");
 
 var startSprites = ["Orc", "Minotaur", "Troll", "Dwarf"];
 
-class Player implements Character.Character {
-	private socket: SocketIO.Socket;
-    private syncData = new Character.CharacterDataToSync();
-    constructor(socket: SocketIO.Socket) {
-      
-        this.syncData.Position = { x: 60, y: 50 };
+
+
+ class Mob implements Character.Character {
+    protected syncData = new Character.CharacterDataToSync();
+
+    constructor(pos: Vector2D) {
+        this.syncData.Position = pos;
         this.syncData.Race = startSprites[(Math.random() * 4) | 0];
-        this.syncData.ID = socket.id;
-        this.socket = socket;
-		
-	}
-   
+    }
+
     Move(data: MoveData) {
-        if (GameState.Ground.GetCollision(data.Pos.x, data.Pos.y)) {
-            this.socket.emit("CharacterTeleport", { ID: this.syncData.ID, Data: { Rot: 0, Pos: this.syncData.Position } });
-            return;
-        }
         GameState.Ground.FreeCollision(this.syncData.Position.x, this.syncData.Position.y);
         this.syncData.Position.x = data.Pos.x;
         this.syncData.Position.y = data.Pos.y;
         GameState.Ground.SetCollision(this.syncData.Position.x, this.syncData.Position.y);
-        this.socket.broadcast.emit("CharacterMove", { ID: this.syncData.ID, Data: data });
+        Server.io.emit("CharacterMove", { ID: this.syncData.ID, Data: data });
     }
 
     MoveDir(rot: Rotation) {
@@ -47,11 +41,6 @@ class Player implements Character.Character {
         this.Move(data);
     }
 
-    Sync() {
-        this.socket.emit("PlayerStart", this.GetJSON());
-    }
-
-  
     GetJSON() {
         return this.syncData.toJSON();
     }
@@ -63,8 +52,6 @@ class Player implements Character.Character {
     Dispose() {
         Server.io.emit("DeleteCharacters", [this.syncData.ID]);
         GameState.Ground.FreeCollision(this.syncData.Position.x, this.syncData.Position.y);
-        this.socket.disconnect();
-       
     }
 
     SelfAnnouce() {
@@ -73,5 +60,4 @@ class Player implements Character.Character {
     }
 }
 
-
-export = Player;
+export = Mob;
