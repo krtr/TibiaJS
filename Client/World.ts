@@ -45,7 +45,7 @@
 }
 
 
-enum Events { PlayerMove };
+enum Events { PlayerMove, PlayerMessage };
 class GameEvent {
     EventType: Events;
     Subject: GameObj;

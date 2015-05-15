@@ -1,6 +1,7 @@
 ﻿const enum Componenets {
     Position = 1, Movement = 2, Sprite = 4, CharacterAnimation = 8,
-    Camera = 16, SimpleAnimation = 32, Input = 64, RenderMap = 128, PlayerNetwork = 256
+    Camera = 16, SimpleAnimation = 32, Input = 64, RenderMap = 128, PlayerNetwork = 256,
+    CharacterMessage = 512, Health = 1024
 }
 
 class PositionComponent implements IComponent {
@@ -37,8 +38,6 @@ class MovementComponent implements IComponent {
         this.TargetPixelPosition.y = tileY * config.TileSize;
         this.IsMoving = true;
     }
-
-  
 }
 
 class SpriteComponent implements IComponent {
@@ -93,5 +92,25 @@ class SimpleAnimationComponent implements IComponent {
     constructor(spriteArray: Array<number>, IsContinous: boolean) {
         this.AnimationList = spriteArray;
         this.IsContinuous = IsContinous;
+    }
+}
+
+class CharacterMessageComponent implements IComponent {
+    Name = Componenets.CharacterMessage;
+    Str = "";
+    TextObj = null;
+
+    constructor(str: string) {
+        this.Str = str;
+    }
+}
+
+class HealthComponent implements IComponent {
+    Name = Componenets.Health;
+    HP: number;
+    MaxHP: number;
+    constructor(currHP: number, maxHP: number) {
+        this.HP = currHP;
+        this.MaxHP = maxHP;
     }
 }

@@ -12,7 +12,8 @@ function OnConnection(socket: SocketIO.Socket) {
         plr.Move(data);
     });
 
-    socket.on("CharacterMessage", function (data: { Msg: string }) {
+    socket.on("PlayerMessage", function (data: { Msg: string }) {
+        console.log(data.Msg);
         Server.io.sockets.emit("CharacterMessage", { Msg: data.Msg, ID: socket.id });
     });
 
