@@ -15,12 +15,12 @@
     }
 
     Process(world: World) {
-        for (var i = 0; i < this.EntityToRemove.length; i++) {
-            world.RemoveEntity(this.EntityToRemove[i]);
-        }
-
         for (var i = 0; i < this.newEntityList.length; i++) {
             world.Add(this.newEntityList[i]);
+        }
+
+        for (var i = 0; i < this.EntityToRemove.length; i++) {
+            world.RemoveEntity(this.EntityToRemove[i]);
         }
 
         this.ProcessEvents(world);
