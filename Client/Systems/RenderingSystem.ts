@@ -24,6 +24,7 @@
                 if (chMsg) {
 
                     if (!chMsg.TextObj || chMsg.TextObj.str !== chMsg.Str) {
+                        this.renderer.DisposeTxt(chMsg.TextObj);
                         chMsg.TextObj = this.renderer.PrepareTxt(chMsg.Str, "Yellow", 14, true);
                         console.log(chMsg.TextObj.str);
                     }

@@ -7,12 +7,12 @@ var open = require("open");
 var runSequence = require("run-sequence");
 gulp.task("build", function () {
 	gulp.src(["Client/**/*.ts", "typings/socket.io-client/socket.io-client.d.ts", "resources/3rd/SpriteGL/bin/SpriteGL.d.ts", "Interchange/*.ts",
-	 "typings/preloadjs/preloadjs.d.ts" ])
-		.pipe(typescript({ typescript:require("typescript"), sortOutput: true, target: "ES5" }))
+	 "typings/preloadjs/preloadjs.d.ts"])
+		.pipe(typescript({ typescript: require("typescript"), sortOutput: true, target: "ES5" }))
 		.pipe(concat("client.js"))
 		.pipe(gulp.dest("out/static"));
 
-	gulp.src(["Client/**/*.html", "Client/**/*.js", "resources/*.png","resources/data.json",
+	gulp.src(["Client/**/*.html", "Client/**/*.js", "resources/*.png", "resources/data.json",
 		"resources/3rd/SpriteGL/bin/SpriteGL.js", "resources/3rd/PreloadJS/lib/preloadjs-0.6.0.min.js"])
 		.pipe(gulp.dest("./out/static"));
 
@@ -28,7 +28,7 @@ gulp.task("build", function () {
 gulp.task("run", function () {
 	nodemon({ script: "Server.js", cwd: "./out", ext: "html js css", ignore: ["ignored.js"] })
 		.on("restart", function () {
-    		console.log("Restarted")
+			console.log("Restarted")
 		})
 
 	open("http://localhost:2137");

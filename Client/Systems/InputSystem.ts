@@ -1,7 +1,9 @@
 ﻿class InputSystem implements ISystem {
     private keys = new Array<boolean>(200);
     private chatInput = <HTMLInputElement>document.getElementById("ChatInput");
+    private canvas = <HTMLCanvasElement> document.getElementById("GameCanvas");
     private chatMsgs = new Array<string>();
+    private mouseClicks = new Array<Vector2D>();
     RequiredSygnature = Componenets.Position + Componenets.Movement + Componenets.Input;
 
 
@@ -99,14 +101,34 @@
 
         addEventListener("keypress", (keyEvent) => {
             var key = keyEvent.keyCode || keyEvent.which;
+            if (document.activeElement === this.chatInput) {
+                keyEvent.preventDefault();
+            }
             if (key === 13) {
-                this.chatMsgs.push(this.chatInput.value);
+                this.chatMsgs.push(this.chatInput.value.substr(0,55));
                 this.chatInput.value = "";
                 return;
             }
             if (key === 8) return;
             if (key > 36 && key < 41) return;
             this.chatInput.value += String.fromCharCode(key);
+        });
+
+        this.canvas.addEventListener("click", (e) => {
+            var x;
+            var y;
+            if (e.pageX || e.pageY) {
+                x = e.pageX;
+                y = e.pageY;
+            }
+            else {
+                x = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
+                y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
+            }
+            x -= this.canvas.offsetLeft;
+            y -= this.canvas.offsetTop;
+            console.log(x, y);
+            this.mouseClicks.push({ x: x, y: y });
         });
     }
 
