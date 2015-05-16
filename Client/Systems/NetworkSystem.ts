@@ -24,7 +24,7 @@
         }
 
         this.ProcessEvents(world);
-        this.ModifyEntities(world.entityList);
+        this.ModifyEntities(world);
 
         this.cleanup();
       
@@ -71,6 +71,10 @@
             this.entityToModification.push({ ID: data.ID, Type: ModType.Teleport, Data: data.Data });
         });
 
+        this.socket.on("CharacterAttack", (data: { AttackType: number; AttarckerID; TargetID; HitPoints: number }) => {
+            this.entityToModification.push({ ID: data.TargetID, Type: ModType.Hit, Data: data.HitPoints });
+        });
+
         this.socket.on("DeleteCharacters", (data: any[]) => {
             console.log(data);
             for (var i = 0; i < data.length; i++) {
@@ -81,17 +85,25 @@
 
     private ProcessEvents(world: World) {
         var plrMoveEventList = world.GetEventByType(Events.PlayerMove);
-        for (var i = 0; i < plrMoveEventList.length; i++) {
-            this.socket.emit("PlayerMove", plrMoveEventList[i].Payload);
-        }
+        plrMoveEventList.forEach((value) => {
+            for (var i = 0; i < plrMoveEventList.length; i++) {
+                this.socket.emit("PlayerMove", plrMoveEventList[i].Payload);
+            }
+        });
 
         var msgEventList = world.GetEventByType(Events.PlayerMessage);
         for (var i = 0; i < msgEventList.length; i++) {
             this.socket.emit("PlayerMessage", { Msg: msgEventList[i].Payload });
         }
+
+        var targetEventList = world.GetEventByType(Events.PlayerTarget);
+        for (var i = 0; i < targetEventList.length; i++) {
+            this.socket.emit("PlayerTarget", targetEventList[i].Payload );
+        }
     }
 
-    private ModifyEntities(gameObjList: GameObj[]) {
+    private ModifyEntities(world: World) {
+        var gameObjList = world.entityList;
         for (var j = 0; j < gameObjList.length; j++) {
             var movement = <MovementComponent>gameObjList[j].ComponentList[Componenets.Movement];
             var position = <PositionComponent>gameObjList[j].ComponentList[Componenets.Position];
@@ -120,6 +132,15 @@
                     }
 
                 }
+
+                if (this.entityToModification[i].Type === ModType.Hit) {
+                    var healthComponent = <HealthComponent>gameObjList[j].ComponentList[Componenets.Health];
+                    if (healthComponent) {
+                        healthComponent.LoseHP(this.entityToModification[i].Data);
+                        world.PushEvent(gameObjList[j], Events.TxtSpawn, this.entityToModification[i].Data.toString());
+
+                    } 
+                }
             }
         }
     }
@@ -131,4 +152,4 @@
     }
 }
 
-const enum ModType { Move, Teleport, Message  };
+const enum ModType { Move, Teleport, Message, Hit  };

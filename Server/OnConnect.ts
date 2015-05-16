@@ -17,6 +17,22 @@ function OnConnection(socket: SocketIO.Socket) {
         Server.io.sockets.emit("CharacterMessage", { Msg: data.Msg, ID: socket.id });
     });
 
+    socket.on("PlayerTarget", function (data: { ID; IsTargeting: boolean }) {
+        var plr = GameState.CharacterList.GetByID(socket.id);
+      
+        if (plr) {
+            
+            if (data.IsTargeting) {
+                var targetChar = GameState.CharacterList.GetByID(data.ID);
+                if (!targetChar) return;
+                plr.Target(targetChar);
+            } else {
+                plr.Untarget();
+            }
+            
+        }
+    });
+
     socket.on("disconnect", () => {
         var char = GameState.CharacterList.RemoveByID(socket.id);
         if (char) {

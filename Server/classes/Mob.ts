@@ -58,6 +58,17 @@ var startSprites = ["Orc", "Minotaur", "Troll", "Dwarf"];
         Server.io.emit("NewCharacters", [this.GetJSON()]);
         GameState.Ground.SetCollision(this.syncData.Position.x, this.syncData.Position.y);
     }
+
+    Target(char) {
+
+    }
+
+    Untarget() {
+    }
+
+    GetHP(): number {
+        return this.syncData.HP;
+    }
 }
 
 export = Mob;
