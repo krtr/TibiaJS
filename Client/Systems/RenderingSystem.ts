@@ -26,7 +26,7 @@
                     if (!chMsg.TextObj || chMsg.TextObj.str !== chMsg.Str) {
                         this.renderer.DisposeTxt(chMsg.TextObj);
                         chMsg.TextObj = this.renderer.PrepareTxt(chMsg.Str, "Yellow", 14, true);
-                        console.log(chMsg.TextObj.str);
+                       
                     }
                     this.renderer.DrawTxt(chMsg.TextObj, (pos.x - chMsg.TextObj.Size.Width / 2) + 10, pos.y - 23);
                 }
@@ -36,6 +36,10 @@
                     this.renderer.SetHight(0.001);
                     this.DrawHealthBar(healthComponent.HP / healthComponent.MaxHP, pos.x, pos.y - 6);
                     this.renderer.SetHight(0.0);
+
+                    if (healthComponent.IsTargeted) {
+                        this.DrawSprite(99, positionComponent.PixelPosition.x, positionComponent.PixelPosition.y);
+                    }
                 }
 
                 continue;
