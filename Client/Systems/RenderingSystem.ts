@@ -1,7 +1,7 @@
 ﻿class RenderingSystem implements ISystem {
     private renderer: SpriteGL.SpriteRenderer;
     private mapsToRender = new Array<{ position: PositionComponent; map: RenderMapComponent; }>();
-
+    private dmgTxtList = new Array<{ txtObj; position: Vector2D, lifeTime: number }>();
     constructor(canvas: HTMLCanvasElement, textureAtlas: HTMLImageElement) {
         this.renderer = SpriteGL.SpriteRenderer.fromCanvas(canvas, textureAtlas);
     }
@@ -26,7 +26,7 @@
                     if (!chMsg.TextObj || chMsg.TextObj.str !== chMsg.Str) {
                         this.renderer.DisposeTxt(chMsg.TextObj);
                         chMsg.TextObj = this.renderer.PrepareTxt(chMsg.Str, "Yellow", 14, true);
-                       
+
                     }
                     this.renderer.DrawTxt(chMsg.TextObj, (pos.x - chMsg.TextObj.Size.Width / 2) + 10, pos.y - 23);
                 }
@@ -51,6 +51,33 @@
                 continue;
             }
         }
+
+        var txts = world.GetEventByType(Events.TxtSpawn);
+        
+        for (var i = 0; i < txts.length; i++) {
+            var posComp = <PositionComponent>txts[i].Subject.ComponentList[Componenets.Position];
+            
+            var txtObj = this.renderer.PrepareTxt(txts[i].Payload, "Red", 11, true);
+            this.dmgTxtList.push({
+                txtObj: txtObj, position: {
+                    x: posComp.PixelPosition.x, y: posComp.PixelPosition.y - 25
+                }, lifeTime: 0
+            });
+            console.log("TXT SPAWNED");
+        }
+
+        this.renderer.SetHight(0.001);
+        for (var i = 0; i < this.dmgTxtList.length; i++) {
+            this.renderer.DrawTxt(this.dmgTxtList[i].txtObj, this.dmgTxtList[i].position.x, this.dmgTxtList[i].position.y);
+            this.dmgTxtList[i].position.y -= 8 / world.FPS;
+            this.dmgTxtList[i].lifeTime += 1 / world.FPS;
+            if (this.dmgTxtList[i].lifeTime > 1) {
+                var txtObjToDispose = this.dmgTxtList.splice(i, 1)[0].txtObj;
+                this.renderer.DisposeTxt(txtObjToDispose);
+                i--;
+            }
+        }
+        this.renderer.SetHight(0);
     }
 
     RenderAll(cameraList: Array<Vector2D>) {

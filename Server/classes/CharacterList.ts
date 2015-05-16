@@ -6,7 +6,7 @@ const enum ObjType { Mob, Player };
 
 class CharacterList {
     private moblist = new Array<Character.Character>();
-    private plrlist = new Array<Character.Character>();
+    private plrlist = new Array<Player>();
     AddNewPlayer(plr: Player) {
         this.plrlist.push(plr);
     }
@@ -36,7 +36,7 @@ class CharacterList {
         this.moblist.forEach((val) => { callback(val); });
     }
 
-    ForEachPlayer(callback: (plr: Character.Character) => void) {
+    ForEachPlayer(callback: (plr: Player) => void) {
         this.plrlist.forEach((val) => { callback(val); });
     }
 

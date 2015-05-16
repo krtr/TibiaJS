@@ -7,6 +7,7 @@ var startSprites = ["Orc", "Minotaur", "Troll", "Dwarf"];
 class Player implements Character.Character {
 	private socket: SocketIO.Socket;
     private syncData = new Character.CharacterDataToSync();
+    private targetChar: Character.Character;
     constructor(socket: SocketIO.Socket) {
       
         this.syncData.Position = { x: 60, y: 50 };
@@ -70,6 +71,26 @@ class Player implements Character.Character {
     SelfAnnouce() {
         Server.io.emit("NewCharacters", [this.GetJSON()]);
         GameState.Ground.SetCollision(this.syncData.Position.x, this.syncData.Position.y);
+    }
+
+    Target(char: Character.Character) {
+    
+        this.targetChar = char;
+    }
+
+    Untarget() {
+      
+        this.targetChar = null;
+    }
+
+    AttackTarget() {
+        if (!this.targetChar) return;
+       
+        Server.io.sockets.emit("CharacterAttack", { AttackType: 0, AttarckerID: this.socket.id, TargetID: this.targetChar.GetID(), HitPoints: Math.random() * 10 | 0 });
+    }
+
+    GetHP(): number {
+        return this.syncData.HP;
     }
 }
 

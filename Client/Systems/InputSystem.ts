@@ -96,11 +96,12 @@
                         continue;
                     if (world.entityList[entityIndex].ID === gameObj.ID) continue;
                     var targetPosComp = <PositionComponent>world.entityList[entityIndex].ComponentList[Componenets.Position];
-                   // console.log(targetPosComp.PixelPosition.x - 10 + config.TileSize, pos.x, pos.x + config.TileSize );
                     if (targetPosComp.PixelPosition.x - 10 + config.TileSize > pos.x && targetPosComp.PixelPosition.x - 10 < pos.x) {
                         if (targetPosComp.PixelPosition.y - 10 + config.TileSize > pos.y && targetPosComp.PixelPosition.y - 10 < pos.y) {
                             var targeted = (<HealthComponent>world.entityList[entityIndex].ComponentList[Componenets.Health]).IsTargeted;
                             (<HealthComponent>world.entityList[entityIndex].ComponentList[Componenets.Health]).IsTargeted = !targeted
+         
+                            world.PushEvent(gameObj, Events.PlayerTarget, { ID: world.entityList[entityIndex].ID, IsTargeting: !targeted });
                             return;
                         }
                     }

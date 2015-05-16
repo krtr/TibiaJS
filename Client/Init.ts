@@ -50,15 +50,17 @@ window.onload = function () {
         world.FPS = GetFPS();
         inputSystem.Process(world);
         
-        collisionSystem.Process(world);
+        //collisionSystem.Process(world);
         characterAnimationSystem.Process(world);
         movemnetSystem.Process(world);
         cameraSystem.Process(world);
-        renderingSystem.Process(world);
+      
         
-
-        renderingSystem.RenderAll(cameraSystem.GetCamerasList());
         networkSystem.Process(world);
+        //console.log(world.GetEventByType(Events.TxtSpawn).length);
+        renderingSystem.Process(world);
+        renderingSystem.RenderAll(cameraSystem.GetCamerasList());
+       
         world.ClearEvets();
         requestAnimationFrame(Loop);
     }
