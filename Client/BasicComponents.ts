@@ -109,6 +109,8 @@ class HealthComponent implements IComponent {
     Name = Componenets.Health;
     HP: number;
     MaxHP: number;
+    IsTargeted = false;
+    DmgTextList = new Array< { textObj: any; pos: Vector2D } > ();
     constructor(currHP: number, maxHP: number) {
         this.HP = currHP;
         this.MaxHP = maxHP;

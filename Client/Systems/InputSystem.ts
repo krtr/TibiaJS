@@ -20,8 +20,10 @@
 
             this.KeyboardInput(gameObjList[i], world);
             this.CheckChatWindow(gameObjList[i], world);
+            this.CheckClick(gameObjList[i], world);
         }
 
+        this.mouseClicks = [];
     }
 
     private KeyboardInput(gameObj: GameObj, world: World) {
@@ -79,9 +81,34 @@
         }
     }
 
-    PerformsOver(componentList: IComponent[]): boolean {
-        return componentList["Input"] && componentList["Position"];
+    private requiredSignature = Componenets.Position + Componenets.Camera;
+    private CheckClick(gameObj: GameObj, world: World) {
+        if ((gameObj.ComponentSygnature & this.requiredSignature) === this.requiredSignature) {
+            var cameraposcomp = <PositionComponent>gameObj.ComponentList[Componenets.Position];
+            for (var i = 0; i < this.mouseClicks.length; i++) {
+                var pos = {
+                    x: this.mouseClicks[i].x + cameraposcomp.PixelPosition.x - this.canvas.width/2,
+                    y: this.mouseClicks[i].y + cameraposcomp.PixelPosition.y - this.canvas.height / 2
+                }
+              ;
+                for (var entityIndex = 0; entityIndex < world.entityList.length; entityIndex++) {
+                    if ((world.entityList[entityIndex].ComponentSygnature & (Componenets.Position + Componenets.Health)) !== (Componenets.Position + Componenets.Health))
+                        continue;
+                    if (world.entityList[entityIndex].ID === gameObj.ID) continue;
+                    var targetPosComp = <PositionComponent>world.entityList[entityIndex].ComponentList[Componenets.Position];
+                   // console.log(targetPosComp.PixelPosition.x - 10 + config.TileSize, pos.x, pos.x + config.TileSize );
+                    if (targetPosComp.PixelPosition.x - 10 + config.TileSize > pos.x && targetPosComp.PixelPosition.x - 10 < pos.x) {
+                        if (targetPosComp.PixelPosition.y - 10 + config.TileSize > pos.y && targetPosComp.PixelPosition.y - 10 < pos.y) {
+                            var targeted = (<HealthComponent>world.entityList[entityIndex].ComponentList[Componenets.Health]).IsTargeted;
+                            (<HealthComponent>world.entityList[entityIndex].ComponentList[Componenets.Health]).IsTargeted = !targeted
+                            return;
+                        }
+                    }
+                }
+            }
+        }
     }
+  
 
     private Setup() {
         addEventListener("keydown", (keyEvent) => {
@@ -127,7 +154,7 @@
             }
             x -= this.canvas.offsetLeft;
             y -= this.canvas.offsetTop;
-            console.log(x, y);
+           
             this.mouseClicks.push({ x: x, y: y });
         });
     }
