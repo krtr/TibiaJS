@@ -21,7 +21,6 @@ function OnConnection(socket: SocketIO.Socket) {
         var plr = GameState.CharacterList.GetByID(socket.id);
       
         if (plr) {
-            
             if (data.IsTargeting) {
                 var targetChar = GameState.CharacterList.GetByID(data.ID);
                 if (!targetChar) return;

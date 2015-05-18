@@ -37,7 +37,6 @@
     <TypeScriptCompile Include="BasicComponents.ts" />
     <TypeScriptCompile Include="Game.ts" />
     <TypeScriptCompile Include="Systems\AnimationSystem.ts" />
-    <TypeScriptCompile Include="Systems\AttackSystem.ts" />
     <TypeScriptCompile Include="Systems\CameraSystem.ts" />
     <TypeScriptCompile Include="ChatConsole.ts" />
     <TypeScriptCompile Include="GameObj.ts" />

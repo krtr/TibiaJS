@@ -3,7 +3,7 @@
     RequiredSygnature = Componenets.Movement + Componenets.Sprite + Componenets.CharacterAnimation + Componenets.Position;
 
     constructor() {
-        setInterval(() => { this.tick++; }, 150);
+        setInterval(() => { this.tick++; }, 20);
     }
 
     Process(world: World) {
@@ -11,26 +11,25 @@
         for (var i = 0; i < objList.length; i++) {
             var charAnimComponent = <CharacterAnimationComponent> objList[i].ComponentList[Componenets.CharacterAnimation];
 
-
-            if (charAnimComponent) {
-                this.ChracterMovement(objList[i]);
-                continue;
+            if (this.tick % 5 === 0) {
+                if (charAnimComponent) {
+                    this.ChracterMovement(objList[i]);
+                    continue;
+                }
             }
 
             var simpleAnimComponent = <SimpleAnimationComponent> objList[i].ComponentList[Componenets.SimpleAnimation];
 
             if (simpleAnimComponent) {
                 var spriteComponent = <SpriteComponent> objList[i].ComponentList[Componenets.Sprite];
-                if (!simpleAnimComponent.StartTick) {
-                    simpleAnimComponent.StartTick = this.tick;
-                }
-                if (this.tick - simpleAnimComponent.StartTick > simpleAnimComponent.AnimationList.length - 1) {
+                if (this.tick % simpleAnimComponent.TicksPerFrame !== 0) continue;
+                if (simpleAnimComponent.CurrentFrame >= simpleAnimComponent.AnimationList.length) {
                     world.entityList.splice(i, 1);
                     i--;
                     continue;
                 }
-                spriteComponent.RenderingSprite =
-                simpleAnimComponent.AnimationList[(this.tick - simpleAnimComponent.StartTick) % simpleAnimComponent.AnimationList.length];
+                spriteComponent.RenderingSprite = simpleAnimComponent.AnimationList[simpleAnimComponent.CurrentFrame];
+                simpleAnimComponent.CurrentFrame++;
             }
         }
     }

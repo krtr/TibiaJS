@@ -10,7 +10,7 @@ class PositionComponent implements IComponent {
     PixelPosition: Vector2D;
     Rotation: Rotation;
 
-    constructor(TilePosX: number, TilePosY: number, rot: Rotation) {
+    constructor(TilePosX: number, TilePosY: number, rot = Rotation.Down) {
         this.TilePosition = { x: TilePosX|0, y: TilePosY|0 };
         this.PixelPosition = { x: this.TilePosition.x * config.TileSize, y: this.TilePosition.y * config.TileSize };
         this.Rotation = rot;
@@ -27,6 +27,8 @@ class PositionComponent implements IComponent {
 class MovementComponent implements IComponent {
     Name = Componenets.Movement;
     IsMoving = false;
+    RemoveOnDone = false;
+    Speed = 100;
     TargetTilePosition = { x: 0, y: 0 };
     TargetPixelPosition = { x: 0, y: 0 };
 
@@ -52,12 +54,10 @@ class SpriteComponent implements IComponent {
 
 class CharacterAnimationComponent implements IComponent {
     Name = Componenets.CharacterAnimation;
-    IsAnimating: boolean;
     SpriteList: Array<number>;
-
-    constructor(array: Array<number>) {
-        this.SpriteList = array;
-        this.IsAnimating = false;
+    CurrSprite = 0;
+    constructor(aliveSpriteList: Array<number>) {
+        this.SpriteList = aliveSpriteList;
     }
 }
 
@@ -68,6 +68,21 @@ class CameraComponent implements IComponent {
 
 class InputComponent implements IComponent {
     Name = Componenets.Input;
+    TargetedEntitiy: GameObj;
+
+    SetTargetEntity(GameObj) {
+        if (this.TargetedEntitiy) {
+            (<HealthComponent>this.TargetedEntitiy.ComponentList[Componenets.Health]).IsTargeted = false;
+        }
+        this.TargetedEntitiy = GameObj
+    }
+
+    FreeTargetedEntity() {
+        if (this.TargetedEntitiy) {
+            (<HealthComponent>this.TargetedEntitiy.ComponentList[Componenets.Health]).IsTargeted = false;
+        }
+        this.TargetedEntitiy = null;
+    }
 }
 
 class RenderMapComponent implements IComponent {
@@ -87,11 +102,12 @@ class SimpleAnimationComponent implements IComponent {
     Name = Componenets.SimpleAnimation;
     AnimationList = new Array<number>();
     IsContinuous = false;
-    StartTick = 0;
-
-    constructor(spriteArray: Array<number>, IsContinous: boolean) {
+    CurrentFrame = 0;
+    TicksPerFrame = 4;
+    constructor(spriteArray: Array<number>, IsContinous: boolean, TicksPerFrame: number) {
         this.AnimationList = spriteArray;
         this.IsContinuous = IsContinous;
+        this.TicksPerFrame = TicksPerFrame;
     }
 }
 

@@ -85,12 +85,26 @@ class Player implements Character.Character {
 
     AttackTarget() {
         if (!this.targetChar) return;
-       
-        Server.io.sockets.emit("CharacterAttack", { AttackType: 0, AttarckerID: this.socket.id, TargetID: this.targetChar.GetID(), HitPoints: Math.random() * 10 | 0 });
+        if (this.targetChar.GetHP() < 0) {
+            this.targetChar = null; return
+        }
+        Server.io.sockets.emit("SpawnProjectile", { Type: 0, StartPos: this.GetJSON().Position, TargetPos: this.targetChar.GetJSON().Position });
+        var dmg = Math.random() * 10 | 0 + 2;
+        this.targetChar.Hit(dmg);
+        Server.io.sockets.emit("CharacterAttack", { AttackType: 0, AttarckerID: this.socket.id, TargetID: this.targetChar.GetID(), HitPoints: dmg });
     }
 
     GetHP(): number {
         return this.syncData.HP;
+    }
+
+    Hit(dmg: number) {
+        this.syncData.HP -= dmg;
+    }
+
+    Kill() {
+        this.Dispose();
+        Server.io.sockets.emit("Animation", { Sprites: GameState.config.Mobs[this.GetJSON().Race].DeadSprites, Pos: this.syncData.Position, TicksPerFrame: 100 });
     }
 }
 

@@ -5,7 +5,7 @@ import Mob = require("./classes/Mob");
 var intervalHandle: NodeJS.Timer;
 
 export function Start() {
-    intervalHandle = setInterval(Loop, 2000);
+    intervalHandle = setInterval(Loop, 1500);
     for (var i = 0; i < 1; i++) {
         AddNew();
     }
@@ -73,16 +73,22 @@ function Loop() {
         var rot = GetRotation({ x: charPos.x - plrPos.x, y: charPos.y - plrPos.y }, charPos);
         if (rot !== -1)
             mob.MoveDir(rot);
-
-        if (mob.GetHP() < 0) {
-            GameState.CharacterList.RemoveByID(mob.GetID());
-        }
     });
-   
+
+   GameState.CharacterList.ForEach((char) => {
+       if (char.GetHP() < 0) {
+           GameState.CharacterList.RemoveByID(char.GetID());
+           char.Kill();
+       }
+   });
 
     GameState.CharacterList.ForEachPlayer((plr) => {
         plr.AttackTarget();
-    });
+   });
+
+    if (GameState.CharacterList.GetMobCount() < 5) {
+        AddNew();
+    }
 }
 
 function AddNew() {

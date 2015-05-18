@@ -69,6 +69,16 @@ var startSprites = ["Orc", "Minotaur", "Troll", "Dwarf"];
     GetHP(): number {
         return this.syncData.HP;
     }
+
+    Hit(dmg: number) {
+        this.syncData.HP -= dmg;
+    }
+
+
+    Kill() {
+        this.Dispose();
+        Server.io.sockets.emit("Animation", { Sprites: GameState.config.Mobs[this.GetJSON().Race].DeadSprites, Pos: this.syncData.Position, TicksPerFrame: 100 });
+    }
 }
 
 export = Mob;

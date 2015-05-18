@@ -27,7 +27,7 @@
         this.ModifyEntities(world);
 
         this.cleanup();
-      
+
     }
 
     private Setup() {
@@ -38,24 +38,31 @@
                 gameObj.AddComponent(new PositionComponent(data[i].Position.x, data[i].Position.y, Rotation.Down));
                 gameObj.AddComponent(new MovementComponent());
                 gameObj.AddComponent(new HealthComponent(100, 100));
-                gameObj.AddComponent(new SpriteComponent(config.Mobs[data[i].Race].Sprites[0], { x: -10, y: -10 }));
-                gameObj.AddComponent(new CharacterAnimationComponent(config.Mobs[data[i].Race].Sprites));
+                gameObj.AddComponent(new SpriteComponent(config.Mobs[data[i].Race].AliveSprites[0], { x: -10, y: -10 }));
+                gameObj.AddComponent(new CharacterAnimationComponent(config.Mobs[data[i].Race].AliveSprites));
                 this.newEntityList.push(gameObj);
+
+                var animation = new GameObj();
+                animation.ID = Math.random() * 10000;
+                animation.AddComponent(new PositionComponent(data[i].Position.x, data[i].Position.y));
+                animation.AddComponent(new SpriteComponent(config.Animations.Beam.Sprites[0]));
+                animation.AddComponent(new SimpleAnimationComponent(config.Animations.Beam.Sprites, false, 4));
+                this.newEntityList.push(animation);
             }
         });
 
         this.socket.on("PlayerStart", (data: NewCharacterData) => {
             var gameObj = new GameObj();
-            console.log(data);
             gameObj.ID = data.ID;
             gameObj.AddComponent(new PositionComponent(data.Position.x, data.Position.y, Rotation.Down));
             gameObj.AddComponent(new MovementComponent());
-            gameObj.AddComponent(new CharacterAnimationComponent(config.Mobs[data.Race].Sprites));
-            gameObj.AddComponent(new SpriteComponent(config.Mobs[data.Race].Sprites[0], { x: -10, y: -10 }));
+            gameObj.AddComponent(new CharacterAnimationComponent(config.Mobs[data.Race].AliveSprites));
+            gameObj.AddComponent(new SpriteComponent(config.Mobs[data.Race].AliveSprites[0], { x: -10, y: -10 }));
             gameObj.AddComponent(new InputComponent());
             gameObj.AddComponent(new HealthComponent(100, 100));
             gameObj.AddComponent(new CameraComponent());
             this.newEntityList.push(gameObj);
+
             console.log("New Player");
         });
 
@@ -74,6 +81,30 @@
         this.socket.on("CharacterAttack", (data: { AttackType: number; AttarckerID; TargetID; HitPoints: number }) => {
             this.entityToModification.push({ ID: data.TargetID, Type: ModType.Hit, Data: data.HitPoints });
         });
+
+        this.socket.on("SpawnProjectile", (data) => {
+            var gameObj = new GameObj();
+            gameObj.ID = Math.random();
+            gameObj.AddComponent(new PositionComponent(data.StartPos.x, data.StartPos.y, Rotation.Down));
+            var movementComponet = new MovementComponent();
+            movementComponet.RemoveOnDone = true;
+            movementComponet.SetTarget(data.TargetPos.x, data.TargetPos.y);
+            movementComponet.Speed = 1000;
+            gameObj.AddComponent(movementComponet);
+            gameObj.AddComponent(new SpriteComponent(44));
+            gameObj.AddComponent(new CameraComponent());
+            this.newEntityList.push(gameObj);
+        });
+
+        this.socket.on("Animation", (data) => {
+            var gameObj = new GameObj();
+            gameObj.ID = Math.random();
+            gameObj.AddComponent(new PositionComponent(data.Pos.x, data.Pos.y));
+            gameObj.AddComponent(new SimpleAnimationComponent(data.Sprites, false, data.TicksPerFrame));
+            gameObj.AddComponent(new SpriteComponent(data.Sprites[0]));
+            this.newEntityList.push(gameObj);
+        });
+
 
         this.socket.on("DeleteCharacters", (data: any[]) => {
             console.log(data);
@@ -98,7 +129,7 @@
 
         var targetEventList = world.GetEventByType(Events.PlayerTarget);
         for (var i = 0; i < targetEventList.length; i++) {
-            this.socket.emit("PlayerTarget", targetEventList[i].Payload );
+            this.socket.emit("PlayerTarget", targetEventList[i].Payload);
         }
     }
 
@@ -139,7 +170,7 @@
                         healthComponent.LoseHP(this.entityToModification[i].Data);
                         world.PushEvent(gameObjList[j], Events.TxtSpawn, this.entityToModification[i].Data.toString());
 
-                    } 
+                    }
                 }
             }
         }
@@ -152,4 +183,4 @@
     }
 }
 
-const enum ModType { Move, Teleport, Message, Hit  };
+const enum ModType { Move, Teleport, Message, Hit };
