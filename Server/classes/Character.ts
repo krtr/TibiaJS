@@ -9,6 +9,8 @@ export interface Character {
     Target(char: Character);
     Untarget();
     GetHP(): number;
+    Hit(dmg: number);
+    Kill();
 
 }
 
@@ -22,12 +24,14 @@ export class CharacterDataToSync {
     MaxHP: number
 
     toJSON() {
-        return { Position: this.Position, HP: 100, Race: this.Race, ID: this.ID };
+        return { Position: this.Position, HP: this.HP, MaxHP: this.MaxHP, Race: this.Race, ID: this.ID };
     }
 
     constructor() {
         this.ID = CharacterDataToSync.lastID.toString();
         CharacterDataToSync.lastID++;
+        this.MaxHP = 100;
+        this.HP = 100;
     }
 
     private static lastID = 0;

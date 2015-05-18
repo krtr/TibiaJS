@@ -29,18 +29,10 @@ window.onload = function () {
     queue.on("complete", function () {
         var map = new GameObj();
         map.ID = 1541515125;
-        map.AddComponent(new PositionComponent(0, 0, Rotation.Down));
+        map.AddComponent(new PositionComponent(0, 0));
         map.AddComponent(new RenderMapComponent(config.Data, config.MapWidth, config.MapHeight));
         world.Add(map);
         networkSystem.connect();
-
-        setInterval(() => {
-            var test = new GameObj();
-            test.ID = Math.random() * 10000;
-            test.AddComponent(new PositionComponent(50 + Math.random() * 30, 60+ Math.random() * 30, Rotation.Down));
-            test.AddComponent(new SpriteComponent(config.Animations.Beam.Sprites[0]));
-            test.AddComponent(new SimpleAnimationComponent(config.Animations.Beam.Sprites, false));
-            world.Add(test); }, 10000);
         requestAnimationFrame(Loop);
     });
 

@@ -81,35 +81,41 @@
         }
     }
 
-    private requiredSignature = Componenets.Position + Componenets.Camera;
     private CheckClick(gameObj: GameObj, world: World) {
-        if ((gameObj.ComponentSygnature & this.requiredSignature) === this.requiredSignature) {
-            var cameraposcomp = <PositionComponent>gameObj.ComponentList[Componenets.Position];
-            for (var i = 0; i < this.mouseClicks.length; i++) {
-                var pos = {
-                    x: this.mouseClicks[i].x + cameraposcomp.PixelPosition.x - this.canvas.width/2,
-                    y: this.mouseClicks[i].y + cameraposcomp.PixelPosition.y - this.canvas.height / 2
-                }
-              ;
-                for (var entityIndex = 0; entityIndex < world.entityList.length; entityIndex++) {
-                    if ((world.entityList[entityIndex].ComponentSygnature & (Componenets.Position + Componenets.Health)) !== (Componenets.Position + Componenets.Health))
-                        continue;
-                    if (world.entityList[entityIndex].ID === gameObj.ID) continue;
-                    var targetPosComp = <PositionComponent>world.entityList[entityIndex].ComponentList[Componenets.Position];
-                    if (targetPosComp.PixelPosition.x - 10 + config.TileSize > pos.x && targetPosComp.PixelPosition.x - 10 < pos.x) {
-                        if (targetPosComp.PixelPosition.y - 10 + config.TileSize > pos.y && targetPosComp.PixelPosition.y - 10 < pos.y) {
-                            var targeted = (<HealthComponent>world.entityList[entityIndex].ComponentList[Componenets.Health]).IsTargeted;
-                            (<HealthComponent>world.entityList[entityIndex].ComponentList[Componenets.Health]).IsTargeted = !targeted
-         
-                            world.PushEvent(gameObj, Events.PlayerTarget, { ID: world.entityList[entityIndex].ID, IsTargeting: !targeted });
-                            return;
+        if ((gameObj.ComponentSygnature & Componenets.Camera) !== Componenets.Camera) return;
+        var cameraposcomp = <PositionComponent>gameObj.ComponentList[Componenets.Position];
+        for (var i = 0; i < this.mouseClicks.length; i++) {
+            var pos = {
+                x: this.mouseClicks[i].x + cameraposcomp.PixelPosition.x - this.canvas.width / 2,
+                y: this.mouseClicks[i].y + cameraposcomp.PixelPosition.y - this.canvas.height / 2
+            };
+
+            for (var entityIndex = 0; entityIndex < world.entityList.length; entityIndex++) {
+                if ((world.entityList[entityIndex].ComponentSygnature & (Componenets.Position + Componenets.Health)) !== (Componenets.Position + Componenets.Health))
+                    continue;
+                if (world.entityList[entityIndex].ID === gameObj.ID) continue;
+                var targetPosComp = <PositionComponent>world.entityList[entityIndex].ComponentList[Componenets.Position];
+                if (targetPosComp.PixelPosition.x - 10 + config.TileSize > pos.x && targetPosComp.PixelPosition.x - 10 < pos.x) {
+                    if (targetPosComp.PixelPosition.y - 10 + config.TileSize > pos.y && targetPosComp.PixelPosition.y - 10 < pos.y) {
+                        var targeted = (<HealthComponent>world.entityList[entityIndex].ComponentList[Componenets.Health]).IsTargeted;
+                        (<HealthComponent>world.entityList[entityIndex].ComponentList[Componenets.Health]).IsTargeted = !targeted
+
+                        var inputComponent = (< InputComponent > gameObj.ComponentList[Componenets.Input]);
+                        if (!targeted) {
+                            inputComponent.SetTargetEntity(world.entityList[entityIndex]);
+                        } else {
+                            inputComponent.FreeTargetedEntity();
                         }
+
+                        world.PushEvent(gameObj, Events.PlayerTarget, { ID: world.entityList[entityIndex].ID, IsTargeting: !targeted });
+                        return;
                     }
                 }
             }
         }
+
     }
-  
+
 
     private Setup() {
         addEventListener("keydown", (keyEvent) => {
@@ -133,7 +139,7 @@
                 keyEvent.preventDefault();
             }
             if (key === 13) {
-                this.chatMsgs.push(this.chatInput.value.substr(0,55));
+                this.chatMsgs.push(this.chatInput.value.substr(0, 55));
                 this.chatInput.value = "";
                 return;
             }
@@ -155,7 +161,7 @@
             }
             x -= this.canvas.offsetLeft;
             y -= this.canvas.offsetTop;
-           
+
             this.mouseClicks.push({ x: x, y: y });
         });
     }

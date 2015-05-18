@@ -14,11 +14,11 @@ interface Config {
 	TileSize: number;
 	MapWidth: number;
 	MapHeight: number;
-	Mobs: {
-        Dwarf: { Sprites: number[]; };
-        Orc: { Sprites: number[]; };
-        Minotaur: { Sprites: number[]; };
-        Troll: { Sprites: number[]; };
+    Mobs: {
+        Dwarf: { AliveSprites: number[]; DeadSprites: number[] };
+        Orc: { AliveSprites: number[]; DeadSprites: number[] };
+        Minotaur: { AliveSprites: number[]; DeadSprites: number[] };
+        Troll: { AliveSprites: number[]; DeadSprites: number[]};
 	};
 	Animations: {
 		Beam: {

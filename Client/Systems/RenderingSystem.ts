@@ -63,7 +63,7 @@
                     x: posComp.PixelPosition.x, y: posComp.PixelPosition.y - 25
                 }, lifeTime: 0
             });
-            console.log("TXT SPAWNED");
+           
         }
 
         this.renderer.SetHight(0.001);
@@ -86,7 +86,7 @@
             this.DrawMap(cameraList[0], this.mapsToRender[0].position.PixelPosition, this.mapsToRender[0].map.Tiles);
         }
         this.mapsToRender = [];
-        this.renderer.UpdateCamera(cameraList[0].x, cameraList[0].y);
+        this.renderer.UpdateCamera(cameraList[0].x | 0, cameraList[0].y | 0);
         this.renderer.RenderAll();
     }
 
@@ -108,7 +108,7 @@
 
 
     private DrawMap(cameraPos: Vector2D, mapPos: Vector2D, tileMap: number[]) {
-        this.renderer.SetHight(-0.001);
+        this.renderer.SetHight(-0.0001);
         for (var i = 0; i < this.mapsToRender.length; i++) {
             var startX = ((cameraPos.x - 400) / config.TileSize) | 0;
 
