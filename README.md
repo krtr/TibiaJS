@@ -8,3 +8,7 @@
 * `npm install`
 * `gulp build`
 * `gulp run` or `cd Out` & `node Server.js`
+
+### How to update cloned repo
+* `git pull origin master`
+* `git submodule foreach git pull origin master`
