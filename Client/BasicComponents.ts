@@ -69,7 +69,7 @@ class CameraComponent implements IComponent {
 class InputComponent implements IComponent {
     Name = Componenets.Input;
     TargetedEntitiy: GameObj;
-
+    
     SetTargetEntity(GameObj) {
         if (this.TargetedEntitiy) {
             (<HealthComponent>this.TargetedEntitiy.ComponentList[Componenets.Health]).IsTargeted = false;

@@ -70,14 +70,25 @@ var startSprites = ["Orc", "Minotaur", "Troll", "Dwarf"];
         return this.syncData.HP;
     }
 
-    Hit(dmg: number) {
+    Hit(dmg: number): boolean {
+        Server.io.sockets.emit("ApplyDommage", { AttackType: 0, TargetID: this.syncData.ID, HitPoints: dmg });
         this.syncData.HP -= dmg;
+        if (this.syncData.HP < 0) {
+            this.Kill();
+            return true;
+        }
+
+        return false;
     }
 
 
     Kill() {
         this.Dispose();
         Server.io.sockets.emit("Animation", { Sprites: GameState.config.Mobs[this.GetJSON().Race].DeadSprites, Pos: this.syncData.Position, TicksPerFrame: 100 });
+    }
+
+    IsDead() {
+        return this.syncData.HP < 0;
     }
 }
 

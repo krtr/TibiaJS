@@ -37,13 +37,13 @@
                 gameObj.ID = data[i].ID;
                 gameObj.AddComponent(new PositionComponent(data[i].Position.x, data[i].Position.y, Rotation.Down));
                 gameObj.AddComponent(new MovementComponent());
-                gameObj.AddComponent(new HealthComponent(100, 100));
+                gameObj.AddComponent(new HealthComponent(data[i].HP, data[i].MaxHP));
                 gameObj.AddComponent(new SpriteComponent(config.Mobs[data[i].Race].AliveSprites[0], { x: -10, y: -10 }));
                 gameObj.AddComponent(new CharacterAnimationComponent(config.Mobs[data[i].Race].AliveSprites));
                 this.newEntityList.push(gameObj);
 
                 var animation = new GameObj();
-                animation.ID = Math.random() * 10000;
+                animation.ID = Math.random();
                 animation.AddComponent(new PositionComponent(data[i].Position.x, data[i].Position.y));
                 animation.AddComponent(new SpriteComponent(config.Animations.Beam.Sprites[0]));
                 animation.AddComponent(new SimpleAnimationComponent(config.Animations.Beam.Sprites, false, 4));
@@ -78,8 +78,12 @@
             this.entityToModification.push({ ID: data.ID, Type: ModType.Teleport, Data: data.Data });
         });
 
-        this.socket.on("CharacterAttack", (data: { AttackType: number; AttarckerID; TargetID; HitPoints: number }) => {
+        this.socket.on("ApplyDommage", (data: { AttackType: number; AttarckerID; TargetID; HitPoints: number }) => {
             this.entityToModification.push({ ID: data.TargetID, Type: ModType.Hit, Data: data.HitPoints });
+        });
+
+        this.socket.on("ApplyExperience", (data: { ID; Exp: number }) => {
+            this.entityToModification.push({ ID: data.ID, Type: ModType.Exp, Data: data.Exp });
         });
 
         this.socket.on("SpawnProjectile", (data) => {
@@ -168,7 +172,16 @@
                     var healthComponent = <HealthComponent>gameObjList[j].ComponentList[Componenets.Health];
                     if (healthComponent) {
                         healthComponent.LoseHP(this.entityToModification[i].Data);
-                        world.PushEvent(gameObjList[j], Events.TxtSpawn, this.entityToModification[i].Data.toString());
+                        world.PushEvent(gameObjList[j], Events.TxtSpawn, { Str: this.entityToModification[i].Data.toString(), Color: "Red" });
+
+                    }
+                }
+
+                if (this.entityToModification[i].Type === ModType.Exp) {
+                    var healthComponent = <HealthComponent>gameObjList[j].ComponentList[Componenets.Health];
+                    if (healthComponent) {
+                        world.PushEvent(gameObjList[j], Events.TxtSpawn, { Str: this.entityToModification[i].Data.toString(), Color: "White" });
+                        console.log("EXP");
 
                     }
                 }
@@ -183,4 +196,4 @@
     }
 }
 
-const enum ModType { Move, Teleport, Message, Hit };
+const enum ModType { Move, Teleport, Message, Hit, Exp };

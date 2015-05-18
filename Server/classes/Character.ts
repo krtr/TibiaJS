@@ -11,6 +11,7 @@ export interface Character {
     GetHP(): number;
     Hit(dmg: number);
     Kill();
+    IsDead(): boolean
 
 }
 

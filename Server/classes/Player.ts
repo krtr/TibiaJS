@@ -1,13 +1,16 @@
 ﻿import Character = require("./Character");
 import Server = require("../Server");
 import GameState = require("../GameState");
-
+import Geometry = require("../Geometry");
 var startSprites = ["Orc", "Minotaur", "Troll", "Dwarf"];
 
 class Player implements Character.Character {
 	private socket: SocketIO.Socket;
     private syncData = new Character.CharacterDataToSync();
     private targetChar: Character.Character;
+    private AttackDelay = 30;
+    private CurretTick = 0;
+    private LastTick = 1;
     constructor(socket: SocketIO.Socket) {
       
         this.syncData.Position = { x: 60, y: 50 };
@@ -84,27 +87,47 @@ class Player implements Character.Character {
     }
 
     AttackTarget() {
+        this.CurretTick++;
         if (!this.targetChar) return;
         if (this.targetChar.GetHP() < 0) {
             this.targetChar = null; return
         }
+        if (!(this.CurretTick - this.LastTick > this.AttackDelay)) return;
+        var dist = Geometry.GetDistance(this.syncData.Position, this.targetChar.GetJSON().Position);
+        if (dist > 6) return;
+
         Server.io.sockets.emit("SpawnProjectile", { Type: 0, StartPos: this.GetJSON().Position, TargetPos: this.targetChar.GetJSON().Position });
-        var dmg = Math.random() * 10 | 0 + 2;
-        this.targetChar.Hit(dmg);
-        Server.io.sockets.emit("CharacterAttack", { AttackType: 0, AttarckerID: this.socket.id, TargetID: this.targetChar.GetID(), HitPoints: dmg });
+        var dmg = Math.random() * 20 | 0 + 9;
+        if (this.targetChar.Hit(dmg)) {
+            Server.io.sockets.emit("ApplyExperience", { ID: this.socket.id, Exp: 20 });
+        }
+
+        this.LastTick = this.CurretTick;
     }
 
     GetHP(): number {
         return this.syncData.HP;
     }
 
-    Hit(dmg: number) {
+    Hit(dmg: number): boolean {
+        Server.io.sockets.emit("ApplyDommage", { AttackType: 0, TargetID: this.syncData.ID, HitPoints: dmg });
         this.syncData.HP -= dmg;
+        if (this.syncData.HP < 0) {
+            this.Kill();
+            return true;
+        }
+
+        return false;
     }
 
     Kill() {
+        this.syncData.HP = -1;
         this.Dispose();
-        Server.io.sockets.emit("Animation", { Sprites: GameState.config.Mobs[this.GetJSON().Race].DeadSprites, Pos: this.syncData.Position, TicksPerFrame: 100 });
+        Server.io.sockets.emit("Animation", { Sprites: GameState.config.Mobs[this.GetJSON().Race].DeadSprites, Pos: this.syncData.Position, TicksPerFrame: 500 });
+    }
+
+    IsDead(): boolean {
+        return this.syncData.HP < 0;
     }
 }
 

@@ -5,7 +5,8 @@ import Mob = require("./classes/Mob");
 var intervalHandle: NodeJS.Timer;
 
 export function Start() {
-    intervalHandle = setInterval(Loop, 1500);
+    intervalHandle = setInterval(Loop, 1000);
+    intervalHandle = setInterval(NewLoop, 40);
     for (var i = 0; i < 1; i++) {
         AddNew();
     }
@@ -65,30 +66,39 @@ function GetRotation(desiredMoveV: Vector2D, position: Vector2D) {
 }
 
 function Loop() {
+
+    GameState.CharacterList.ForEach((char) => {
+        if (char.IsDead()) {
+            GameState.CharacterList.RemoveByID(char.GetID());
+        }
+    })
+
    GameState.CharacterList.ForEachMob((mob) => {
         var plr = GetNearestPlayer(mob);
         if (!plr) return;
         var plrPos = plr.GetJSON().Position;
         var charPos = mob.GetJSON().Position;
-        var rot = GetRotation({ x: charPos.x - plrPos.x, y: charPos.y - plrPos.y }, charPos);
+        var dist = Geometry.GetDistance(charPos, plrPos);
+        if (dist < 1.4) plr.Hit(5);
+        var rot = 0;
+        if (dist < 7) {
+            var rot = GetRotation({ x: charPos.x - plrPos.x, y: charPos.y - plrPos.y }, charPos);
+        } else {
+            var rot = GetRotation({ x: Math.sin(Math.random() * Math.PI * 2), y: Math.sin(Math.random() * Math.PI * 2) }, charPos);
+        }
         if (rot !== -1)
             mob.MoveDir(rot);
     });
 
-   GameState.CharacterList.ForEach((char) => {
-       if (char.GetHP() < 0) {
-           GameState.CharacterList.RemoveByID(char.GetID());
-           char.Kill();
-       }
-   });
-
-    GameState.CharacterList.ForEachPlayer((plr) => {
-        plr.AttackTarget();
-   });
-
     if (GameState.CharacterList.GetMobCount() < 5) {
         AddNew();
     }
+}
+
+function NewLoop() {
+    GameState.CharacterList.ForEachPlayer((plr) => {
+        plr.AttackTarget();
+    });
 }
 
 function AddNew() {

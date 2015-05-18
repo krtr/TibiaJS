@@ -8,6 +8,8 @@ interface NewCharacterData {
     Position: Vector2D;
     Race: string;
     ID: string;
+    HP: number;
+    MaxHP: number;
 }
 
 interface Config {
