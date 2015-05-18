@@ -57,7 +57,7 @@
         for (var i = 0; i < txts.length; i++) {
             var posComp = <PositionComponent>txts[i].Subject.ComponentList[Componenets.Position];
             
-            var txtObj = this.renderer.PrepareTxt(txts[i].Payload, "Red", 11, true);
+            var txtObj = this.renderer.PrepareTxt(txts[i].Payload.Str, txts[i].Payload.Color, 11, true);
             this.dmgTxtList.push({
                 txtObj: txtObj, position: {
                     x: posComp.PixelPosition.x, y: posComp.PixelPosition.y - 25
