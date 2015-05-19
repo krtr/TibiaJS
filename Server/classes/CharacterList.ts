@@ -1,18 +1,19 @@
 ﻿import Character = require("./Character");
 import Player = require("./Player");
+import Mob = require("./Mob");
 
 enum Rotation { Down, Top, Right, Left };
 const enum ObjType { Mob, Player };
 
 class CharacterList {
-    private moblist = new Array<Character.Character>();
+    private moblist = new Array<Mob>();
     private plrlist = new Array<Player>();
 
     AddNewPlayer(plr: Player) {
         this.plrlist.push(plr);
     }
 
-    AddNewMob(mob: Character.Character) {
+    AddNewMob(mob: Mob) {
         this.moblist.push(mob);
     }
 
@@ -33,7 +34,7 @@ class CharacterList {
         this.plrlist.forEach((val) => { callback(val); });
     }
 
-    ForEachMob(callback: (plr: Character.Character) => void) {
+    ForEachMob(callback: (plr: Mob) => void) {
         this.moblist.forEach((val) => { callback(val); });
     }
 
