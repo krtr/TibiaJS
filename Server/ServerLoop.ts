@@ -1,4 +1,4 @@
-﻿import GameState = require("./GameState");
+import GameState = require("./GameState");
 import Character = require("./classes/Character");
 import Geometry = require("./Geometry");
 import Mob = require("./classes/Mob");
@@ -33,13 +33,6 @@ function GetNearestPlayer(char: Character.Character) {
 }
 
 function Loop() {
-
-    GameState.CharacterList.ForEach((char) => {
-        if (char.IsDead()) {
-            GameState.CharacterList.RemoveByID(char.GetID());
-        }
-    })
-
     if (GameState.CharacterList.GetMobCount() < 5) {
         AddNew();
     }
@@ -48,6 +41,9 @@ function Loop() {
 function NewLoop() {
     GameState.CharacterList.ForEachPlayer((plr) => {
         plr.AttackTarget();
+        if (plr.IsDead()) {
+            GameState.CharacterList.RemoveByID(plr.GetID());
+        }
     });
 
     GameState.CharacterList.ForEachMob((mob) => {
@@ -63,6 +59,10 @@ function NewLoop() {
             mob.MoveByVector({ x: charPos.x - plrPos.x, y: charPos.y - plrPos.y });
         } else {
             mob.IdleMoving();
+        }
+
+        if (mob.IsDead()) {
+            GameState.CharacterList.RemoveByID(mob.GetID());
         }
 
     });
