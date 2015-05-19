@@ -10,6 +10,7 @@ interface NewCharacterData {
     ID: string;
     HP: number;
     MaxHP: number;
+    Speed: number;
 }
 
 interface Config {
