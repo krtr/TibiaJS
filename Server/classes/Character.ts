@@ -12,6 +12,8 @@ export interface Character {
     Hit(dmg: number);
     Kill();
     IsDead(): boolean
+    CanMove(): boolean
+    CanAttack(): boolean
 
 }
 

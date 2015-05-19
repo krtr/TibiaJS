@@ -8,9 +8,9 @@ class Player implements Character.Character {
 	private socket: SocketIO.Socket;
     private syncData = new Character.CharacterDataToSync();
     private targetChar: Character.Character;
-    private AttackDelay = 30;
-    private CurretTick = 0;
-    private LastTick = 1;
+    private AttackDelay = 850;
+    private LastAttackTime = 0;
+
     constructor(socket: SocketIO.Socket) {
       
         this.syncData.Position = { x: 60, y: 50 };
@@ -87,12 +87,12 @@ class Player implements Character.Character {
     }
 
     AttackTarget() {
-        this.CurretTick++;
+      
         if (!this.targetChar) return;
         if (this.targetChar.GetHP() < 0) {
             this.targetChar = null; return
         }
-        if (!(this.CurretTick - this.LastTick > this.AttackDelay)) return;
+        if (!(Date.now() - this.LastAttackTime > this.AttackDelay)) return;
         var dist = Geometry.GetDistance(this.syncData.Position, this.targetChar.GetJSON().Position);
         if (dist > 6) return;
 
@@ -102,7 +102,7 @@ class Player implements Character.Character {
             Server.io.sockets.emit("ApplyExperience", { ID: this.socket.id, Exp: 20 });
         }
 
-        this.LastTick = this.CurretTick;
+        this.LastAttackTime = Date.now();
     }
 
     GetHP(): number {
@@ -128,6 +128,14 @@ class Player implements Character.Character {
 
     IsDead(): boolean {
         return this.syncData.HP < 0;
+    }
+
+    CanMove() {
+        return true;
+    }
+
+    CanAttack() {
+        return (Date.now() - this.LastAttackTime) > this.AttackDelay;
     }
 }
 
