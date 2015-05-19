@@ -6,18 +6,15 @@ var startSprites = ["Orc", "Minotaur", "Troll", "Dwarf"];
 
 class Player implements Character.Character {
 	private socket: SocketIO.Socket;
-    private syncData = new Character.CharacterDataToSync();
+    private syncData = new Character.CharacterDataToSync(startSprites[(Math.random() * 4) | 0]);
     private targetChar: Character.Character;
     private AttackDelay = 850;
     private LastAttackTime = 0;
 
     constructor(socket: SocketIO.Socket) {
-      
         this.syncData.Position = { x: 60, y: 50 };
-        this.syncData.Race = startSprites[(Math.random() * 4) | 0];
         this.syncData.ID = socket.id;
         this.socket = socket;
-		
 	}
    
     Move(data: MoveData) {

@@ -11,7 +11,7 @@ class PositionComponent implements IComponent {
     Rotation: Rotation;
 
     constructor(TilePosX: number, TilePosY: number, rot = Rotation.Down) {
-        this.TilePosition = { x: TilePosX|0, y: TilePosY|0 };
+        this.TilePosition = { x: TilePosX | 0, y: TilePosY | 0 };
         this.PixelPosition = { x: this.TilePosition.x * config.TileSize, y: this.TilePosition.y * config.TileSize };
         this.Rotation = rot;
     }
@@ -31,6 +31,9 @@ class MovementComponent implements IComponent {
     Speed = 100;
     TargetTilePosition = { x: 0, y: 0 };
     TargetPixelPosition = { x: 0, y: 0 };
+    constructor(speed = 100) {
+        this.Speed = speed;
+    } 
 
     SetTarget(tileX: number, tileY: number) {
         //if (this.IsMoving) return;
@@ -56,8 +59,11 @@ class CharacterAnimationComponent implements IComponent {
     Name = Componenets.CharacterAnimation;
     SpriteList: Array<number>;
     CurrSprite = 0;
-    constructor(aliveSpriteList: Array<number>) {
+    TicksPerFrame: number;
+    constructor(aliveSpriteList: Array<number>, TicksPerFrame = 5) {
         this.SpriteList = aliveSpriteList;
+        console.log(TicksPerFrame);
+        this.TicksPerFrame = TicksPerFrame;
     }
 }
 
@@ -69,7 +75,7 @@ class CameraComponent implements IComponent {
 class InputComponent implements IComponent {
     Name = Componenets.Input;
     TargetedEntitiy: GameObj;
-    
+
     SetTargetEntity(GameObj) {
         if (this.TargetedEntitiy) {
             (<HealthComponent>this.TargetedEntitiy.ComponentList[Componenets.Health]).IsTargeted = false;

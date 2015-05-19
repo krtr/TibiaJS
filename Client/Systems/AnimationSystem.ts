@@ -11,12 +11,14 @@
         for (var i = 0; i < objList.length; i++) {
             var charAnimComponent = <CharacterAnimationComponent> objList[i].ComponentList[Componenets.CharacterAnimation];
 
-            if (this.tick % 5 === 0) {
-                if (charAnimComponent) {
+
+            if (charAnimComponent) {
+                if ((this.tick % charAnimComponent.TicksPerFrame) === 0) {
                     this.ChracterMovement(objList[i]);
                     continue;
                 }
             }
+
 
             var simpleAnimComponent = <SimpleAnimationComponent> objList[i].ComponentList[Componenets.SimpleAnimation];
 

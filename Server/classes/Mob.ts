@@ -7,16 +7,15 @@ var startSprites = ["Orc", "Minotaur", "Troll", "Dwarf"];
 
 
 class Mob implements Character.Character {
-    private syncData = new Character.CharacterDataToSync();
+    private syncData = new Character.CharacterDataToSync(startSprites[(Math.random() * 4) | 0]);
     private lastMoveTime = 0;
-    private moveDelay = 1000;
+    private moveDelay = 35000 / this.syncData.Speed;
     private LastAttackTime = 0;
     private AttackDelay = 850;
     private targetChar: Character.Character;
 
     constructor(pos: Vector2D) {
         this.syncData.Position = pos;
-        this.syncData.Race = startSprites[(Math.random() * 4) | 0];
     }
 
     Move(data: MoveData) {

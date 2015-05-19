@@ -36,10 +36,10 @@
                 var gameObj = new GameObj();
                 gameObj.ID = data[i].ID;
                 gameObj.AddComponent(new PositionComponent(data[i].Position.x, data[i].Position.y, Rotation.Down));
-                gameObj.AddComponent(new MovementComponent());
+                gameObj.AddComponent(new MovementComponent(data[i].Speed));
                 gameObj.AddComponent(new HealthComponent(data[i].HP, data[i].MaxHP));
                 gameObj.AddComponent(new SpriteComponent(config.Mobs[data[i].Race].AliveSprites[0], { x: -10, y: -10 }));
-                gameObj.AddComponent(new CharacterAnimationComponent(config.Mobs[data[i].Race].AliveSprites));
+                gameObj.AddComponent(new CharacterAnimationComponent(config.Mobs[data[i].Race].AliveSprites, 5));
                 this.newEntityList.push(gameObj);
 
                 var animation = new GameObj();
@@ -55,8 +55,8 @@
             var gameObj = new GameObj();
             gameObj.ID = data.ID;
             gameObj.AddComponent(new PositionComponent(data.Position.x, data.Position.y, Rotation.Down));
-            gameObj.AddComponent(new MovementComponent());
-            gameObj.AddComponent(new CharacterAnimationComponent(config.Mobs[data.Race].AliveSprites));
+            gameObj.AddComponent(new MovementComponent(data.Speed));
+            gameObj.AddComponent(new CharacterAnimationComponent(config.Mobs[data.Race].AliveSprites, 5));
             gameObj.AddComponent(new SpriteComponent(config.Mobs[data.Race].AliveSprites[0], { x: -10, y: -10 }));
             gameObj.AddComponent(new InputComponent());
             gameObj.AddComponent(new HealthComponent(100, 100));
