@@ -42,11 +42,11 @@
     <TypeScriptCompile Include="GameObj.ts" />
     <TypeScriptCompile Include="Init.ts" />
     <TypeScriptCompile Include="Misc.ts" />
-    <TypeScriptCompile Include="Systems\CollisionSystem.ts" />
     <TypeScriptCompile Include="Systems\InputSystem.ts" />
     <TypeScriptCompile Include="Systems\MovementSystem.ts" />
     <TypeScriptCompile Include="Systems\NetworkSystem.ts" />
     <TypeScriptCompile Include="Systems\RenderingSystem.ts" />
+    <TypeScriptCompile Include="Systems\UserInterfaceSystem.ts" />
     <TypeScriptCompile Include="World.ts" />
   </ItemGroup>
   <ItemGroup>

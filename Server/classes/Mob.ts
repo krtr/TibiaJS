@@ -13,6 +13,7 @@ class Mob implements Character.Character {
     private LastAttackTime = 0;
     private AttackDelay = 850;
     private targetChar: Character.Character;
+   // private IsDead = false;
 
     constructor(pos: Vector2D) {
         this.syncData.Position = pos;
@@ -93,15 +94,15 @@ class Mob implements Character.Character {
     }
 
 
-    Hit(dmg: number): boolean {
+    Hit(dmg: number): { Exp: number } {
         Server.io.sockets.emit("ApplyDommage", { AttackType: 0, TargetID: this.syncData.ID, HitPoints: dmg });
         this.syncData.HP -= dmg;
         if (this.syncData.HP < 0) {
             this.Kill();
-            return true;
+            return { Exp: this.syncData.ExpAtDead };
         }
 
-        return false;
+       
     }
 
     Kill() {
@@ -158,11 +159,11 @@ class Mob implements Character.Character {
     }
 
     CanMove() {
-        return (Date.now() - this.lastMoveTime) > this.moveDelay;
+        return ((Date.now() - this.lastMoveTime) > this.moveDelay) && !this.IsDead();
     }
 
     CanAttack() {
-        return (Date.now() - this.LastAttackTime) > this.AttackDelay;
+        return ((Date.now() - this.LastAttackTime) > this.AttackDelay) && !this.IsDead();
     }
 }
 

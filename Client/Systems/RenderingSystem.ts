@@ -69,7 +69,7 @@
         this.renderer.SetHight(0.001);
         for (var i = 0; i < this.dmgTxtList.length; i++) {
             this.renderer.DrawTxt(this.dmgTxtList[i].txtObj, this.dmgTxtList[i].position.x, this.dmgTxtList[i].position.y);
-            this.dmgTxtList[i].position.y -= 8 / world.FPS;
+            this.dmgTxtList[i].position.y -= 10 / world.FPS;
             this.dmgTxtList[i].lifeTime += 1 / world.FPS;
             if (this.dmgTxtList[i].lifeTime > 1) {
                 var txtObjToDispose = this.dmgTxtList.splice(i, 1)[0].txtObj;

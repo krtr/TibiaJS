@@ -62,7 +62,6 @@ class CharacterAnimationComponent implements IComponent {
     TicksPerFrame: number;
     constructor(aliveSpriteList: Array<number>, TicksPerFrame = 5) {
         this.SpriteList = aliveSpriteList;
-        console.log(TicksPerFrame);
         this.TicksPerFrame = TicksPerFrame;
     }
 }
@@ -75,6 +74,9 @@ class CameraComponent implements IComponent {
 class InputComponent implements IComponent {
     Name = Componenets.Input;
     TargetedEntitiy: GameObj;
+    Experience = 0;
+    MaxExp = 100;
+    Level = 1;
 
     SetTargetEntity(GameObj) {
         if (this.TargetedEntitiy) {
