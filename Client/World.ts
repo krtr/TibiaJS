@@ -42,8 +42,7 @@
     RemoveEntity(ID) {
         for (var i = 0; i < this.entityList.length; i++) {
             if (this.entityList[i].ID === ID) {
-                this.entityList.splice(i, 1);
-                return;
+                return this.entityList.splice(i, 1)[0];
             }
         }
     }

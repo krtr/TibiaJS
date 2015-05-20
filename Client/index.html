@@ -14,7 +14,7 @@
             margin-right: auto;
         }
 
-        #LevelProgressBar {
+        .GameBar {
             -webkit-appearance: none;
             -moz-appearance: none;
             border: 1px solid black;
@@ -25,7 +25,7 @@
             width: 100%;
         }
 
-            #LevelProgressBar::-webkit-progress-bar {
+            .GameBar::-webkit-progress-bar {
                 -webkit-appearance: none;
                 -moz-appearance: none;
                 border: 1px solid black;
@@ -35,13 +35,21 @@
                 width: 100%;
             }
 
-            #LevelProgressBar::-webkit-progress-value {
-                background-color: red;
-            }
+        #LevelProgressBar::-webkit-progress-value {
+            background-color: red;
+        }
 
-            #LevelProgressBar::-moz-progress-bar {
-                background-color: red;
-            }
+        #LevelProgressBar::-moz-progress-bar {
+            background-color: red;
+        }
+
+        #ManaBar::-webkit-progress-value {
+            background-color: blue;
+        }
+
+        #ManaBar::-moz-progress-bar {
+            background-color: blue;
+        }
     </style>
 </head>
 <body>
@@ -49,13 +57,18 @@
         <canvas id="GameCanvas" width="800" height="600"></canvas>
         <input type="text" id="ChatInput" style="width:796px; background-color:white;" value="" />
     </div>
-   
+
     <div style="position:absolute; right: 0; top: 0;margin: 10px;">
         <div>
             <span style="font-size: small; float:left;">Level: <span id="Lvl">1</span></span>
             <span style="font-size: small; float:right;">Exp: <span id="Exp">0</span></span>
         </div>
-        <progress id="LevelProgressBar" max="100" value="1"></progress>
+        <progress id="LevelProgressBar" class="GameBar" max="100" value="1"></progress>
+        <div>
+            <span style="font-size: small; float:left;">Mana: </span>
+            <span style="font-size: small; float:right;"> <span id="Mana">20/20</span></span>
+        </div>
+        <progress id="ManaBar" class="GameBar" max="100" value="100"></progress>
     </div>
     <script src="/socket.io/socket.io.js"></script>
     <script src="preloadjs-0.6.0.min.js"></script>

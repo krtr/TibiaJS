@@ -48,7 +48,10 @@ function NewLoop() {
 
     GameState.CharacterList.ForEachMob((mob) => {
         var plr = GetNearestPlayer(mob);
-        if (!plr) return;
+        if (!plr) {
+            mob.IdleMoving();
+            return;
+        }
         var plrPos = plr.GetJSON().Position;
         var charPos = mob.GetJSON().Position;
         var dist = Geometry.GetDistance(charPos, plrPos);

@@ -4,7 +4,7 @@
     private canvas = <HTMLCanvasElement> document.getElementById("GameCanvas");
     private chatMsgs = new Array<string>();
     private mouseClicks = new Array<Vector2D>();
-    RequiredSygnature = Componenets.Position + Componenets.Movement + Componenets.Input;
+    RequiredSygnature = Componenets.Position + Componenets.Movement + Componenets.Input ;
 
 
     constructor() {
@@ -29,10 +29,12 @@
     private KeyboardInput(gameObj: GameObj, world: World) {
         var movementComponent = <MovementComponent> gameObj.ComponentList[Componenets.Movement];
         var positionComponent = <PositionComponent> gameObj.ComponentList[Componenets.Position];
+        var inputSystem = <InputComponent> gameObj.ComponentList[Componenets.Input];
         if (movementComponent.IsMoving) return;
 
         if (this.keys[37]) {
             positionComponent.Rotation = Rotation.Left;
+            if (inputSystem.IsAlive)
             world.PushEvent(gameObj, Events.PlayerMove, {
                 Rot: Rotation.Left,
                 Pos: { x: positionComponent.TilePosition.x - 1, y: positionComponent.TilePosition.y }
@@ -43,6 +45,7 @@
 
         if (this.keys[38]) {
             positionComponent.Rotation = Rotation.Top;
+            if (inputSystem.IsAlive)
             world.PushEvent(gameObj, Events.PlayerMove, {
                 Rot: Rotation.Top,
                 Pos: { x: positionComponent.TilePosition.x, y: positionComponent.TilePosition.y - 1 }
@@ -54,6 +57,7 @@
 
         if (this.keys[39]) {
             positionComponent.Rotation = Rotation.Right;
+            if (inputSystem.IsAlive)
             world.PushEvent(gameObj, Events.PlayerMove, {
                 Rot: Rotation.Right,
                 Pos: { x: positionComponent.TilePosition.x + 1, y: positionComponent.TilePosition.y }
@@ -64,6 +68,7 @@
 
         if (this.keys[40]) {
             positionComponent.Rotation = Rotation.Down;
+            if (inputSystem.IsAlive)
             world.PushEvent(gameObj, Events.PlayerMove, {
                 Rot: Rotation.Down,
                 Pos: { x: positionComponent.TilePosition.x, y: positionComponent.TilePosition.y + 1 }
