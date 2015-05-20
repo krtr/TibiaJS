@@ -2,11 +2,39 @@
     "TileSize": 32,
     "MapWidth": 100,
     "MapHeight": 100,
+    "Player": {
+        "LvlExp": [ 75, 125, 200, 300, 450, 650, 800, 1100 ]
+    },
     "Mobs": {
-        "Dwarf": { "AliveSprites": [ 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67 ], "DeadSprites": [ 68, 69, 70 ], "Speed": 70 },
-        "Orc": { "AliveSprites": [ 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124 ], "DeadSprites": [ 125, 126, 127 ], "Speed": 100 },
-        "Minotaur": { "AliveSprites": [ 223, 224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234 ], "DeadSprites": [ 235, 236, 237 ], "Speed": 120 },
-        "Troll": { "AliveSprites": [ 244, 245, 246, 247, 248, 249, 238, 239, 240, 241, 242, 243 ], "DeadSprites": [ 250, 251, 252 ], "Speed": 90 }
+        "Dwarf": {
+            "AliveSprites": [ 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67 ],
+            "DeadSprites": [ 68, 69, 70 ],
+            "Speed": 70,
+            "Experience": 30,
+            "HP": 40
+        },
+        "Orc": {
+            "AliveSprites": [ 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124 ],
+            "DeadSprites": [ 125, 126, 127 ],
+            "Speed": 100,
+            "Experience": 25,
+            "HP": 25
+        },
+        "Minotaur": {
+            "AliveSprites": [ 223, 224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234 ],
+            "DeadSprites": [ 235, 236, 237 ],
+            "Speed": 120,
+            "Experience": 50,
+            "HP": 35
+
+        },
+        "Troll": {
+            "AliveSprites": [ 244, 245, 246, 247, 248, 249, 238, 239, 240, 241, 242, 243 ],
+            "DeadSprites": [ 250, 251, 252 ],
+            "Speed": 90,
+            "Experience": 20,
+            "HP": 20
+        }
     },
     "Animations": {
         "Beam": { "Sprites": [ 48, 49, 50, 51, 52, 53, 54, 55 ] }

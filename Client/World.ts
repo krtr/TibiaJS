@@ -4,7 +4,13 @@
     FPS = 1;
 
     Add(gameObj: GameObj) {
+      
         if (!this.GetByID(gameObj.ID)) {
+        
+            this.entityList.push(gameObj);
+        } else {
+          
+            this.RemoveEntity(gameObj.ID);
             this.entityList.push(gameObj);
         }
     }

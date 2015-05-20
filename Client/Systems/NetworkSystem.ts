@@ -58,7 +58,10 @@
             gameObj.AddComponent(new MovementComponent(data.Speed));
             gameObj.AddComponent(new CharacterAnimationComponent(config.Mobs[data.Race].AliveSprites, 5));
             gameObj.AddComponent(new SpriteComponent(config.Mobs[data.Race].AliveSprites[0], { x: -10, y: -10 }));
-            gameObj.AddComponent(new InputComponent());
+            var input = new InputComponent();
+            input.Level = data.Level;
+            input.MaxExp = data.MaxExp;
+            gameObj.AddComponent(input);
             gameObj.AddComponent(new HealthComponent(100, 100));
             gameObj.AddComponent(new CameraComponent());
             this.newEntityList.push(gameObj);
@@ -83,7 +86,7 @@
         });
 
         this.socket.on("ApplyExperience", (data: { ID; Exp: number }) => {
-            this.entityToModification.push({ ID: data.ID, Type: ModType.Exp, Data: data.Exp });
+            this.entityToModification.push({ ID: data.ID, Type: ModType.Exp, Data: data });
         });
 
         this.socket.on("SpawnProjectile", (data) => {
@@ -96,7 +99,6 @@
             movementComponet.Speed = 1000;
             gameObj.AddComponent(movementComponet);
             gameObj.AddComponent(new SpriteComponent(44));
-            gameObj.AddComponent(new CameraComponent());
             this.newEntityList.push(gameObj);
         });
 
@@ -178,11 +180,15 @@
                 }
 
                 if (this.entityToModification[i].Type === ModType.Exp) {
-                    var healthComponent = <HealthComponent>gameObjList[j].ComponentList[Componenets.Health];
-                    if (healthComponent) {
-                        world.PushEvent(gameObjList[j], Events.TxtSpawn, { Str: this.entityToModification[i].Data.toString(), Color: "White" });
-                        console.log("EXP");
-
+                    var inputComponent = <InputComponent>gameObjList[j].ComponentList[Componenets.Input];
+                    if (inputComponent) {
+                        world.PushEvent(gameObjList[j], Events.TxtSpawn, { Str: this.entityToModification[i].Data.Exp.toString(), Color: "White" });
+                        if (this.entityToModification[i].Data.NextLvl) {
+                            inputComponent.Level = this.entityToModification[i].Data.NextLvl;
+                            inputComponent.Experience = 0;
+                        } else {
+                            inputComponent.Experience += this.entityToModification[i].Data.Exp;
+                        }
                     }
                 }
             }

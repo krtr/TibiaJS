@@ -1,3 +1,4 @@
+/// <binding BeforeBuild='build' ProjectOpened='run' />
 var gulp = require("gulp");
 var typescript = require("gulp-typescript");
 var concat = require("gulp-concat");
@@ -26,7 +27,7 @@ gulp.task("build", function () {
 });
 
 gulp.task("run", function () {
-	nodemon({ script: "Server.js", cwd: "./out", ext: "html js css", ignore: ["ignored.js"] })
+	nodemon({ script: "Server.js", cwd: "./out", ext: "html js css" })
 		.on("restart", function () {
 			console.log("Restarted")
 		})

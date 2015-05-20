@@ -7,7 +7,7 @@ window.onload = function () {
     var cameraSystem = new CameraSystem();
     var inputSystem = new InputSystem();
     var movemnetSystem = new MovementSystem();
-    //var collisionSystem = new ColliisonSystem();
+    var userInterfaceSystem = new UserInterfaceSytem();
     var networkSystem = new NetworkSystem();
     var characterAnimationSystem = new AnimationSystem();
     var world = new World();
@@ -49,7 +49,7 @@ window.onload = function () {
       
         
         networkSystem.Process(world);
-        //console.log(world.GetEventByType(Events.TxtSpawn).length);
+        userInterfaceSystem.Process(world);
         renderingSystem.Process(world);
         renderingSystem.RenderAll(cameraSystem.GetCamerasList());
        
