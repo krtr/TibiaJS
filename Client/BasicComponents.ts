@@ -75,9 +75,8 @@ class InputComponent implements IComponent {
     Name = Componenets.Input;
     TargetedEntitiy: GameObj;
     Experience = 0;
-    MaxExp = 100;
     Level = 1;
-
+    IsAlive = true;
     SetTargetEntity(GameObj) {
         if (this.TargetedEntitiy) {
             (<HealthComponent>this.TargetedEntitiy.ComponentList[Componenets.Health]).IsTargeted = false;

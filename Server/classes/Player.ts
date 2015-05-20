@@ -64,7 +64,7 @@ class Player implements Character.Character {
     Dispose() {
         Server.io.emit("DeleteCharacters", [this.syncData.ID]);
         GameState.Ground.FreeCollision(this.syncData.Position.x, this.syncData.Position.y);
-        this.socket.disconnect();
+       // this.socket.disconnect();
 
     }
 

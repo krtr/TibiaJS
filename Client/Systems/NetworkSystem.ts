@@ -18,9 +18,19 @@
         for (var i = 0; i < this.newEntityList.length; i++) {
             world.Add(this.newEntityList[i]);
         }
-
+     
         for (var i = 0; i < this.EntityToRemove.length; i++) {
-            world.RemoveEntity(this.EntityToRemove[i]);
+            
+            var removed = world.RemoveEntity(this.EntityToRemove[i]);
+            if (removed && removed.ComponentList[Componenets.Camera]) {
+                removed.ComponentList[Componenets.Sprite] = null;
+                removed.ComponentList[Componenets.CharacterAnimation] = null;
+                removed.ComponentList[Componenets.Health] = null;
+                (<InputComponent>removed.ComponentList[Componenets.Input]).IsAlive = false;
+                (<MovementComponent>removed.ComponentList[Componenets.Movement]).Speed = 1000;
+                document.body.style.backgroundColor = "black";
+                world.Add(removed);
+            }
         }
 
         this.ProcessEvents(world);
@@ -60,9 +70,8 @@
             gameObj.AddComponent(new SpriteComponent(config.Mobs[data.Race].AliveSprites[0], { x: -10, y: -10 }));
             var input = new InputComponent();
             input.Level = data.Level;
-            input.MaxExp = data.MaxExp;
             gameObj.AddComponent(input);
-            gameObj.AddComponent(new HealthComponent(100, 100));
+            gameObj.AddComponent(new HealthComponent(data.HP, data.MaxHP));
             gameObj.AddComponent(new CameraComponent());
             this.newEntityList.push(gameObj);
 
@@ -113,7 +122,7 @@
 
 
         this.socket.on("DeleteCharacters", (data: any[]) => {
-            console.log(data);
+           
             for (var i = 0; i < data.length; i++) {
                 this.EntityToRemove.push(data[i]);
             }
