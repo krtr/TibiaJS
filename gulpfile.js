@@ -1,4 +1,4 @@
-/// <binding BeforeBuild='build' ProjectOpened='run' />
+/// <binding />
 var gulp = require("gulp");
 var typescript = require("gulp-typescript");
 var concat = require("gulp-concat");
