@@ -30,16 +30,21 @@ class CharacterList {
     }
 
     ForEach(callback: (plr: Character.Character) => void) {
-        this.moblist.forEach((val) => { callback(val); });
-        this.plrlist.forEach((val) => { callback(val); });
+        this.ForEachMob(callback);
+        this.ForEachPlayer(callback);
     }
 
     ForEachMob(callback: (plr: Mob) => void) {
-        this.moblist.forEach((val) => { callback(val); });
+        for (var i = 0; i < this.moblist.length; i++) {
+            callback(this.moblist[i])
+        }
     }
 
     ForEachPlayer(callback: (plr: Player) => void) {
-        this.plrlist.forEach((val) => { callback(val); });
+      
+        for (var i = 0; i < this.plrlist.length; i++) {
+            callback(this.plrlist[i])
+        }
     }
 
     GetByID(ID: string): Character.Character {

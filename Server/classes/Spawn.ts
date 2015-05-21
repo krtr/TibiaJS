@@ -23,6 +23,7 @@ class Spawn {
                 GameState.CharacterList.RemoveByID(this.mobList[i].GetID());
                 this.mobList.splice(i, 1);
                 i--;
+                continue;
             }
 
             var nearestPlr = this.getNearestPlayer(this.mobList[i]);
