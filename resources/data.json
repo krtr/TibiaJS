@@ -5,6 +5,14 @@
     "Player": {
         "LvlExp": [ 75, 125, 200, 300, 450, 650, 800, 1100 ]
     },
+    "MobSpawns": [
+        { "Position": { "x": 80, "y": 80 }, "Count":  4 },
+        { "Position": { "x": 44, "y": 73 },  "Count":  3 },
+        { "Position": { "x": 14, "y": 73 }, "Count":  4 },
+        { "Position": { "x": 8, "y": 54 }, "Count":  5 },
+        { "Position": { "x": 31, "y": 35 }, "Count": 3 },
+        { "Position": { "x": 82, "y": 23 }, "Count":  7 }
+    ],
     "Mobs": {
         "Dwarf": {
             "AliveSprites": [ 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67 ],
