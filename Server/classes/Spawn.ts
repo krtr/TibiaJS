@@ -27,8 +27,8 @@ class Spawn {
 
             var nearestPlr = this.getNearestPlayer(this.mobList[i]);
             if (!nearestPlr) return;
-            var mobPos = nearestPlr.GetJSON().Position;
-            var plrPos = this.mobList[i].GetJSON().Position;
+            var plrPos = nearestPlr.GetJSON().Position;
+            var mobPos = this.mobList[i].GetJSON().Position;
             var dist = Geometry.GetDistance(mobPos, plrPos);
 
             this.mobList[i].Target(nearestPlr);
