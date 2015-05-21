@@ -14,25 +14,19 @@
             margin-right: auto;
         }
 
-        .GameBar {
+        progress {
             -webkit-appearance: none;
             -moz-appearance: none;
+            appearance: none;
             border: 1px solid black;
-            height: 4px;
-            background-color: black;
-            margin: 1px;
-            padding: 0px;
             width: 100%;
+            height: 5px;
+            background-color: black;
         }
 
-            .GameBar::-webkit-progress-bar {
-                -webkit-appearance: none;
-                -moz-appearance: none;
-                border: 1px solid black;
-                height: 4px;
+            progress::-webkit-progress-bar {
                 background-color: black;
-                margin: 1px;
-                width: 100%;
+                border: 1px solid black;
             }
 
         #LevelProgressBar::-webkit-progress-value {
