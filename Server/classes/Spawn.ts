@@ -4,7 +4,7 @@ import Geometry = require("../Geometry");
 import GameState = require("../GameState");
 
 class Spawn {
-    private mobList: Mob[];
+    private mobList = new Array<Mob>();
     private pos: Vector2D;
     private desiredMobCount = 0;
 
@@ -19,7 +19,14 @@ class Spawn {
     Process() {
         if (this.mobList.length < this.desiredMobCount) this.addNew();
         for (var i = 0; i < this.mobList.length; i++) {
+            if (this.mobList[i].IsDead()) {
+                GameState.CharacterList.RemoveByID(this.mobList[i].GetID());
+                this.mobList.splice(i, 1);
+                i--;
+            }
+
             var nearestPlr = this.getNearestPlayer(this.mobList[i]);
+            if (!nearestPlr) return;
             var mobPos = nearestPlr.GetJSON().Position;
             var plrPos = this.mobList[i].GetJSON().Position;
             var dist = Geometry.GetDistance(mobPos, plrPos);
@@ -33,9 +40,7 @@ class Spawn {
             if (dist >= 7) {
                 this.mobList[i].IdleMoving();
             }
-
         }
-
     }
 
     private addNew() {
@@ -60,3 +65,5 @@ class Spawn {
         return selectedPlayer;
     }
 }
+
+export = Spawn;
