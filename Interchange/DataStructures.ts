@@ -16,24 +16,37 @@ interface NewCharacterData {
 }
 
 interface Config {
-	TileSize: number;
-	MapWidth: number;
+    TileSize: number;
+    MapWidth: number;
     MapHeight: number;
     Player: {
         LvlExp: number[]
     }
+    MobSpawns: SpawnData[],
     Mobs: {
         Dwarf: { AliveSprites: number[]; DeadSprites: number[], Experience: number };
         Orc: { AliveSprites: number[]; DeadSprites: number[], Experience: number };
         Minotaur: { AliveSprites: number[]; DeadSprites: number[], Experience: number };
-        Troll: { AliveSprites: number[]; DeadSprites: number[], Experience: number};
-	};
-	Animations: {
-		Beam: {
+        Troll: { AliveSprites: number[]; DeadSprites: number[], Experience: number };
+    };
+    Animations: {
+        Beam: {
             Sprites: number[];
-		};
-	};
-	Data: number[];
-	Collision: number[];
+        };
+    };
+    Data: number[];
+    Collision: number[];
+};
+
+interface SpawnData {
+    Position: Vector2D;
+    Count: number
 }
 
+interface MobData {
+    AliveSprites: number[];
+    DeadSprites: number[];
+    Experience: number;
+    Speed: number;
+    HP: number;
+}

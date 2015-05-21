@@ -14,6 +14,7 @@ export interface Character {
     IsDead(): boolean
     CanMove(): boolean
     CanAttack(): boolean
+    AttackTarget();
 
 }
 
