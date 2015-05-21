@@ -2,40 +2,21 @@ import GameState = require("./GameState");
 import Character = require("./classes/Character");
 import Geometry = require("./Geometry");
 import Mob = require("./classes/Mob");
+import Spawn = require("./classes/Spawn");
 var intervalHandle: NodeJS.Timer;
 
+var spawnList = new Array<Spawn>();
+
 export function Start() {
-    intervalHandle = setInterval(Loop, 500);
     intervalHandle = setInterval(NewLoop, 50);
-    for (var i = 0; i < 1; i++) {
-        AddNew();
+    for (var i = 0; i < GameState.config.MobSpawns.length; i++) {
+        spawnList.push(new Spawn(GameState.config.MobSpawns[i].Position.x, GameState.config.MobSpawns[i].Position.y));
+        spawnList[i].MaintainMobCount(GameState.config.MobSpawns[i].Count);
     }
 }
 
 export function Stop() {
     if (intervalHandle) clearInterval(intervalHandle);
-}
-
-
-function GetNearestPlayer(char: Character.Character) {
-
-    var lastDist = 1000000;
-    var selectedPlayer: Character.Character;
-    GameState.CharacterList.ForEachPlayer((plr) => {
-        var tmpDist = Geometry.GetDistance(plr.GetJSON().Position, char.GetJSON().Position)
-        if (tmpDist < lastDist) {
-            lastDist = tmpDist;
-            selectedPlayer = plr;
-        }
-    });
-
-    return selectedPlayer;
-}
-
-function Loop() {
-    if (GameState.CharacterList.GetMobCount() < 5) {
-        AddNew();
-    }
 }
 
 function NewLoop() {
@@ -46,33 +27,7 @@ function NewLoop() {
         }
     });
 
-    GameState.CharacterList.ForEachMob((mob) => {
-        var plr = GetNearestPlayer(mob);
-        if (!plr) {
-            mob.IdleMoving();
-            return;
-        }
-        var plrPos = plr.GetJSON().Position;
-        var charPos = mob.GetJSON().Position;
-        var dist = Geometry.GetDistance(charPos, plrPos);
-        mob.Target(plr);
-        mob.AttackTarget();
-       
-        if (dist < 7) {
-            mob.MoveByVector({ x: charPos.x - plrPos.x, y: charPos.y - plrPos.y });
-        } else {
-            mob.IdleMoving();
-        }
-
-        if (mob.IsDead()) {
-            GameState.CharacterList.RemoveByID(mob.GetID());
-        }
-
-    });
-}
-
-function AddNew() {
-    var char = new Mob({ x: ((Math.random() - 0.5) * 20 + 60) | 0, y: ((Math.random() - 0.5) * 20 + 50) | 0 });
-    char.SelfAnnouce();
-    GameState.CharacterList.AddNewMob(char);
+    for (var i = 0; i < spawnList.length; i++) {
+        spawnList[i].Process();
+    }
 }
