@@ -2,6 +2,7 @@
     "TileSize": 32,
     "MapWidth": 100,
     "MapHeight": 100,
+    "MobSpawnDelay":  20000,
     "Player": {
         "LvlExp": [ 75, 125, 200, 300, 450, 650, 800, 1100 ]
     },

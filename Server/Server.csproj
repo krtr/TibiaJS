@@ -42,6 +42,7 @@
     <TypeScriptCompile Include="classes\Player.ts" />
     <TypeScriptCompile Include="classes\CharacterList.ts" />
     <TypeScriptCompile Include="ServerLoop.ts" />
+    <TypeScriptCompile Include="classes\Spawn.ts" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\resources\data.json">

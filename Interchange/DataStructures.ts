@@ -19,6 +19,7 @@ interface Config {
     TileSize: number;
     MapWidth: number;
     MapHeight: number;
+    MobSpawnDelay: number;
     Player: {
         LvlExp: number[]
     }

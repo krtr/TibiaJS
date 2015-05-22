@@ -7,6 +7,7 @@ class Spawn {
     private mobList = new Array<Mob>();
     private pos: Vector2D;
     private desiredMobCount = 0;
+    private newList = new Array<number>();
 
     constructor(posX: number, posY: number) {
         this.pos = { x: posX, y: posY };
@@ -17,7 +18,17 @@ class Spawn {
     }
 
     Process() {
-        if (this.mobList.length < this.desiredMobCount) this.addNew();
+        if (this.mobList.length + this.newList.length < this.desiredMobCount) {
+            this.newList.push(Date.now());
+        }
+      
+        if (this.newList.length > 0) {
+            if ((this.newList[0] + GameState.config.MobSpawnDelay) < Date.now()) {
+                this.addNew();
+                this.newList.splice(0, 1);
+            }
+        }
+
         for (var i = 0; i < this.mobList.length; i++) {
             if (this.mobList[i].IsDead()) {
                 GameState.CharacterList.RemoveByID(this.mobList[i].GetID());
