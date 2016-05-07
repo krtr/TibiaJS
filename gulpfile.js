@@ -13,7 +13,7 @@ gulp.task("build", function () {
 		.pipe(concat("client.js"))
 		.pipe(gulp.dest("out/static"));
 
-	gulp.src(["Client/**/*.html", "Client/**/*.js", "resources/*.png", "resources/data.json",
+	gulp.src(["Client/**/*.html", "Client/**/*.js", "resources/*.png", "resources/config.json",
 		"resources/3rd/SpriteGL/bin/SpriteGL.js", "resources/3rd/PreloadJS/lib/preloadjs-0.6.0.min.js"])
 		.pipe(gulp.dest("./out/static"));
 
@@ -21,7 +21,7 @@ gulp.task("build", function () {
 		.pipe(typescript({ typescript: require("typescript"), module: "commonjs", target: "ES5" }))
 		.pipe(gulp.dest("out"));
 
-	gulp.src(["resources/data.json"])
+	gulp.src(["resources/config.json", "resources/fullmap.json"])
 	.pipe(gulp.dest("out"));
 
 });

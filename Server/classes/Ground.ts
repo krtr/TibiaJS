@@ -1,4 +1,4 @@
-﻿import GameState = require("../GameState");
+﻿﻿import GameState = require("../GameState");
 
 class Ground {
     private width: number;
@@ -14,15 +14,16 @@ class Ground {
         if (x < 0) return 1;
         if (y > this.height) return 1;
         if (y < 0) return 1;
-        return GameState.config.Collision[y * this.width + x];
+        //  return GameState.config.Collision[y * this.width + x];
+        return 0;
     }
 
     SetCollision(x: number, y: number) {
-        GameState.config.Collision[y * this.width + x] = 1;
+      //  GameState.config.Collision[y * this.width + x] = 1;
     }
 
     FreeCollision(x: number, y: number) {
-        GameState.config.Collision[y * this.width + x] = 0;
+       // GameState.config.Collision[y * this.width + x] = 0;
     }
 
 }

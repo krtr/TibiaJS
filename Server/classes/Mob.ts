@@ -1,8 +1,8 @@
-﻿import Character = require("./Character");
+﻿﻿import Character = require("./Character");
 import Server = require("../Server");
 import GameState = require("../GameState");
 import Geometry = require("../Geometry");
-var startSprites = ["Orc", "Minotaur", "Troll", "Dwarf"];
+var startSprites = ["Orc", "Minotaur", "Dwarf", "Spider"];
 
 
 
@@ -13,7 +13,7 @@ class Mob implements Character.Character {
     private LastAttackTime = 0;
     private AttackDelay = 850;
     private targetChar: Character.Character;
-   // private IsDead = false;
+    // private IsDead = false;
 
     constructor(pos: Vector2D) {
         this.syncData.Position = pos;
@@ -89,25 +89,27 @@ class Mob implements Character.Character {
         if (dist > 1.5) return;
         var dmg = Math.random() * 5 | 0 + 1;
         this.targetChar.Hit(dmg);
-    
+
         this.LastAttackTime = Date.now();
     }
 
 
     Hit(dmg: number): { Exp: number } {
-        Server.io.sockets.emit("ApplyDommage", { AttackType: 0, TargetID: this.syncData.ID, HitPoints: dmg });
+
+        Server.io.sockets.emit("Animation", { Sprites: GameState.config.Animations.BloodSpread.Sprites, Pos: this.syncData.Position, TicksPerFrame: 75, z: GameState.config.ZIndexes.Fluid });
+       Server.io.sockets.emit("ApplyDommage", { AttackType: 0, TargetID: this.syncData.ID, HitPoints: dmg });
+
         this.syncData.HP -= dmg;
         if (this.syncData.HP < 0) {
             this.Kill();
             return { Exp: this.syncData.ExpAtDead };
         }
-
-       
     }
 
     Kill() {
+        Server.io.sockets.emit("Animation", { Sprites: GameState.config.Animations.BloodPuddle.Sprites, Pos: this.syncData.Position, TicksPerFrame: 150, z: GameState.config.ZIndexes.Fluid });
+        Server.io.sockets.emit("Animation", { Sprites: GameState.config.Mobs[this.GetJSON().Race].DeadSprites, Pos: this.syncData.Position, TicksPerFrame: 300, z: GameState.config.ZIndexes.Corpse });
         this.Dispose();
-        Server.io.sockets.emit("Animation", { Sprites: GameState.config.Mobs[this.GetJSON().Race].DeadSprites, Pos: this.syncData.Position, TicksPerFrame: 100 });
     }
 
     IsDead() {

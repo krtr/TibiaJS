@@ -1,4 +1,4 @@
-﻿const enum Componenets {
+﻿﻿const enum Componenets {
     Position = 1, Movement = 2, Sprite = 4, CharacterAnimation = 8,
     Camera = 16, SimpleAnimation = 32, Input = 64, RenderMap = 128, PlayerNetwork = 256,
     CharacterMessage = 512, Health = 1024
@@ -49,9 +49,11 @@ class SpriteComponent implements IComponent {
     Name = Componenets.Sprite;
     RenderingSprite: number;
     SpriteOnTilePos: Vector2D;
-    constructor(sprite: number, SpriteOnTilePos = { x: 0, y: 0 }) {
+    Z: number;
+    constructor(sprite: number, SpriteOnTilePos = { x: 0, y: 0 }, z = 0) {
         this.RenderingSprite = sprite;
         this.SpriteOnTilePos = SpriteOnTilePos;
+        this.Z = z;
     }
 }
 
@@ -94,14 +96,24 @@ class InputComponent implements IComponent {
 
 class RenderMapComponent implements IComponent {
     Name = Componenets.RenderMap;
-    Tiles: number[];
+    FloorTiles: Int16Array;
+    DecorationTiles: Int16Array;
     Width: number;
     Height: number;
 
-    constructor(tiles: number[], width: number, height: number) {
-        this.Tiles = tiles;
+    constructor(width: number, height: number) {
+        this.FloorTiles = new Int16Array(width * height);
+        this.DecorationTiles = new Int16Array(width * height);
         this.Width = width;
         this.Height = height;
+    }
+
+    PutFloorTile(x: number, y: number, tile: number) {
+        this.FloorTiles[y * this.Width + x] = tile;
+    }
+
+    PutDecorationTile(x: number, y: number, tile: number) {
+        this.DecorationTiles[y * this.Width + x] = tile;
     }
 }
 

@@ -1,4 +1,4 @@
-﻿
+﻿﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.22823.1
@@ -15,7 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Client\Client.csp
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "resources", "resources", "{64CFD947-3C68-4C61-A3C5-6576F4B49297}"
 	ProjectSection(SolutionItems) = preProject
-		resources\data.json = resources\data.json
+		resources\config.json = resources\config.json
 	EndProjectSection
 EndProject
 Global

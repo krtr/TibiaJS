@@ -1,5 +1,8 @@
 # TibiaJS
 
+Tibia remake for modern web. Build on top of WebGL, socket.io and node.js. 
+## Screenshot
+![Image](http://i.snag.gy/g9Abi.jpg)
 ### How to run
 * [`npm install gulp -g`]
 * `git clone https://github.com/RemoveIt/TibiaJS.git`

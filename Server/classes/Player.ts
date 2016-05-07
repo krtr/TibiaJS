@@ -1,18 +1,18 @@
-﻿import Character = require("./Character");
+﻿﻿import Character = require("./Character");
 import Server = require("../Server");
 import GameState = require("../GameState");
 import Geometry = require("../Geometry");
-var startSprites = ["Orc", "Minotaur", "Troll", "Dwarf"];
+var startSprites = ["Minotaur"];
 
 class Player implements Character.Character {
     private socket: SocketIO.Socket;
-    private syncData = new Character.CharacterDataToSync(startSprites[(Math.random() * 4) | 0]);
+    private syncData = new Character.CharacterDataToSync(startSprites[(Math.random() * 1) | 0]);
     private targetChar: Character.Character;
     private AttackDelay = 850;
     private LastAttackTime = 0;
 
     constructor(socket: SocketIO.Socket) {
-        this.syncData.Position = { x: 60, y: 50 };
+        this.syncData.Position = { x: 37, y: 38 };
         this.syncData.ID = socket.id;
         this.socket = socket;
     }
@@ -108,6 +108,8 @@ class Player implements Character.Character {
     }
 
     Hit(dmg: number): { Exp: number } {
+
+        Server.io.sockets.emit("Animation", { Sprites: GameState.config.Animations.BloodSpread.Sprites, Pos: this.syncData.Position, TicksPerFrame: 75, z: GameState.config.ZIndexes.Fluid });
         Server.io.sockets.emit("ApplyDommage", { AttackType: 0, TargetID: this.syncData.ID, HitPoints: dmg });
         this.syncData.HP -= dmg;
         if (this.syncData.HP < 0) {
@@ -119,7 +121,8 @@ class Player implements Character.Character {
     Kill() {
         this.syncData.HP = -1;
         this.Dispose();
-        Server.io.sockets.emit("Animation", { Sprites: GameState.config.Mobs[this.GetJSON().Race].DeadSprites, Pos: this.syncData.Position, TicksPerFrame: 500 });
+        Server.io.sockets.emit("Animation", { Sprites: GameState.config.Animations.BloodPuddle.Sprites, Pos: this.syncData.Position, TicksPerFrame: 150, z: GameState.config.ZIndexes.Fluid });
+        GameState.Network.SendToAllAnimation(GameState.config.Mobs[this.GetJSON().Race].DeadSprites, this.syncData.Position, 500, GameState.config.ZIndexes.Corpse);
     }
 
     IsDead(): boolean {

@@ -1,9 +1,10 @@
-﻿class RenderingSystem implements ISystem {
+﻿﻿class RenderingSystem implements ISystem {
     private renderer: SpriteGL.SpriteRenderer;
     private mapsToRender = new Array<{ position: PositionComponent; map: RenderMapComponent; }>();
     private dmgTxtList = new Array<{ txtObj; position: Vector2D, lifeTime: number }>();
+    private canvas = <HTMLCanvasElement>document.getElementById("GameCanvas");
     constructor(canvas: HTMLCanvasElement, textureAtlas: HTMLImageElement) {
-        this.renderer = SpriteGL.SpriteRenderer.fromCanvas(canvas, textureAtlas);
+        this.renderer = SpriteGL.SpriteRenderer.fromCanvas(canvas, textureAtlas, SpriteGL.SpriteRenderer.TextureFilteringNearest);
     }
 
     Process(world: World) {
@@ -18,6 +19,8 @@
                     x: positionComponent.PixelPosition.x + spriteComponent.SpriteOnTilePos.x,
                     y: positionComponent.PixelPosition.y + spriteComponent.SpriteOnTilePos.y
                 }
+                //this.renderer.SetHight(((pos.y * config.MapWidth + pos.x - 100000) / 10000000.0));
+                this.renderer.SetHight((((pos.y / config.TileSize) * config.MapWidth) + (pos.x / config.TileSize)) / 1000000.0);
                 this.DrawSprite(spriteComponent.RenderingSprite, pos.x, pos.y);
 
                 var chMsg = <CharacterMessageComponent>gameObjList[i].ComponentList[Componenets.CharacterMessage];
@@ -38,7 +41,9 @@
                     this.renderer.SetHight(0.0);
 
                     if (healthComponent.IsTargeted) {
-                        this.DrawSprite(99, positionComponent.PixelPosition.x, positionComponent.PixelPosition.y);
+                        this.renderer.SetHight(-0.0000001);
+                        this.DrawSprite(3, positionComponent.PixelPosition.x, positionComponent.PixelPosition.y);
+                        this.renderer.SetHight(0);
                     }
                 }
 
@@ -60,7 +65,7 @@
             var txtObj = this.renderer.PrepareTxt(txts[i].Payload.Str, txts[i].Payload.Color, 11, true);
             this.dmgTxtList.push({
                 txtObj: txtObj, position: {
-                    x: posComp.PixelPosition.x, y: posComp.PixelPosition.y - 25
+                    x: posComp.PixelPosition.x, y: posComp.PixelPosition.y - (config.TileSize * 0.9)
                 }, lifeTime: 0
             });
 
@@ -86,7 +91,10 @@
         }
 
         if (this.mapsToRender.length !== 0) {
-            this.DrawMap(cameraList[0], this.mapsToRender[0].position.PixelPosition, this.mapsToRender[0].map.Tiles);
+            this.renderer.SetHight(-0.00001);
+            this.DrawMap(cameraList[0], this.mapsToRender[0].position.PixelPosition, this.mapsToRender[0].map.FloorTiles);
+            this.renderer.SetHight(0.001);
+            this.DrawMapWithDepth(cameraList[0], this.mapsToRender[0].position.PixelPosition, this.mapsToRender[0].map.DecorationTiles);
         }
         this.mapsToRender = [];
         this.renderer.UpdateCamera(cameraList[0].x | 0, cameraList[0].y | 0);
@@ -95,44 +103,75 @@
 
 
     private DrawSprite(index: number, posx: number, posy: number) {
-    this.renderer.DrawSpr((index % 32) * 32, ((index / 32) | 0) * 32, 32, 32, posx, posy, config.TileSize, config.TileSize);
-}
+        this.renderer.DrawSpr((index % 32) * 32, ((index / 32) | 0) * 32, 32, 32, posx, posy, config.TileSize, config.TileSize);
+    }
 
 
     private DrawHealthBar(fraction: number, posx: number, posy: number) {
-    if (fraction > 0.90) { this.renderer.DrawSpr(129, 386, 26, 4, posx, posy, 26, 4); return; }
-    if (fraction > 0.75) { this.renderer.DrawSpr(129, 391, 26, 4, posx, posy, 26, 4); return; }
-    if (fraction > 0.60) { this.renderer.DrawSpr(129, 396, 26, 4, posx, posy, 26, 4); return; }
-    if (fraction > 0.45) { this.renderer.DrawSpr(129, 401, 26, 4, posx, posy, 26, 4); return; }
-    if (fraction > 0.35) { this.renderer.DrawSpr(161, 386, 26, 4, posx, posy, 26, 4); return; }
-    if (fraction > 0.20) { this.renderer.DrawSpr(161, 391, 26, 4, posx, posy, 26, 4); return; }
-    if (fraction > 0.10) { this.renderer.DrawSpr(161, 396, 26, 4, posx, posy, 26, 4); return; }
-    this.renderer.DrawSpr(161, 401, 26, 4, posx, posy, 26, 4);
-}
+        var sizeX = 26 * config.TileSize / 32.0 | 0;
+        var sizeY = 4 * config.TileSize / 32.0 | 0;
+        posy = (posy - sizeY / 2) | 0
+        if (fraction > 0.92) { this.renderer.DrawSpr(1, 2, 26, 4, posx, posy, sizeX, sizeY); return; }
+        if (fraction > 0.84) { this.renderer.DrawSpr(1, 7, 26, 4, posx, posy, sizeX, sizeY); return; }
+        if (fraction > 0.76) { this.renderer.DrawSpr(1, 12, 26, 4, posx, posy, sizeX, sizeY); return; }
+        if (fraction > 0.68) { this.renderer.DrawSpr(1, 17, 26, 4, posx, posy, sizeX, sizeY); return; }
+        if (fraction > 0.6) { this.renderer.DrawSpr(1, 22, 26, 4, posx, posy, sizeX, sizeY); return; }
+        if (fraction > 0.52) { this.renderer.DrawSpr(1, 27, 26, 4, posx, posy, sizeX, sizeY); return; }
+        if (fraction > 0.44) { this.renderer.DrawSpr(33, 2, 26, 4, posx, posy, sizeX, sizeY); return; }
+        if (fraction > 0.36) { this.renderer.DrawSpr(33, 7, 26, 4, posx, posy, sizeX, sizeY); return; }
+        if (fraction > 0.28) { this.renderer.DrawSpr(33, 12, 26, 4, posx, posy, sizeX, sizeY); return; }
+        if (fraction > 0.2) { this.renderer.DrawSpr(33, 17, 26, 4, posx, posy, sizeX, sizeY); return; }
+        if (fraction > 0.08) { this.renderer.DrawSpr(33, 22, 26, 4, posx, posy, sizeX, sizeY); return; }
+        this.renderer.DrawSpr(33, 27, 26, 4, posx, posy, sizeX, sizeY);
+
+    }
 
 
-    private DrawMap(cameraPos: Vector2D, mapPos: Vector2D, tileMap: number[]) {
-    this.renderer.SetHight(-0.0001);
-    for (var i = 0; i < this.mapsToRender.length; i++) {
-        var startX = ((cameraPos.x - 400) / config.TileSize) | 0;
+    private DrawMap(cameraPos: Vector2D, mapPos: Vector2D, tileMap: Int16Array) {
+        for (var i = 0; i < this.mapsToRender.length; i++) {
+            var startX = ((cameraPos.x - this.canvas.width / 2) / config.TileSize) | 0;
 
-        var endX = (startX + 800 / config.TileSize) | 0;
-        endX += 1;
-        var startY = ((cameraPos.y - 300) / config.TileSize) | 0;
+            var endX = (startX + this.canvas.width / config.TileSize) | 0;
+            endX += 2;
+            var startY = ((cameraPos.y - this.canvas.height / 2) / config.TileSize) | 0;
 
-        var endY = (startY + 600 / config.TileSize) | 0;
-        endY += 2;
-        if (startX < 0) startX = 0;
-        if (startY < 0) startY = 0;
-        if (endX > config.MapWidth - 1) endX = config.MapWidth - 1;
-        if (endY > config.MapHeight - 1) endY = config.MapHeight - 1;
-        for (var i = startY; i < endY; i++) {
-            for (var j = startX; j < endX; j++) {
-                this.DrawSprite(config.Data[i * config.MapWidth + j] - 1, (j * config.TileSize), i * config.TileSize);
+            var endY = (startY + this.canvas.height / config.TileSize) | 0;
+            endY += 2;
+            if (startX < 0) startX = 0;
+            if (startY < 0) startY = 0;
+            if (endX > config.MapWidth - 1) endX = config.MapWidth - 1;
+            if (endY > config.MapHeight - 1) endY = config.MapHeight - 1;
+            for (var y = startY; y < endY; y++) {
+                for (var x = startX; x < endX; x++) {
+                    if (tileMap[y * config.MapWidth + x] === 0) continue;
+                    this.DrawSprite(tileMap[y * config.MapWidth + x] - 1, (x * config.TileSize), y * config.TileSize);
+                }
+            }
+
+        }
+
+    }
+    private DrawMapWithDepth(cameraPos: Vector2D, mapPos: Vector2D, tileMap: Int16Array) {
+        for (var i = 0; i < this.mapsToRender.length; i++) {
+            var startX = ((cameraPos.x - this.canvas.width / 2) / config.TileSize) | 0;
+
+            var endX = (startX + this.canvas.width / config.TileSize) | 0;
+            endX += 2;
+            var startY = ((cameraPos.y - this.canvas.height / 2) / config.TileSize) | 0;
+
+            var endY = (startY + this.canvas.height / config.TileSize) | 0;
+            endY += 2;
+            if (startX < 0) startX = 0;
+            if (startY < 0) startY = 0;
+            if (endX > config.MapWidth - 1) endX = config.MapWidth - 1;
+            if (endY > config.MapHeight - 1) endY = config.MapHeight - 1;
+            for (var y = startY; y < endY; y++) {
+                for (var x = startX; x < endX; x++) {
+                    if (tileMap[y * config.MapWidth + x] === 0) continue;
+                    this.renderer.SetHight((y * config.MapWidth + x) / 1000000.0);
+                    this.DrawSprite(tileMap[y * config.MapWidth + x] - 1, (x * config.TileSize), y * config.TileSize);
+                }
             }
         }
     }
-    this.renderer.SetHight(0.0);
-}
-
 }

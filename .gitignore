@@ -231,3 +231,5 @@ $RECYCLE.BIN/
 *.lnk
 Out/
 Server/*.js
+
+.idea/

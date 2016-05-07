@@ -19,24 +19,29 @@ interface Config {
     TileSize: number;
     MapWidth: number;
     MapHeight: number;
+    ZIndexes: {
+        Fluid: number,
+        Corpse: number,
+        Character: number
+    },
     MobSpawnDelay: number;
     Player: {
         LvlExp: number[]
     }
     MobSpawns: SpawnData[],
     Mobs: {
-        Dwarf: { AliveSprites: number[]; DeadSprites: number[], Experience: number };
-        Orc: { AliveSprites: number[]; DeadSprites: number[], Experience: number };
-        Minotaur: { AliveSprites: number[]; DeadSprites: number[], Experience: number };
-        Troll: { AliveSprites: number[]; DeadSprites: number[], Experience: number };
+        Dwarf: MobData;
+        Orc: MobData;
+        Minotaur: MobData;
     };
     Animations: {
-        Beam: {
-            Sprites: number[];
-        };
+        Beam: AnimationData;
+        Explosion1: AnimationData;
+        Explosion2: AnimationData;
+        Explosion3: AnimationData;
+        BloodSpread: AnimationData;
+        BloodPuddle: AnimationData;
     };
-    Data: number[];
-    Collision: number[];
 };
 
 interface SpawnData {
@@ -50,4 +55,8 @@ interface MobData {
     Experience: number;
     Speed: number;
     HP: number;
+}
+
+interface AnimationData {
+    Sprites: number[];
 }
