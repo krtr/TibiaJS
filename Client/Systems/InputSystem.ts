@@ -1,4 +1,10 @@
-﻿class InputSystem implements ISystem {
+﻿import {Componenets, PositionComponent, MovementComponent, InputComponent, HealthComponent} from "../BasicComponents";
+import {World, Events} from "../World";
+import GameObj from "../GameObj";
+import {ISystem} from "../Game";
+import {config} from "../Init";
+
+export default class InputSystem implements ISystem {
     private keys = new Array<boolean>(200);
     private chatInput = <HTMLInputElement>document.getElementById("ChatInput");
     private canvas = <HTMLCanvasElement> document.getElementById("GameCanvas");
@@ -31,7 +37,7 @@
         var positionComponent = <PositionComponent> gameObj.ComponentList[Componenets.Position];
         var inputSystem = <InputComponent> gameObj.ComponentList[Componenets.Input];
         if (movementComponent.IsMoving) return;
-
+        
         if (this.keys[37]) {
             positionComponent.Rotation = Rotation.Left;
             if (inputSystem.IsAlive)

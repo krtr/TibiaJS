@@ -1,4 +1,14 @@
-﻿class AnimationSystem implements ISystem {
+﻿import {ISystem} from "../Game";
+import {
+    Componenets, CharacterAnimationComponent, SimpleAnimationComponent, SpriteComponent,
+    PositionComponent, MovementComponent
+} from "../BasicComponents";
+import {World} from "../World";
+import GameObj from "../GameObj";
+
+
+
+export default class AnimationSystem implements ISystem {
     private tick = 1;
     RequiredSygnature = Componenets.Movement + Componenets.Sprite + Componenets.CharacterAnimation + Componenets.Position;
 

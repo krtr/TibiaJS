@@ -1,5 +1,5 @@
 ﻿
-function GET(path: string, fn: (err, res) => void) {
+export function GET(path: string, fn: (err, res) => void) {
 	var req = new XMLHttpRequest();
 	req.open("GET", path, true);
 	req.send();
@@ -15,14 +15,14 @@ function GET(path: string, fn: (err, res) => void) {
 }
  
 var _lastmeasure = Date.now();
-function GetFPS(): number {
+export function GetFPS(): number {
 	var curmeasure = Date.now();
 	var delta = curmeasure - _lastmeasure;
 	_lastmeasure = curmeasure;
 	return 1000.0 / delta;
 }
 
-function GetDistance(p1: Vector2D, p2: Vector2D): number {
+export function GetDistance(p1: Vector2D, p2: Vector2D): number {
     var vx = p1.x - p2.x;
     var vy = p1.y - p2.y;
 

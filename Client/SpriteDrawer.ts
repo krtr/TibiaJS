@@ -1,4 +1,5 @@
-﻿class SpriteDrawer {
+﻿import {config} from "./Init";
+export class SpriteDrawer {
     renderer: SpriteGL.SpriteRenderer;
     constructor(renderer: SpriteGL.SpriteRenderer) {
         this.renderer = renderer;

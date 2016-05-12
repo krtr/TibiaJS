@@ -1,13 +1,40 @@
-﻿﻿class RenderingSystem implements ISystem {
-    private renderer: SpriteGL.SpriteRenderer;
-    private mapsToRender = new Array<{ position: PositionComponent; map: RenderMapComponent; }>();
-    private dmgTxtList = new Array<{ txtObj; position: Vector2D, lifeTime: number }>();
+﻿import {ISystem} from "../Game";
+import {
+    PositionComponent, RenderMapComponent, Componenets, SpriteComponent,
+    CharacterMessageComponent, HealthComponent
+} from "../BasicComponents";
+import {World} from "../World";
+import {config} from "../Init";
+import {Events} from "../World";
+
+declare module SpriteGL {
+    class SpriteRenderer {
+        constructor(webglContext: WebGLRenderingContext, Image: HTMLImageElement, Filtering?: number);
+        RenderAll(): void;
+        UpdateViewPort(width: number, height: number): void;
+        DrawSpr(AtlasX: number, AtlasY: number, AtlasWidth: any, AtlasHeigh: any, ScreenX: number, ScreenY: number, ScreenWidth: number, ScreenHeight: any): void;
+        SetHight(hight: number): void;
+        PrepareTxt(str: string, color: string, fontSize: number, outLine?: boolean): any;
+        DisposeTxt(txtObj: any): void;
+        DrawTxt(txtObj: any, PosX: number, PosY: number): void;
+        UpdateCamera(x: number, y: number): void;
+        static fromCanvas(canvas: HTMLCanvasElement, Image: HTMLImageElement, Filtering?: number): SpriteRenderer;
+        static TextureFilteringLinear: number;
+        static TextureFilteringNearest: number;
+    }
+}
+﻿
+export default class RenderingSystem implements ISystem {
+    private renderer:SpriteGL.SpriteRenderer;
+    private mapsToRender = new Array<{ position:PositionComponent, map:RenderMapComponent }>();
+    private dmgTxtList = new Array<{ txtObj; position:Vector2D, lifeTime:number }>();
     private canvas = <HTMLCanvasElement>document.getElementById("GameCanvas");
-    constructor(canvas: HTMLCanvasElement, textureAtlas: HTMLImageElement) {
+
+    constructor(canvas:HTMLCanvasElement, textureAtlas:HTMLImageElement) {
         this.renderer = SpriteGL.SpriteRenderer.fromCanvas(canvas, textureAtlas, SpriteGL.SpriteRenderer.TextureFilteringNearest);
     }
 
-    Process(world: World) {
+    Process(world:World) {
         var gameObjList = world.entityList;
         for (var i = 0; i < gameObjList.length; i++) {
             if ((gameObjList[i].ComponentSygnature & Componenets.Position) !== Componenets.Position) continue;
@@ -52,7 +79,7 @@
 
             var mapComponent = gameObjList[i].ComponentList[Componenets.RenderMap];
             if (mapComponent) {
-                this.mapsToRender.push({ position: positionComponent, map: <any> mapComponent });
+                this.mapsToRender.push({position: positionComponent, map: <any> mapComponent});
                 continue;
             }
         }
@@ -85,9 +112,9 @@
         this.renderer.SetHight(0);
     }
 
-    RenderAll(cameraList: Array<Vector2D>) {
+    RenderAll(cameraList:Array<Vector2D>) {
         if (cameraList.length === 0) {
-            cameraList.push({ x: 55 * config.TileSize, y: 55 * config.TileSize });
+            cameraList.push({x: 55 * config.TileSize, y: 55 * config.TileSize});
         }
 
         if (this.mapsToRender.length !== 0) {
@@ -102,32 +129,65 @@
     }
 
 
-    private DrawSprite(index: number, posx: number, posy: number) {
+    private DrawSprite(index:number, posx:number, posy:number) {
         this.renderer.DrawSpr((index % 32) * 32, ((index / 32) | 0) * 32, 32, 32, posx, posy, config.TileSize, config.TileSize);
     }
 
 
-    private DrawHealthBar(fraction: number, posx: number, posy: number) {
+    private DrawHealthBar(fraction:number, posx:number, posy:number) {
         var sizeX = 26 * config.TileSize / 32.0 | 0;
         var sizeY = 4 * config.TileSize / 32.0 | 0;
         posy = (posy - sizeY / 2) | 0
-        if (fraction > 0.92) { this.renderer.DrawSpr(1, 2, 26, 4, posx, posy, sizeX, sizeY); return; }
-        if (fraction > 0.84) { this.renderer.DrawSpr(1, 7, 26, 4, posx, posy, sizeX, sizeY); return; }
-        if (fraction > 0.76) { this.renderer.DrawSpr(1, 12, 26, 4, posx, posy, sizeX, sizeY); return; }
-        if (fraction > 0.68) { this.renderer.DrawSpr(1, 17, 26, 4, posx, posy, sizeX, sizeY); return; }
-        if (fraction > 0.6) { this.renderer.DrawSpr(1, 22, 26, 4, posx, posy, sizeX, sizeY); return; }
-        if (fraction > 0.52) { this.renderer.DrawSpr(1, 27, 26, 4, posx, posy, sizeX, sizeY); return; }
-        if (fraction > 0.44) { this.renderer.DrawSpr(33, 2, 26, 4, posx, posy, sizeX, sizeY); return; }
-        if (fraction > 0.36) { this.renderer.DrawSpr(33, 7, 26, 4, posx, posy, sizeX, sizeY); return; }
-        if (fraction > 0.28) { this.renderer.DrawSpr(33, 12, 26, 4, posx, posy, sizeX, sizeY); return; }
-        if (fraction > 0.2) { this.renderer.DrawSpr(33, 17, 26, 4, posx, posy, sizeX, sizeY); return; }
-        if (fraction > 0.08) { this.renderer.DrawSpr(33, 22, 26, 4, posx, posy, sizeX, sizeY); return; }
+        if (fraction > 0.92) {
+            this.renderer.DrawSpr(1, 2, 26, 4, posx, posy, sizeX, sizeY);
+            return;
+        }
+        if (fraction > 0.84) {
+            this.renderer.DrawSpr(1, 7, 26, 4, posx, posy, sizeX, sizeY);
+            return;
+        }
+        if (fraction > 0.76) {
+            this.renderer.DrawSpr(1, 12, 26, 4, posx, posy, sizeX, sizeY);
+            return;
+        }
+        if (fraction > 0.68) {
+            this.renderer.DrawSpr(1, 17, 26, 4, posx, posy, sizeX, sizeY);
+            return;
+        }
+        if (fraction > 0.6) {
+            this.renderer.DrawSpr(1, 22, 26, 4, posx, posy, sizeX, sizeY);
+            return;
+        }
+        if (fraction > 0.52) {
+            this.renderer.DrawSpr(1, 27, 26, 4, posx, posy, sizeX, sizeY);
+            return;
+        }
+        if (fraction > 0.44) {
+            this.renderer.DrawSpr(33, 2, 26, 4, posx, posy, sizeX, sizeY);
+            return;
+        }
+        if (fraction > 0.36) {
+            this.renderer.DrawSpr(33, 7, 26, 4, posx, posy, sizeX, sizeY);
+            return;
+        }
+        if (fraction > 0.28) {
+            this.renderer.DrawSpr(33, 12, 26, 4, posx, posy, sizeX, sizeY);
+            return;
+        }
+        if (fraction > 0.2) {
+            this.renderer.DrawSpr(33, 17, 26, 4, posx, posy, sizeX, sizeY);
+            return;
+        }
+        if (fraction > 0.08) {
+            this.renderer.DrawSpr(33, 22, 26, 4, posx, posy, sizeX, sizeY);
+            return;
+        }
         this.renderer.DrawSpr(33, 27, 26, 4, posx, posy, sizeX, sizeY);
 
     }
 
 
-    private DrawMap(cameraPos: Vector2D, mapPos: Vector2D, tileMap: Int16Array) {
+    private DrawMap(cameraPos:Vector2D, mapPos:Vector2D, tileMap:Int16Array) {
         for (var i = 0; i < this.mapsToRender.length; i++) {
             var startX = ((cameraPos.x - this.canvas.width / 2) / config.TileSize) | 0;
 
@@ -151,7 +211,8 @@
         }
 
     }
-    private DrawMapWithDepth(cameraPos: Vector2D, mapPos: Vector2D, tileMap: Int16Array) {
+
+    private DrawMapWithDepth(cameraPos:Vector2D, mapPos:Vector2D, tileMap:Int16Array) {
         for (var i = 0; i < this.mapsToRender.length; i++) {
             var startX = ((cameraPos.x - this.canvas.width / 2) / config.TileSize) | 0;
 

@@ -7,14 +7,8 @@ var ignore = require('gulp-ignore');
 var open = require("open");
 var runSequence = require("run-sequence");
 gulp.task("build", function () {
-	gulp.src(["Client/**/*.ts", "typings/socket.io-client/socket.io-client.d.ts", "resources/3rd/SpriteGL/bin/SpriteGL.d.ts", "Interchange/*.ts",
-	 "typings/preloadjs/preloadjs.d.ts"])
-		.pipe(typescript({ typescript: require("typescript"), sortOutput: true, target: "ES5" }))
-		.pipe(concat("client.js"))
-		.pipe(gulp.dest("out/static"));
-
-	gulp.src(["Client/**/*.html", "Client/**/*.js", "resources/*.png", "resources/config.json",
-		"resources/3rd/SpriteGL/bin/SpriteGL.js", "resources/3rd/PreloadJS/lib/preloadjs-0.6.0.min.js"])
+	gulp.src(["Client/**/*.html", "resources/*.png", "resources/config.json",
+		"resources/3rd/SpriteGL/bin/SpriteGL.js"])
 		.pipe(gulp.dest("./out/static"));
 
 	gulp.src(["!typings/socket.io-client/socket.io-client.d.ts", "Server/**/*.ts", "typings/**/*.d.ts", "Interchange/*.ts"])

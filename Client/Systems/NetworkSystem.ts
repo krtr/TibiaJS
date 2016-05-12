@@ -1,4 +1,17 @@
-﻿﻿class NetworkSystem {
+﻿import {World, Events} from "../World";
+import {
+    Componenets, InputComponent, MovementComponent, PositionComponent, HealthComponent,
+    SpriteComponent, CharacterAnimationComponent, SimpleAnimationComponent, CameraComponent, CharacterMessageComponent,
+    RenderMapComponent
+
+} from "../BasicComponents";
+
+import {config} from "../Init";
+import * as SocketIO from 'socket.io-client';
+import GameObj from "../GameObj";
+
+﻿
+export default class NetworkSystem {
     private socket:SocketIOClient.Socket;
     private newEntityList = [];
     private EntityToRemove = [];
@@ -6,9 +19,9 @@
 
     connect(url = null) {
         if (!url) {
-            this.socket = io.connect();
+            this.socket = SocketIO.connect();
         } else {
-            this.socket = io.connect(url);
+            this.socket = SocketIO.connect(url);
         }
 
         this.Setup();
@@ -234,7 +247,7 @@
                         var offset = 4;
 
                         for (var i = 0; i < (fillRect.width * fillRect.height); i++) {
-                            mapComponent.PutFloorTile(putPos.x, putPos.y, payload[i +  offset]);
+                            mapComponent.PutFloorTile(putPos.x, putPos.y, payload[i + offset]);
                             putPos.x++;
                             if (putPos.x >= fillRect.x + fillRect.width) {
                                 putPos.x = fillRect.x;
@@ -243,7 +256,7 @@
                                     return;
                             }
                         }
-                        
+
                         putPos.x = fillRect.x;
                         putPos.y = fillRect.y;
 

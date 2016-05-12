@@ -1,4 +1,9 @@
-﻿class CameraSystem implements ISystem {
+﻿
+import {ISystem} from "../Game";
+import {Componenets, PositionComponent} from "../BasicComponents";
+import {World} from "../World";
+
+export default class CameraSystem implements ISystem {
     private cameraPosList = new Array<Vector2D>();
     RequiredSygnature = Componenets.Camera + Componenets.Position;
 

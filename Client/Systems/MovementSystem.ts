@@ -1,4 +1,10 @@
-﻿﻿class MovementSystem {
+﻿import {World} from "../World";
+import {PositionComponent, MovementComponent, Componenets} from "../BasicComponents";
+
+import {config} from "../Init";
+import {ISystem} from "../Game";
+
+export default class MovementSystem implements ISystem {
     RequiredSygnature = Componenets.Position + Componenets.Movement;
     Process(world: World) {
         var gameObjList = world.entityList;
