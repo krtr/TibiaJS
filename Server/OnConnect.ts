@@ -1,26 +1,25 @@
-﻿﻿import GameState = require("./GameState");
+﻿﻿
+import GameState = require("./GameState");
 import Server = require("./Server");
 import Player = require("./classes/Player");
 
 
 function SendMapUpdate(socket, x, y, width, height) {
-    var groundStrip = GameState.Map.getGroundRect(x, y, width, height);
-    var decorationStrip = GameState.Map.getDecorationRect(x, y, width, height);
-
-    var buffer = new Int16Array(width * height * 2 + 4);
+    //var groundStrip = GameState.Map.getGroundRect(x, y, width, height);
+    //var decorationStrip = GameState.Map.getDecorationRect(x, y, width, height);
+    
+    var mapStrip = GameState.Map.getFloorRect(x, y, width, height);
+    
+    var buffer = new Int16Array(width * height + 4);
     buffer[0] = x;
     buffer[1] = y;
     buffer[2] = width;
     buffer[3] = height;
 
-    for (var i = 0; i < groundStrip.length; i++) {
-        buffer[i + 4] = groundStrip[i];
+    for (var i = 0; i <  mapStrip.length; i++) {
+        buffer[i + 4] =  mapStrip[i][0];
     }
-
-    for (var i = 0; i < groundStrip.length; i++) {
-        buffer[i + 4 + groundStrip.length] = decorationStrip[i];
-    }
-
+    
     socket.emit("MapUpdate", buffer);
 }
 

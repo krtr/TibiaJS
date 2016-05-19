@@ -98,6 +98,7 @@ export default class NetworkSystem {
         });
 
         this.socket.on("MapUpdate", (data:Uint16Array) => {
+            console.log(data);
             this.entityToModification.push({ID: 1995, Type: ModType.MapUpdate, Data: data});
         });
 

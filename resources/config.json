@@ -1,7 +1,7 @@
 {
     "TileSize": 0,
-    "MapWidth": 200,
-    "MapHeight": 200,
+    "MapWidth": 256,
+    "MapHeight": 256,
     "MobSpawnDelay": 20000,
     "ZIndexes": {
         "Fluid": 0.0001,

@@ -12,7 +12,7 @@ class Player implements Character.Character {
     private LastAttackTime = 0;
 
     constructor(socket: SocketIO.Socket) {
-        this.syncData.Position = { x: 37, y: 38 };
+        this.syncData.Position = { x: 52, y: 71 };
         this.syncData.ID = socket.id;
         this.socket = socket;
     }

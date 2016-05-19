@@ -15,7 +15,7 @@ import {World} from "./World";
 import {RenderMapComponent, PositionComponent} from "./BasicComponents";
 
 export var config:Config;
-
+var things: Array<any>;
 
 window.onload = function () {
 
@@ -35,7 +35,14 @@ window.onload = function () {
         config = data;
     });
 
-    var spriteReq = fetch("sprites.png").then((response) => {
+    var thingsReq = fetch("things.json").then((response) => {
+        return response.json();
+    }).then((data) => {
+        things = data;
+        window["things"] = data;
+    });
+
+    var spriteReq = fetch("sprites2.png").then((response) => {
         return response.blob();
     }).then((data) => {
         var objectURL = URL.createObjectURL(data);
@@ -52,13 +59,14 @@ window.onload = function () {
     });
 
 
-    Promise.all([configReq, spriteReq]).then(() => {
+    Promise.all([configReq, spriteReq, thingsReq]).then(() => {
         var map = new GameObj();
         map.ID = 1995;
         map.AddComponent(new PositionComponent(0, 0));
         map.AddComponent(new RenderMapComponent(config.MapWidth, config.MapHeight));
         world.Add(map);
         networkSystem.connect();
+        renderingSystem.things = things;
         config.TileSize = ((<HTMLCanvasElement>document.getElementById("GameCanvas")).width / 16.0) | 0;
         requestAnimationFrame(Loop);
     });

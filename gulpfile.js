@@ -6,8 +6,9 @@ var nodemon = require("gulp-nodemon");
 var ignore = require('gulp-ignore');
 var open = require("open");
 var runSequence = require("run-sequence");
+
 gulp.task("build", function () {
-	gulp.src(["Client/**/*.html", "resources/*.png", "resources/config.json",
+	gulp.src(["Client/**/*.html", "resources/*.png", "resources/config.json",  "resources/things.json",
 		"resources/3rd/SpriteGL/bin/SpriteGL.js"])
 		.pipe(gulp.dest("./out/static"));
 

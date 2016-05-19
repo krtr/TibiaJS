@@ -26,12 +26,14 @@ declare module SpriteGL {
 ﻿
 export default class RenderingSystem implements ISystem {
     private renderer:SpriteGL.SpriteRenderer;
+    public things: Array<any>;
     private mapsToRender = new Array<{ position:PositionComponent, map:RenderMapComponent }>();
     private dmgTxtList = new Array<{ txtObj; position:Vector2D, lifeTime:number }>();
     private canvas = <HTMLCanvasElement>document.getElementById("GameCanvas");
 
     constructor(canvas:HTMLCanvasElement, textureAtlas:HTMLImageElement) {
-        this.renderer = SpriteGL.SpriteRenderer.fromCanvas(canvas, textureAtlas, SpriteGL.SpriteRenderer.TextureFilteringNearest);
+        this.renderer = SpriteGL.SpriteRenderer.fromCanvas(canvas, textureAtlas, SpriteGL.SpriteRenderer.TextureFilteringNearest)
+        setInterval(() => this.x++, 200);
     }
 
     Process(world:World) {
@@ -128,13 +130,16 @@ export default class RenderingSystem implements ISystem {
         this.renderer.RenderAll();
     }
 
-
+    x = 0;
     private DrawSprite(index:number, posx:number, posy:number) {
-        this.renderer.DrawSpr((index % 32) * 32, ((index / 32) | 0) * 32, 32, 32, posx, posy, config.TileSize, config.TileSize);
+        var sprIndex = this.things[index-100].sprites[0];
+        sprIndex -= 32;
+       // console.log(sprIndex);
+        this.renderer.DrawSpr((sprIndex % 128) * 32, ((sprIndex / 128) | 0) * 32, 32, 32, posx, posy, config.TileSize, config.TileSize);
     }
 
 
-    private DrawHealthBar(fraction:number, posx:number, posy:number) {
+    private DrawHealthBar(fraction:number, posx:number, posy:number) { 
         var sizeX = 26 * config.TileSize / 32.0 | 0;
         var sizeY = 4 * config.TileSize / 32.0 | 0;
         posy = (posy - sizeY / 2) | 0
