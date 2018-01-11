@@ -229,5 +229,6 @@ $RECYCLE.BIN/
 .vs/
 # Windows shortcuts
 *.lnk
-Out/
+out
 Server/*.js
+.idea
