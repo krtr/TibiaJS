@@ -3,6 +3,10 @@
   "version": "0.0.0",
   "description": "TibiaJS",
   "main": "app.js",
+  "scripts": {
+    "build": "gulp build",
+    "run": "gulp run"
+  },
   "author": {
     "name": "Pawel",
     "email": ""
