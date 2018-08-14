@@ -1,6 +1,8 @@
-﻿var config: Config;
+﻿/// <reference path="../Interchange/DataStructures.ts"/>
 
-declare function fetch(src: string): Promise<any>;
+
+var config: Config;
+
 
 window.onload = function () {
     var renderingSystem: RenderingSystem;

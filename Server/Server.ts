@@ -1,9 +1,6 @@
 ﻿/// <reference path="../Interchange/DataStructures.ts"/>
-/// <reference path="../typings/tsd.d.ts"/>
-
 
 import express = require("express");
-import http = require("http");
 import socketio = require("socket.io");
 var serveStatic = require('serve-static')
 import OnConnection = require("./OnConnect");
