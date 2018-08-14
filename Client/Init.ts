@@ -1,8 +1,8 @@
-﻿
-var config: Config;
+﻿var config: Config;
+
+declare function fetch(src: string): Promise<any>;
 
 window.onload = function () {
-
     var renderingSystem: RenderingSystem;
     var cameraSystem = new CameraSystem();
     var inputSystem = new InputSystem();
@@ -13,46 +13,40 @@ window.onload = function () {
     var world = new World();
 
 
+    const configPromise = fetch("data.json").then(response => response.json());
+    const spritePromise = loadImage("sprites.png");
 
-    var queue = new createjs.LoadQueue(true);
-    queue.loadFile({ src: "data.json", id: "config" });
-    queue.loadFile({ src: "sprites.png", id: "sprites" });
+    Promise.all([configPromise, spritePromise])
+        .then(([configData, sprites]) => {
+            config = configData;
+            const canvas = <HTMLCanvasElement>document.getElementById("GameCanvas");
+            renderingSystem = new RenderingSystem(canvas, sprites);
 
-    queue.on("fileload", function (data: any) {
-        if (data.item.id === "config") { console.log("config loaded"); config = data.result; }
-        if (data.item.id === "sprites") {
-            var canvas = <HTMLCanvasElement>document.getElementById("GameCanvas");
-            renderingSystem = new RenderingSystem(canvas, data.result);
-        }
-    });
+            var map = new GameObj();
+            map.ID = 1541515125;
+            map.AddComponent(new PositionComponent(0, 0));
+            map.AddComponent(new RenderMapComponent(config.Data, config.MapWidth, config.MapHeight));
+            world.Add(map);
+            networkSystem.connect();
+            requestAnimationFrame(Loop);
+        });
 
-    queue.on("complete", function () {
-        var map = new GameObj();
-        map.ID = 1541515125;
-        map.AddComponent(new PositionComponent(0, 0));
-        map.AddComponent(new RenderMapComponent(config.Data, config.MapWidth, config.MapHeight));
-        world.Add(map);
-        networkSystem.connect();
-        requestAnimationFrame(Loop);
-    });
-
-    queue.load();
 
     function Loop() {
         world.FPS = GetFPS();
         inputSystem.Process(world);
-        
+
         //collisionSystem.Process(world);
         characterAnimationSystem.Process(world);
         movemnetSystem.Process(world);
         cameraSystem.Process(world);
-      
-        
+
+
         networkSystem.Process(world);
         userInterfaceSystem.Process(world);
         renderingSystem.Process(world);
         renderingSystem.RenderAll(cameraSystem.GetCamerasList());
-       
+
         world.ClearEvets();
         requestAnimationFrame(Loop);
     }

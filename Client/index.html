@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 <head>
     <title>TibiaJS client</title>
     <style>
@@ -24,10 +24,10 @@
             background-color: black;
         }
 
-            progress::-webkit-progress-bar {
-                background-color: black;
-                border: 1px solid black;
-            }
+        progress::-webkit-progress-bar {
+            background-color: black;
+            border: 1px solid black;
+        }
 
         #LevelProgressBar::-webkit-progress-value {
             background-color: red;
@@ -47,26 +47,25 @@
     </style>
 </head>
 <body>
-    <div id="GameArea" style="width:800px;">
-        <canvas id="GameCanvas" width="800" height="600"></canvas>
-        <input type="text" id="ChatInput" style="width:796px; background-color:white;" value="" />
-    </div>
+<div id="GameArea" style="width:800px;">
+    <canvas id="GameCanvas" width="800" height="600"></canvas>
+    <input type="text" id="ChatInput" style="width:796px; background-color:white;" value=""/>
+</div>
 
-    <div style="position:absolute; right: 0; top: 0;margin: 10px;">
-        <div>
-            <span style="font-size: small; float:left;">Level: <span id="Lvl">1</span></span>
-            <span style="font-size: small; float:right;">Exp: <span id="Exp">0</span></span>
-        </div>
-        <progress id="LevelProgressBar" class="GameBar" max="100" value="1"></progress>
-        <div>
-            <span style="font-size: small; float:left;">Mana: </span>
-            <span style="font-size: small; float:right;"> <span id="Mana">20/20</span></span>
-        </div>
-        <progress id="ManaBar" class="GameBar" max="100" value="100"></progress>
+<div style="position:absolute; right: 0; top: 0;margin: 10px;">
+    <div>
+        <span style="font-size: small; float:left;">Level: <span id="Lvl">1</span></span>
+        <span style="font-size: small; float:right;">Exp: <span id="Exp">0</span></span>
     </div>
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="preloadjs-0.6.0.min.js"></script>
-    <script src="SpriteGL.js"></script>
-    <script src="client.js"></script>
+    <progress id="LevelProgressBar" class="GameBar" max="100" value="1"></progress>
+    <div>
+        <span style="font-size: small; float:left;">Mana: </span>
+        <span style="font-size: small; float:right;"> <span id="Mana">20/20</span></span>
+    </div>
+    <progress id="ManaBar" class="GameBar" max="100" value="100"></progress>
+</div>
+<script src="/socket.io/socket.io.js"></script>
+<script src="SpriteGL.js"></script>
+<script src="client.js"></script>
 </body>
 </html>

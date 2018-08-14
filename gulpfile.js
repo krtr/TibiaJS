@@ -6,10 +6,11 @@ var nodemon = require("gulp-nodemon");
 var ignore = require('gulp-ignore');
 var open = require("open");
 var runSequence = require("run-sequence");
+
 gulp.task("build", function () {
 	gulp.src(["Client/**/*.ts", "typings/socket.io-client/socket.io-client.d.ts", "resources/3rd/SpriteGL/bin/SpriteGL.d.ts", "Interchange/*.ts",
 	 "typings/preloadjs/preloadjs.d.ts"])
-		.pipe(typescript({ typescript: require("typescript"), sortOutput: true, target: "ES5" }))
+		.pipe(typescript({ sortOutput: true, target: "ES6" }))
 		.pipe(concat("client.js"))
 		.pipe(gulp.dest("out/static"));
 
@@ -30,7 +31,7 @@ gulp.task("run", function () {
 	nodemon({ script: "Server.js", cwd: "./out", ext: "html js css" })
 		.on("restart", function () {
 			console.log("Restarted")
-		})
+		});
 
 	open("http://localhost:2137");
 });
