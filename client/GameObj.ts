@@ -1,4 +1,6 @@
-﻿class GameObj {
+﻿import {IComponent} from "./Game";
+
+export class GameObj {
     ID;
     ComponentSygnature = 0;
     ComponentList: IComponent[];

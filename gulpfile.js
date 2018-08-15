@@ -1,26 +1,29 @@
 var gulp = require("gulp");
-var typescript = require("gulp-typescript");
+var ts = require("gulp-typescript");
 var concat = require("gulp-concat");
 var nodemon = require("gulp-nodemon");
 var open = require("open");
+var webpack = require('webpack-stream');
+
+const serverProject = ts.createProject("./server/tsconfig.json");
 
 gulp.task("build client", function() {
-    return gulp.src(["Client/**/*.ts", "resources/3rd/SpriteGL/bin/SpriteGL.d.ts", "Interchange/*.ts"])
-        .pipe(typescript({ target: "ES6" }))
-        .pipe(concat("client.js"))
+    return gulp.src("./client/Init.ts")
+        .pipe(webpack(require('./client/webpack.config.js')))
         .pipe(gulp.dest("out/static"));
+
 });
 
 gulp.task("copy static client files", function() {
-    return gulp.src(["Client/**/*.html", "Client/**/*.js", "resources/*.png", "resources/data.json",
+    return gulp.src(["client/**/*.html", "client/**/*.js", "resources/*.png", "resources/data.json",
         "resources/3rd/SpriteGL/bin/SpriteGL.js"])
         .pipe(gulp.dest("./out/static"));
 });
 
 gulp.task("build server", function() {
-    return gulp.src(["Server/**/*.ts", "typings/**/*.d.ts", "Interchange/*.ts"])
-        .pipe(typescript({ typescript: require("typescript"), module: "commonjs", target: "ES5" }))
-        .pipe(gulp.dest("out"));
+    return serverProject.src()
+        .pipe(serverProject())
+        .pipe(gulp.dest("out"))
 });
 
 gulp.task("copy config", function() {

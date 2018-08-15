@@ -1,4 +1,10 @@
-﻿class InputSystem implements ISystem {
+﻿import {ISystem} from "../Game";
+import {Componenets, HealthComponent, InputComponent, MovementComponent, PositionComponent} from "../BasicComponents";
+import {GameObj} from "../GameObj";
+import {config} from "../Init";
+import {Events, World} from "../World";
+
+export class InputSystem implements ISystem {
     private keys = new Array<boolean>(200);
     private chatInput = <HTMLInputElement>document.getElementById("ChatInput");
     private canvas = <HTMLCanvasElement> document.getElementById("GameCanvas");

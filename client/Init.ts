@@ -1,7 +1,20 @@
 ﻿/// <reference path="../Interchange/DataStructures.ts"/>
+/// <reference path="../resources/3rd/SpriteGL/bin/SpriteGL.d.ts"/>
 
 
-var config: Config;
+import {RenderingSystem} from "./Systems/RenderingSystem";
+import {AnimationSystem} from "./Systems/AnimationSystem";
+import {NetworkSystem} from "./Systems/NetworkSystem";
+import {UserInterfaceSytem} from "./Systems/UserInterfaceSystem";
+import {MovementSystem} from "./Systems/MovementSystem";
+import {InputSystem} from "./Systems/InputSystem";
+import {CameraSystem} from "./Systems/CameraSystem";
+import {GameObj} from "./GameObj";
+import {PositionComponent, RenderMapComponent} from "./BasicComponents";
+import {World} from "./World";
+import {GetFPS, loadImage} from "./Misc";
+
+export var config: Config;
 
 
 window.onload = function () {

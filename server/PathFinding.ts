@@ -1,13 +1,14 @@
-﻿import GameState = require("./GameState");
+﻿import {ground} from "./GameState";
+
 
 export function AStar(start: Vector2D, goal: Vector2D) {
     var kutas = [];
     function GetNeighbours(pos: Vector2D) {
         var result = [];
-        if (!GameState.Ground.GetCollision(pos.x - 1, pos.y)) result.push(visitedArray[pos.x - 1][pos.y]);
-        if (!GameState.Ground.GetCollision(pos.x + 1, pos.y)) result.push(visitedArray[pos.x + 1][pos.y]);
-        if (!GameState.Ground.GetCollision(pos.x, pos.y - 1)) result.push(visitedArray[pos.x][pos.y - 1]);
-        if (!GameState.Ground.GetCollision(pos.x, pos.y + 1)) result.push(visitedArray[pos.x][pos.y + 1]);
+        if (!ground.GetCollision(pos.x - 1, pos.y)) result.push(visitedArray[pos.x - 1][pos.y]);
+        if (!ground.GetCollision(pos.x + 1, pos.y)) result.push(visitedArray[pos.x + 1][pos.y]);
+        if (!ground.GetCollision(pos.x, pos.y - 1)) result.push(visitedArray[pos.x][pos.y - 1]);
+        if (!ground.GetCollision(pos.x, pos.y + 1)) result.push(visitedArray[pos.x][pos.y + 1]);
 
         return result;
     }
@@ -44,8 +45,7 @@ export function AStar(start: Vector2D, goal: Vector2D) {
 
 
         if (current.h === 1) {
-            console.log("PENIS");
-            var parent = current
+            var parent = current;
             var result = [];
             while (parent) {
                 result.push(parent.pos);

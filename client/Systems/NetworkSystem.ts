@@ -1,4 +1,18 @@
-﻿class NetworkSystem {
+﻿import {
+    CameraComponent,
+    CharacterAnimationComponent, CharacterMessageComponent,
+    Componenets,
+    HealthComponent,
+    InputComponent,
+    MovementComponent,
+    PositionComponent, SimpleAnimationComponent,
+    SpriteComponent
+} from "../BasicComponents";
+import {config} from "../Init";
+import {GameObj} from "../GameObj";
+import {Events, World} from "../World";
+
+export class NetworkSystem {
     private socket: SocketIOClient.Socket;
     private newEntityList = [];
     private EntityToRemove = [];

@@ -1,6 +1,6 @@
 ﻿import GameState = require("../GameState");
 
-class Ground {
+export class Ground {
     private width: number;
     private height: number;
 
@@ -27,4 +27,3 @@ class Ground {
 
 }
 
-export = Ground;

@@ -1,4 +1,5 @@
-﻿import GameState = require("../GameState");
+﻿import {config} from "../GameState";
+
 export interface Character {
     Move(data: MoveData);
     MoveDir(rot: Rotation);
@@ -42,12 +43,12 @@ export class CharacterDataToSync {
     constructor(race : string) {
         this.ID = CharacterDataToSync.lastID.toString();
         this.Race = race;
-        this.MaxExp = GameState.config.Player.LvlExp[this.Level];
-        this.Speed = GameState.config.Mobs[this.Race].Speed;
-        this.ExpAtDead = GameState.config.Mobs[this.Race].Experience;
+        this.MaxExp = config.Player.LvlExp[this.Level];
+        this.Speed = config.Mobs[this.Race].Speed;
+        this.ExpAtDead = config.Mobs[this.Race].Experience;
         CharacterDataToSync.lastID++;
-        this.MaxHP = GameState.config.Mobs[this.Race].HP;
-        this.HP = GameState.config.Mobs[this.Race].HP;
+        this.MaxHP = config.Mobs[this.Race].HP;
+        this.HP = config.Mobs[this.Race].HP;
     }
 
     private static lastID = 0;

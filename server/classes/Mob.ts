@@ -1,18 +1,20 @@
-﻿import Character = require("./Character");
-import Server = require("../Server");
-import GameState = require("../GameState");
-import Geometry = require("../Geometry");
+﻿import {Character, CharacterDataToSync} from "./Character";
+import {config, ground} from "../GameState";
+import {socketServer} from "../Server";
+import {GetDistance} from "../Geometry";
+
 var startSprites = ["Orc", "Minotaur", "Troll", "Dwarf"];
 
 
 
-class Mob implements Character.Character {
-    private syncData = new Character.CharacterDataToSync(startSprites[(Math.random() * 4) | 0]);
+
+export class Mob implements Character {
+    private syncData = new CharacterDataToSync(startSprites[(Math.random() * 4) | 0]);
     private lastMoveTime = 0;
     private moveDelay = 35000 / this.syncData.Speed;
     private LastAttackTime = 0;
     private AttackDelay = 850;
-    private targetChar: Character.Character;
+    private targetChar: Character;
    // private IsDead = false;
 
     constructor(pos: Vector2D) {
@@ -21,11 +23,11 @@ class Mob implements Character.Character {
 
     Move(data: MoveData) {
         if (!this.CanMove()) return;
-        GameState.Ground.FreeCollision(this.syncData.Position.x, this.syncData.Position.y);
+        ground.FreeCollision(this.syncData.Position.x, this.syncData.Position.y);
         this.syncData.Position.x = data.Pos.x;
         this.syncData.Position.y = data.Pos.y;
-        GameState.Ground.SetCollision(this.syncData.Position.x, this.syncData.Position.y);
-        Server.io.emit("CharacterMove", { ID: this.syncData.ID, Data: data });
+        ground.SetCollision(this.syncData.Position.x, this.syncData.Position.y);
+        socketServer.emit("CharacterMove", { ID: this.syncData.ID, Data: data });
         this.lastMoveTime = Date.now();
     }
 
@@ -57,16 +59,16 @@ class Mob implements Character.Character {
     }
 
     Dispose() {
-        Server.io.emit("DeleteCharacters", [this.syncData.ID]);
-        GameState.Ground.FreeCollision(this.syncData.Position.x, this.syncData.Position.y);
+        socketServer.emit("DeleteCharacters", [this.syncData.ID]);
+        ground.FreeCollision(this.syncData.Position.x, this.syncData.Position.y);
     }
 
     SelfAnnouce() {
-        Server.io.emit("NewCharacters", [this.GetJSON()]);
-        GameState.Ground.SetCollision(this.syncData.Position.x, this.syncData.Position.y);
+        socketServer.emit("NewCharacters", [this.GetJSON()]);
+        ground.SetCollision(this.syncData.Position.x, this.syncData.Position.y);
     }
 
-    Target(char: Character.Character) {
+    Target(char: Character) {
         this.targetChar = char;
     }
 
@@ -85,7 +87,7 @@ class Mob implements Character.Character {
             return;
         }
         if (!this.CanAttack()) return;
-        var dist = Geometry.GetDistance(this.syncData.Position, this.targetChar.GetJSON().Position);
+        var dist = GetDistance(this.syncData.Position, this.targetChar.GetJSON().Position);
         if (dist > 1.5) return;
         var dmg = Math.random() * 5 | 0 + 1;
         this.targetChar.Hit(dmg);
@@ -95,7 +97,7 @@ class Mob implements Character.Character {
 
 
     Hit(dmg: number): { Exp: number } {
-        Server.io.sockets.emit("ApplyDommage", { AttackType: 0, TargetID: this.syncData.ID, HitPoints: dmg });
+        socketServer.sockets.emit("ApplyDommage", { AttackType: 0, TargetID: this.syncData.ID, HitPoints: dmg });
         this.syncData.HP -= dmg;
         if (this.syncData.HP < 0) {
             this.Kill();
@@ -107,7 +109,7 @@ class Mob implements Character.Character {
 
     Kill() {
         this.Dispose();
-        Server.io.sockets.emit("Animation", { Sprites: GameState.config.Mobs[this.GetJSON().Race].DeadSprites, Pos: this.syncData.Position, TicksPerFrame: 100 });
+        socketServer.sockets.emit("Animation", { Sprites: config.Mobs[this.GetJSON().Race].DeadSprites, Pos: this.syncData.Position, TicksPerFrame: 100 });
     }
 
     IsDead() {
@@ -119,19 +121,19 @@ class Mob implements Character.Character {
         var dataArr = new Array<any>(4);
         var radians = Math.atan2(desiredMoveV.y, desiredMoveV.x);
         dataArr[Rotation.Left] = ({
-            can: GameState.Ground.GetCollision(this.syncData.Position.x - 1, this.syncData.Position.y),
+            can: ground.GetCollision(this.syncData.Position.x - 1, this.syncData.Position.y),
             desire: Math.cos(radians)
         });
         dataArr[Rotation.Down] = ({
-            can: GameState.Ground.GetCollision(this.syncData.Position.x, this.syncData.Position.y + 1),
+            can: ground.GetCollision(this.syncData.Position.x, this.syncData.Position.y + 1),
             desire: Math.cos(radians + (Math.PI / 2))
         });
         dataArr[Rotation.Right] = ({
-            can: GameState.Ground.GetCollision(this.syncData.Position.x + 1, this.syncData.Position.y),
+            can: ground.GetCollision(this.syncData.Position.x + 1, this.syncData.Position.y),
             desire: Math.cos(radians + Math.PI)
         });
         dataArr[Rotation.Top] = ({
-            can: GameState.Ground.GetCollision(this.syncData.Position.x, this.syncData.Position.y - 1),
+            can: ground.GetCollision(this.syncData.Position.x, this.syncData.Position.y - 1),
             desire: Math.cos(radians + (Math.PI / 2 * 3))
         });
 
@@ -166,5 +168,3 @@ class Mob implements Character.Character {
         return ((Date.now() - this.LastAttackTime) > this.AttackDelay) && !this.IsDead();
     }
 }
-
-export = Mob;

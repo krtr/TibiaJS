@@ -1,15 +1,17 @@
 ﻿/// <reference path="../Interchange/DataStructures.ts"/>
 
+import {OnConnection} from "./OnConnect";
 import express = require("express");
 import socketio = require("socket.io");
-var serveStatic = require('serve-static')
-import OnConnection = require("./OnConnect");
+var serveStatic = require('serve-static');
 import ServerLoop = require("./ServerLoop");
 var app = express();
 var server = app.listen(2137);
 
-export var io = socketio(server);
+
+export var socketServer = socketio(server);
+
+
 ServerLoop.Start();
 app.use(serveStatic("./static", { index: ["index.html"] }));
-io.on('connection', OnConnection);
-
+socketServer.on('connection', OnConnection);

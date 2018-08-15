@@ -1,10 +1,14 @@
-﻿const enum Componenets {
+﻿import {IComponent} from "./Game";
+import {config} from "./Init";
+import {GameObj} from "./GameObj";
+
+export const enum Componenets {
     Position = 1, Movement = 2, Sprite = 4, CharacterAnimation = 8,
     Camera = 16, SimpleAnimation = 32, Input = 64, RenderMap = 128, PlayerNetwork = 256,
     CharacterMessage = 512, Health = 1024
 }
 
-class PositionComponent implements IComponent {
+export class PositionComponent implements IComponent {
     Name = Componenets.Position;
     TilePosition: Vector2D;
     PixelPosition: Vector2D;
@@ -24,7 +28,7 @@ class PositionComponent implements IComponent {
     }
 }
 
-class MovementComponent implements IComponent {
+export class MovementComponent implements IComponent {
     Name = Componenets.Movement;
     IsMoving = false;
     RemoveOnDone = false;
@@ -45,7 +49,7 @@ class MovementComponent implements IComponent {
     }
 }
 
-class SpriteComponent implements IComponent {
+export class SpriteComponent implements IComponent {
     Name = Componenets.Sprite;
     RenderingSprite: number;
     SpriteOnTilePos: Vector2D;
@@ -55,7 +59,7 @@ class SpriteComponent implements IComponent {
     }
 }
 
-class CharacterAnimationComponent implements IComponent {
+export class CharacterAnimationComponent implements IComponent {
     Name = Componenets.CharacterAnimation;
     SpriteList: Array<number>;
     CurrSprite = 0;
@@ -66,12 +70,12 @@ class CharacterAnimationComponent implements IComponent {
     }
 }
 
-class CameraComponent implements IComponent {
+export class CameraComponent implements IComponent {
     Name = Componenets.Camera;
 
 }
 
-class InputComponent implements IComponent {
+export class InputComponent implements IComponent {
     Name = Componenets.Input;
     TargetedEntitiy: GameObj;
     Experience = 0;
@@ -92,7 +96,7 @@ class InputComponent implements IComponent {
     }
 }
 
-class RenderMapComponent implements IComponent {
+export class RenderMapComponent implements IComponent {
     Name = Componenets.RenderMap;
     Tiles: number[];
     Width: number;
@@ -105,7 +109,7 @@ class RenderMapComponent implements IComponent {
     }
 }
 
-class SimpleAnimationComponent implements IComponent {
+export class SimpleAnimationComponent implements IComponent {
     Name = Componenets.SimpleAnimation;
     AnimationList = new Array<number>();
     IsContinuous = false;
@@ -118,7 +122,7 @@ class SimpleAnimationComponent implements IComponent {
     }
 }
 
-class CharacterMessageComponent implements IComponent {
+export class CharacterMessageComponent implements IComponent {
     Name = Componenets.CharacterMessage;
     Str = "";
     TextObj = null;
@@ -128,7 +132,7 @@ class CharacterMessageComponent implements IComponent {
     }
 }
 
-class HealthComponent implements IComponent {
+export class HealthComponent implements IComponent {
     Name = Componenets.Health;
     HP: number;
     MaxHP: number;

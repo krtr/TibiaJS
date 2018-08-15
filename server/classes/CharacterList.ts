@@ -1,11 +1,12 @@
-﻿import Character = require("./Character");
-import Player = require("./Player");
-import Mob = require("./Mob");
+﻿import {Mob} from "./Mob";
+import {Player} from "./Player";
+import {Character, CharacterDataToSync} from "./Character";
+
 
 enum Rotation { Down, Top, Right, Left };
 const enum ObjType { Mob, Player };
 
-class CharacterList {
+export class CharacterList {
     private moblist = new Array<Mob>();
     private plrlist = new Array<Player>();
 
@@ -17,7 +18,7 @@ class CharacterList {
         this.moblist.push(mob);
     }
 
-    GetAllSyncData(): Array<Character.CharacterDataToSync> {
+    GetAllSyncData(): Array<CharacterDataToSync> {
         var result = [];
         this.moblist.forEach((val) => {
             result.push(val.GetJSON());
@@ -29,7 +30,7 @@ class CharacterList {
         return result;
     }
 
-    ForEach(callback: (plr: Character.Character) => void) {
+    ForEach(callback: (plr: Character) => void) {
         this.ForEachMob(callback);
         this.ForEachPlayer(callback);
     }
@@ -47,7 +48,7 @@ class CharacterList {
         }
     }
 
-    GetByID(ID: string): Character.Character {
+    GetByID(ID: string): Character {
         for (var i = 0; i < this.moblist.length; i++) {
             if (this.moblist[i].GetID() === ID) {
                 return this.moblist[i];
@@ -63,7 +64,7 @@ class CharacterList {
         return null;
     }
 
-    RemoveByID(ID: string): Character.Character {
+    RemoveByID(ID: string): Character {
         var tmpChar;
         for (var i = 0; i < this.moblist.length; i++) {
             if (this.moblist[i].GetID() === ID) {
@@ -88,5 +89,3 @@ class CharacterList {
         return this.moblist.length;
     }
 }
-
-export = CharacterList;

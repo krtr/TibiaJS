@@ -1,4 +1,15 @@
-﻿class RenderingSystem implements ISystem {
+﻿import {
+    CharacterMessageComponent,
+    Componenets,
+    HealthComponent,
+    PositionComponent, RenderMapComponent,
+    SpriteComponent
+} from "../BasicComponents";
+import {config} from "../Init";
+import {ISystem} from "../Game";
+import {Events, World} from "../World";
+
+export class RenderingSystem implements ISystem {
     private renderer: SpriteGL.SpriteRenderer;
     private mapsToRender = new Array<{ position: PositionComponent; map: RenderMapComponent; }>();
     private dmgTxtList = new Array<{ txtObj; position: Vector2D, lifeTime: number }>();

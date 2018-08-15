@@ -1,4 +1,8 @@
-﻿class CameraSystem implements ISystem {
+﻿import {ISystem} from "../Game";
+import {Componenets, PositionComponent} from "../BasicComponents";
+import {World} from "../World";
+
+export class CameraSystem implements ISystem {
     private cameraPosList = new Array<Vector2D>();
     RequiredSygnature = Componenets.Camera + Componenets.Position;
 
@@ -13,7 +17,7 @@
         }
     }
 
-   
+
 
     GetCamerasList(): Array<Vector2D> {
         var cameralist = this.cameraPosList;

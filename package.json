@@ -21,11 +21,14 @@
     "@types/node": "^10.7.0",
     "@types/socket.io": "^1.4.36",
     "@types/socket.io-client": "^1.4.32",
+    "awesome-typescript-loader": "^5.2.0",
     "gulp": "4.0.0",
     "gulp-concat": "2.6.1",
     "gulp-nodemon": "2.2.1",
     "gulp-typescript": "4.0.1",
     "open": "0.0.5",
-    "typescript": "2.8.4"
+    "typescript": "2.8.4",
+    "webpack": "^4.16.5",
+    "webpack-stream": "^5.1.1"
   }
 }

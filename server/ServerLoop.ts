@@ -1,8 +1,7 @@
 import GameState = require("./GameState");
-import Character = require("./classes/Character");
-import Geometry = require("./Geometry");
-import Mob = require("./classes/Mob");
-import Spawn = require("./classes/Spawn");
+import {Spawn} from "./classes/Spawn";
+import {characterList} from "./GameState";
+
 var intervalHandle: NodeJS.Timer;
 
 var spawnList = new Array<Spawn>();
@@ -20,10 +19,10 @@ export function Stop() {
 }
 
 function NewLoop() {
-    GameState.CharacterList.ForEachPlayer((plr) => {
+    characterList.ForEachPlayer((plr) => {
         plr.AttackTarget();
         if (plr.IsDead()) {
-            GameState.CharacterList.RemoveByID(plr.GetID());
+            characterList.RemoveByID(plr.GetID());
         }
     });
 

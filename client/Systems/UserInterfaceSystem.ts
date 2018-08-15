@@ -1,4 +1,9 @@
-﻿class UserInterfaceSytem implements ISystem {
+﻿import {ISystem} from "../Game";
+import {Componenets, InputComponent} from "../BasicComponents";
+import {config} from "../Init";
+import {World} from "../World";
+
+export class UserInterfaceSytem implements ISystem {
     private Level = document.getElementById("Lvl");
     private Exp = document.getElementById("Exp");
     private LvlProgressBar = <HTMLProgressElement>document.getElementById("LevelProgressBar");

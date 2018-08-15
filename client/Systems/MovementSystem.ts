@@ -1,4 +1,7 @@
-﻿class MovementSystem {
+﻿import {Componenets, MovementComponent, PositionComponent} from "../BasicComponents";
+import {World} from "../World";
+
+export class MovementSystem {
     RequiredSygnature = Componenets.Position + Componenets.Movement;
     Process(world: World) {
         var gameObjList = world.entityList;

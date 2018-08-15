@@ -1,4 +1,6 @@
-﻿class World {
+﻿import {GameObj} from "./GameObj";
+
+export class World {
     entityList = new Array<GameObj>();
     eventList = new Array<GameEvent>();
     FPS = 1;
@@ -50,7 +52,7 @@
 }
 
 
-enum Events { PlayerMove, PlayerMessage, PlayerTarget, TxtSpawn };
+export enum Events { PlayerMove, PlayerMessage, PlayerTarget, TxtSpawn };
 class GameEvent {
     EventType: Events;
     Subject: GameObj;

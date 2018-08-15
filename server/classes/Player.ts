@@ -2,9 +2,11 @@
 import Server = require("../Server");
 import GameState = require("../GameState");
 import Geometry = require("../Geometry");
+import {ground} from "../GameState";
+import {socketServer} from "../Server";
 var startSprites = ["Orc", "Minotaur", "Troll", "Dwarf"];
 
-class Player implements Character.Character {
+export class Player implements Character.Character {
     private socket: SocketIO.Socket;
     private syncData = new Character.CharacterDataToSync(startSprites[(Math.random() * 4) | 0]);
     private targetChar: Character.Character;
@@ -18,14 +20,14 @@ class Player implements Character.Character {
     }
 
     Move(data: MoveData) {
-        if (GameState.Ground.GetCollision(data.Pos.x, data.Pos.y)) {
+        if (ground.GetCollision(data.Pos.x, data.Pos.y)) {
             this.socket.emit("CharacterTeleport", { ID: this.syncData.ID, Data: { Rot: 0, Pos: this.syncData.Position } });
             return;
         }
-        GameState.Ground.FreeCollision(this.syncData.Position.x, this.syncData.Position.y);
+        ground.FreeCollision(this.syncData.Position.x, this.syncData.Position.y);
         this.syncData.Position.x = data.Pos.x;
         this.syncData.Position.y = data.Pos.y;
-        GameState.Ground.SetCollision(this.syncData.Position.x, this.syncData.Position.y);
+        ground.SetCollision(this.syncData.Position.x, this.syncData.Position.y);
         this.socket.broadcast.emit("CharacterMove", { ID: this.syncData.ID, Data: data });
     }
 
@@ -62,15 +64,15 @@ class Player implements Character.Character {
     }
 
     Dispose() {
-        Server.io.emit("DeleteCharacters", [this.syncData.ID]);
-        GameState.Ground.FreeCollision(this.syncData.Position.x, this.syncData.Position.y);
+        socketServer.emit("DeleteCharacters", [this.syncData.ID]);
+        ground.FreeCollision(this.syncData.Position.x, this.syncData.Position.y);
        // this.socket.disconnect();
 
     }
 
     SelfAnnouce() {
         this.socket.broadcast.emit("NewCharacters", [this.GetJSON()]);
-        GameState.Ground.SetCollision(this.syncData.Position.x, this.syncData.Position.y);
+        ground.SetCollision(this.syncData.Position.x, this.syncData.Position.y);
     }
 
     Target(char: Character.Character) {
@@ -93,7 +95,7 @@ class Player implements Character.Character {
         var dist = Geometry.GetDistance(this.syncData.Position, this.targetChar.GetJSON().Position);
         if (dist > 6) return;
 
-        Server.io.sockets.emit("SpawnProjectile", { Type: 0, StartPos: this.GetJSON().Position, TargetPos: this.targetChar.GetJSON().Position });
+        socketServer.sockets.emit("SpawnProjectile", { Type: 0, StartPos: this.GetJSON().Position, TargetPos: this.targetChar.GetJSON().Position });
         var dmg = Math.random() * this.syncData.Level * 6 | 0 + this.syncData.Level*2;
         var deadInfo = this.targetChar.Hit(dmg);
         if (deadInfo) {
@@ -108,7 +110,7 @@ class Player implements Character.Character {
     }
 
     Hit(dmg: number): { Exp: number } {
-        Server.io.sockets.emit("ApplyDommage", { AttackType: 0, TargetID: this.syncData.ID, HitPoints: dmg });
+        socketServer.sockets.emit("ApplyDommage", { AttackType: 0, TargetID: this.syncData.ID, HitPoints: dmg });
         this.syncData.HP -= dmg;
         if (this.syncData.HP < 0) {
             this.Kill();
@@ -119,7 +121,7 @@ class Player implements Character.Character {
     Kill() {
         this.syncData.HP = -1;
         this.Dispose();
-        Server.io.sockets.emit("Animation", { Sprites: GameState.config.Mobs[this.GetJSON().Race].DeadSprites, Pos: this.syncData.Position, TicksPerFrame: 500 });
+        socketServer.sockets.emit("Animation", { Sprites: GameState.config.Mobs[this.GetJSON().Race].DeadSprites, Pos: this.syncData.Position, TicksPerFrame: 500 });
     }
 
     IsDead(): boolean {
@@ -139,17 +141,14 @@ class Player implements Character.Character {
         if (this.syncData.CurrentExp > GameState.config.Player.LvlExp[this.syncData.Level]) {
             this.syncData.Level++;
             this.syncData.CurrentExp = 0;
-            Server.io.sockets.emit("ApplyExperience", { ID: this.socket.id, Exp: exp, NextLvl: this.syncData.Level });
+            socketServer.sockets.emit("ApplyExperience", { ID: this.socket.id, Exp: exp, NextLvl: this.syncData.Level });
             this.syncData.MaxHP += 35;
             this.syncData.HP = this.syncData.MaxHP;
             this.syncData.Speed += 20;
             this.Sync();
         }
         else {
-            Server.io.sockets.emit("ApplyExperience", { ID: this.socket.id, Exp: exp });
+            socketServer.sockets.emit("ApplyExperience", { ID: this.socket.id, Exp: exp });
         }
     }
 }
-
-
-export = Player;
