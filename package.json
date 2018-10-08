@@ -6,7 +6,7 @@
   "scripts": {
     "build": "concurrently \"gulp build\" \"npm run build:server\"",
     "run": "gulp run",
-    "build:server": "parcel build server/Server.ts --out-dir out/ --target node"
+    "build:server": "parcel build server/Server.ts -d out --target node --no-minify"
   },
   "author": {
     "name": "Pawel",
