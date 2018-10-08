@@ -1,6 +1,7 @@
 ﻿import {ISystem} from "../Game";
 import {Componenets, PositionComponent} from "../BasicComponents";
 import {World} from "../World";
+import {Vector2D} from "../../Interchange/DataStructures";
 
 export class CameraSystem implements ISystem {
     private cameraPosList = new Array<Vector2D>();

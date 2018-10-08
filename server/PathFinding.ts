@@ -1,8 +1,8 @@
 ﻿import {ground} from "./GameState";
+import {Vector2D} from "../Interchange/DataStructures";
 
 
 export function AStar(start: Vector2D, goal: Vector2D) {
-    var kutas = [];
     function GetNeighbours(pos: Vector2D) {
         var result = [];
         if (!ground.GetCollision(pos.x - 1, pos.y)) result.push(visitedArray[pos.x - 1][pos.y]);

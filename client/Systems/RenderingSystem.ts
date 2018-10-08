@@ -8,6 +8,7 @@
 import {config} from "../Init";
 import {ISystem} from "../Game";
 import {Events, World} from "../World";
+import {Vector2D} from "../../Interchange/DataStructures";
 
 export class RenderingSystem implements ISystem {
     private renderer: SpriteGL.SpriteRenderer;

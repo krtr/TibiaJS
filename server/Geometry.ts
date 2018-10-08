@@ -1,4 +1,6 @@
-﻿export function GetDistance(p1: Vector2D, p2: Vector2D): number {
+﻿import {Vector2D, Rotation} from "../Interchange/DataStructures";
+
+export function GetDistance(p1: Vector2D, p2: Vector2D): number {
     var vx = p1.x - p2.x;
     var vy = p1.y - p2.y;
 

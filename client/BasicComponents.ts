@@ -1,6 +1,7 @@
 ﻿import {IComponent} from "./Game";
 import {config} from "./Init";
 import {GameObj} from "./GameObj";
+import {Vector2D, Rotation} from "../Interchange/DataStructures";
 
 export const enum Componenets {
     Position = 1, Movement = 2, Sprite = 4, CharacterAnimation = 8,

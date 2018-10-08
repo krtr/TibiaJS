@@ -3,6 +3,7 @@ import {Componenets, HealthComponent, InputComponent, MovementComponent, Positio
 import {GameObj} from "../GameObj";
 import {config} from "../Init";
 import {Events, World} from "../World";
+import {Rotation, Vector2D} from "../../Interchange/DataStructures";
 
 export class InputSystem implements ISystem {
     private keys = new Array<boolean>(200);

@@ -1,10 +1,10 @@
-const enum Rotation { Down, Top, Right, Left };
+export const enum Rotation { Down, Top, Right, Left };
 
-interface Vector2D { x: number; y: number; }
+export interface Vector2D { x: number; y: number; }
 
-interface MoveData { Rot: Rotation; Pos: Vector2D }
+export interface MoveData { Rot: Rotation; Pos: Vector2D }
 
-interface NewCharacterData {
+export interface NewCharacterData {
     Position: Vector2D;
     Race: string;
     ID: string;
@@ -15,7 +15,7 @@ interface NewCharacterData {
     Level: number;
 }
 
-interface Config {
+export interface Config {
     TileSize: number;
     MapWidth: number;
     MapHeight: number;
@@ -39,12 +39,12 @@ interface Config {
     Collision: number[];
 };
 
-interface SpawnData {
+export interface SpawnData {
     Position: Vector2D;
     Count: number
 }
 
-interface MobData {
+export interface MobData {
     AliveSprites: number[];
     DeadSprites: number[];
     Experience: number;

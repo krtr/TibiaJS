@@ -1,9 +1,10 @@
 ﻿import * as Character from "./Character";
-import * as Server from "../Server";
 import * as GameState from "../GameState";
 import * as Geometry from "../Geometry";
 import {ground} from "../GameState";
 import {socketServer} from "../Server";
+import {Rotation, MoveData} from "../../Interchange/DataStructures";
+
 var startSprites = ["Orc", "Minotaur", "Troll", "Dwarf"];
 
 export class Player implements Character.Character {

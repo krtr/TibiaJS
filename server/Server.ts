@@ -1,5 +1,4 @@
 ﻿/// <reference path="../resources/index.d.ts" />
-/// <reference path="../Interchange/DataStructures.ts" />
 
 import {OnConnection} from "./OnConnect";
 import express from "express";

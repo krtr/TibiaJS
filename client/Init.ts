@@ -1,7 +1,6 @@
-﻿/// <reference path="../Interchange/DataStructures.ts"/>
-/// <reference path="../resources/3rd/SpriteGL/bin/SpriteGL.d.ts"/>
+﻿/// <reference path="../resources/3rd/SpriteGL/bin/SpriteGL.d.ts"/>
 
-
+import {Config} from "../Interchange/DataStructures";
 import {RenderingSystem} from "./Systems/RenderingSystem";
 import {AnimationSystem} from "./Systems/AnimationSystem";
 import {NetworkSystem} from "./Systems/NetworkSystem";
