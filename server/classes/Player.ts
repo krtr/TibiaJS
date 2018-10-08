@@ -1,7 +1,7 @@
-﻿import Character = require("./Character");
-import Server = require("../Server");
-import GameState = require("../GameState");
-import Geometry = require("../Geometry");
+﻿import * as Character from "./Character";
+import * as Server from "../Server";
+import * as GameState from "../GameState";
+import * as Geometry from "../Geometry";
 import {ground} from "../GameState";
 import {socketServer} from "../Server";
 var startSprites = ["Orc", "Minotaur", "Troll", "Dwarf"];

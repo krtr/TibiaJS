@@ -1,4 +1,4 @@
-﻿import GameState = require("../GameState");
+﻿import * as GameState from "../GameState";
 
 export class Ground {
     private width: number;
