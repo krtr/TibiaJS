@@ -4,7 +4,7 @@
   "description": "TibiaJS",
   "main": "app.js",
   "scripts": {
-    "build": "gulp build",
+    "build": "concurrently \"gulp build\" \"npm run build:server\"",
     "run": "gulp run",
     "build:server": "parcel build server/Server.ts --out-dir out/ --target node"
   },
@@ -23,6 +23,7 @@
     "@types/socket.io": "^1.4.36",
     "@types/socket.io-client": "^1.4.32",
     "awesome-typescript-loader": "^5.2.0",
+    "concurrently": "^4.0.1",
     "gulp": "4.0.0",
     "gulp-nodemon": "2.2.1",
     "open": "0.0.5",
