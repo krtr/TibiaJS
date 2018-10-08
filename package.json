@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "build": "gulp build",
-    "run": "gulp run"
+    "run": "gulp run",
+    "build:server": "parcel build server/Server.ts --out-dir out/ --target node"
   },
   "author": {
     "name": "Pawel",
@@ -23,10 +24,9 @@
     "@types/socket.io-client": "^1.4.32",
     "awesome-typescript-loader": "^5.2.0",
     "gulp": "4.0.0",
-    "gulp-concat": "2.6.1",
     "gulp-nodemon": "2.2.1",
-    "gulp-typescript": "4.0.1",
     "open": "0.0.5",
+    "parcel-bundler": "^1.10.2",
     "typescript": "^3.1.1",
     "webpack": "^4.16.5",
     "webpack-stream": "^5.1.1"
