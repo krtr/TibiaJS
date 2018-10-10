@@ -233,3 +233,6 @@ out
 Server/*.js
 .idea
 /out
+resources/**/*.png
+*.dat
+*.spr

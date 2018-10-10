@@ -29,11 +29,13 @@ window.onload = function () {
 
 
     const configPromise = fetch("data.json").then(response => response.json());
+    const mapPromise = fetch("map.json").then(response => response.json());
     const spritePromise = loadImage("sprites.png");
 
-    Promise.all([configPromise, spritePromise])
-        .then(([configData, sprites]) => {
+    Promise.all([configPromise, spritePromise, mapPromise])
+        .then(([configData, sprites, mapData]) => {
             config = configData;
+            config.Data = mapData;
             const canvas = <HTMLCanvasElement>document.getElementById("GameCanvas");
             renderingSystem = new RenderingSystem(canvas, sprites);
 

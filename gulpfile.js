@@ -15,7 +15,7 @@ gulp.task("build client", function() {
 });
 
 gulp.task("copy static client files", function() {
-    return gulp.src(["client/**/*.html", "client/**/*.js", "resources/*.png", "resources/data.json",
+    return gulp.src(["client/**/*.html", "client/**/*.js", "resources/*.png", "resources/data.json", "resources/map.json",
         "resources/3rd/SpriteGL/bin/SpriteGL.js"])
         .pipe(gulp.dest("./out/static"));
 });

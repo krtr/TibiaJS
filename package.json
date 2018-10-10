@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "build": "gulp build",
-    "run": "gulp run"
+    "run": "gulp run",
+    "extract-sprites": "sprites-extractor ./resources/tools/Tibia.spr ./resources/tools/sprites"
   },
   "author": {
     "name": "Pawel",
@@ -13,8 +14,11 @@
   },
   "dependencies": {
     "express": "4.16.3",
+    "lodash": "^4.17.10",
+    "otbm2json": "https://github.com/krtr/OTBM2JSON/tarball/master",
     "serve-static": "1.13.2",
-    "socket.io": "2.1.1"
+    "socket.io": "2.1.1",
+    "sprites-extractor": "https://github.com/krtr/sprites-extractor/tarball/master"
   },
   "devDependencies": {
     "@types/express": "^4.16.0",

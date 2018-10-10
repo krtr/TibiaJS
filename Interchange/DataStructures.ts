@@ -35,7 +35,7 @@ interface Config {
             Sprites: number[];
         };
     };
-    Data: number[];
+    Data: number[][];
     Collision: number[];
 };
 

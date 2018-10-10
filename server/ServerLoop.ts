@@ -8,10 +8,10 @@ var spawnList = new Array<Spawn>();
 
 export function Start() {
     intervalHandle = setInterval(NewLoop, 50);
-    for (var i = 0; i < GameState.config.MobSpawns.length; i++) {
-        spawnList.push(new Spawn(GameState.config.MobSpawns[i].Position.x, GameState.config.MobSpawns[i].Position.y));
-        spawnList[i].MaintainMobCount(GameState.config.MobSpawns[i].Count);
-    }
+    // for (var i = 0; i < GameState.config.MobSpawns.length; i++) {
+    //     spawnList.push(new Spawn(GameState.config.MobSpawns[i].Position.x, GameState.config.MobSpawns[i].Position.y));
+    //     spawnList[i].MaintainMobCount(GameState.config.MobSpawns[i].Count);
+    // }
 }
 
 export function Stop() {

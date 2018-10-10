@@ -14,16 +14,16 @@ export class Player implements Character.Character {
     private LastAttackTime = 0;
 
     constructor(socket: SocketIO.Socket) {
-        this.syncData.Position = { x: 60, y: 50 };
+        this.syncData.Position = { x: 160, y: 80 };
         this.syncData.ID = socket.id;
         this.socket = socket;
     }
 
     Move(data: MoveData) {
-        if (ground.GetCollision(data.Pos.x, data.Pos.y)) {
-            this.socket.emit("CharacterTeleport", { ID: this.syncData.ID, Data: { Rot: 0, Pos: this.syncData.Position } });
-            return;
-        }
+        // if (ground.GetCollision(data.Pos.x, data.Pos.y)) {
+        //     this.socket.emit("CharacterTeleport", { ID: this.syncData.ID, Data: { Rot: 0, Pos: this.syncData.Position } });
+        //     return;
+        // }
         ground.FreeCollision(this.syncData.Position.x, this.syncData.Position.y);
         this.syncData.Position.x = data.Pos.x;
         this.syncData.Position.y = data.Pos.y;

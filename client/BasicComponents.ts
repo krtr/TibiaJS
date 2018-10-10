@@ -98,11 +98,11 @@ export class InputComponent implements IComponent {
 
 export class RenderMapComponent implements IComponent {
     Name = Componenets.RenderMap;
-    Tiles: number[];
+    Tiles: number[][];
     Width: number;
     Height: number;
 
-    constructor(tiles: number[], width: number, height: number) {
+    constructor(tiles: number[][], width: number, height: number) {
         this.Tiles = tiles;
         this.Width = width;
         this.Height = height;
