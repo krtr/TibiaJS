@@ -4,8 +4,9 @@
   "description": "TibiaJS",
   "main": "app.js",
   "scripts": {
-    "build": "concurrently \"gulp build\" \"npm run build:server\"",
-    "run": "gulp run",
+    "run": "node ./start.js",
+    "build": "concurrently \"npm run build:client\" \"npm run build:server\"",
+    "build:client": "parcel build client/index.html -d out/static --no-minify",
     "build:server": "parcel build server/Server.ts -d out --target node --no-minify"
   },
   "author": {
@@ -19,17 +20,13 @@
   },
   "devDependencies": {
     "@types/express": "^4.16.0",
-    "@types/node": "^10.7.0",
+    "@types/node": "^10.11.6",
     "@types/socket.io": "^1.4.36",
     "@types/socket.io-client": "^1.4.32",
-    "awesome-typescript-loader": "^5.2.0",
     "concurrently": "^4.0.1",
-    "gulp": "4.0.0",
-    "gulp-nodemon": "2.2.1",
+    "nodemon": "^1.18.4",
     "open": "0.0.5",
     "parcel-bundler": "^1.10.2",
-    "typescript": "^3.1.1",
-    "webpack": "^4.16.5",
-    "webpack-stream": "^5.1.1"
+    "typescript": "^3.1.2"
   }
 }

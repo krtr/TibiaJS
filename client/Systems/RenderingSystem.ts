@@ -1,4 +1,7 @@
-﻿import {
+﻿/// <reference path="../../resources/3rd/SpriteGL/bin/SpriteGL.d.ts"/>
+
+import "../../resources/3rd/SpriteGL/bin/SpriteGL.js";
+import {
     CharacterMessageComponent,
     Componenets,
     HealthComponent,

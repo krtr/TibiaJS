@@ -1,4 +1,4 @@
-﻿/// <reference path="../resources/3rd/SpriteGL/bin/SpriteGL.d.ts"/>
+﻿/// <reference path="../resources/index.d.ts"/>
 
 import {Config} from "../Interchange/DataStructures";
 import {RenderingSystem} from "./Systems/RenderingSystem";
@@ -12,6 +12,7 @@ import {GameObj} from "./GameObj";
 import {PositionComponent, RenderMapComponent} from "./BasicComponents";
 import {World} from "./World";
 import {GetFPS, loadImage} from "./Misc";
+import SpritesURL from "../resources/sprites.png";
 
 export var config: Config;
 
@@ -27,12 +28,12 @@ window.onload = function () {
     var world = new World();
 
 
-    const configPromise = fetch("data.json").then(response => response.json());
-    const spritePromise = loadImage("sprites.png");
+    const configPromise = import("../resources/data.json");
+    const spritePromise = loadImage(SpritesURL);
 
     Promise.all([configPromise, spritePromise])
         .then(([configData, sprites]) => {
-            config = configData;
+            config = configData.default as Config;
             const canvas = <HTMLCanvasElement>document.getElementById("GameCanvas");
             renderingSystem = new RenderingSystem(canvas, sprites);
 

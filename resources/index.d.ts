@@ -4,6 +4,6 @@ declare module "*.png" {
 }
 
 declare module "*.json" {
-  const resources: any;
+  const resources: object;
   export default resources;
 }
