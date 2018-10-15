@@ -1,6 +1,4 @@
-﻿/// <reference path="../../resources/3rd/SpriteGL/bin/SpriteGL.d.ts"/>
-
-import "../../resources/3rd/SpriteGL/bin/SpriteGL.js";
+﻿import SpriteGL, {SpriteRenderer} from "SpriteGL";
 import {
     CharacterMessageComponent,
     Componenets,
@@ -14,7 +12,7 @@ import {Events, World} from "../World";
 import {Vector2D} from "../../Interchange/DataStructures";
 
 export class RenderingSystem implements ISystem {
-    private renderer: SpriteGL.SpriteRenderer;
+    private renderer: SpriteRenderer;
     private mapsToRender = new Array<{ position: PositionComponent; map: RenderMapComponent; }>();
     private dmgTxtList = new Array<{ txtObj; position: Vector2D, lifeTime: number }>();
     constructor(canvas: HTMLCanvasElement, textureAtlas: HTMLImageElement) {

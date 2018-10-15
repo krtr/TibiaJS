@@ -14,6 +14,7 @@
     "email": ""
   },
   "dependencies": {
+    "SpriteGL": "https://github.com/krtr/SpriteGL",
     "express": "4.16.3",
     "serve-static": "1.13.2",
     "socket.io": "2.1.1"
