@@ -1,4 +1,6 @@
-﻿export function GET(path: string, fn: (err, res) => void) {
+﻿import {Vector2D} from "../Interchange/DataStructures";
+
+export function GET(path: string, fn: (err, res) => void) {
     var req = new XMLHttpRequest();
     req.open("GET", path, true);
     req.send();

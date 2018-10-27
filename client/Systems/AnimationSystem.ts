@@ -8,6 +8,7 @@ import {
 } from "../BasicComponents";
 import {GameObj} from "../GameObj";
 import {World} from "../World";
+import {Rotation} from "../../Interchange/DataStructures";
 
 export class AnimationSystem implements ISystem {
     private tick = 1;

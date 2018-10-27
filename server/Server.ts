@@ -1,10 +1,11 @@
-﻿/// <reference path="../Interchange/DataStructures.ts"/>
+﻿/// <reference path="../resources/index.d.ts" />
 
 import {OnConnection} from "./OnConnect";
-import express = require("express");
-import socketio = require("socket.io");
-var serveStatic = require('serve-static');
-import ServerLoop = require("./ServerLoop");
+import express from "express";
+import socketio from "socket.io";
+import serveStatic from "serve-static";
+import * as ServerLoop from "./ServerLoop";
+
 var app = express();
 var server = app.listen(2137);
 

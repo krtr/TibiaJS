@@ -1,7 +1,9 @@
-﻿import {Character, CharacterDataToSync} from "./Character";
+﻿import "../../Interchange/DataStructures";
+import {Character, CharacterDataToSync} from "./Character";
 import {config, ground} from "../GameState";
 import {socketServer} from "../Server";
 import {GetDistance} from "../Geometry";
+import {Vector2D, MoveData, Rotation} from "../../Interchange/DataStructures";
 
 var startSprites = ["Orc", "Minotaur", "Troll", "Dwarf"];
 

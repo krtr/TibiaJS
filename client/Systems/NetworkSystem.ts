@@ -11,6 +11,7 @@
 import {config} from "../Init";
 import {GameObj} from "../GameObj";
 import {Events, World} from "../World";
+import {NewCharacterData, Rotation, MoveData} from "../../Interchange/DataStructures";
 
 export class NetworkSystem {
     private socket: SocketIOClient.Socket;

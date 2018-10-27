@@ -2,6 +2,7 @@
 import {characterList, config} from "../GameState";
 import {Player} from "./Player";
 import {GetDistance} from "../Geometry";
+import {Vector2D} from "../../Interchange/DataStructures";
 
 
 export class Spawn {

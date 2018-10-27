@@ -1,4 +1,4 @@
-import GameState = require("./GameState");
+import * as GameState from "./GameState";
 import {Spawn} from "./classes/Spawn";
 import {characterList} from "./GameState";
 

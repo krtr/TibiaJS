@@ -1,4 +1,5 @@
 ﻿import {config} from "../GameState";
+import {MoveData, Rotation} from "../../Interchange/DataStructures";
 
 export interface Character {
     Move(data: MoveData);

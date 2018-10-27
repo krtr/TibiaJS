@@ -1,13 +1,8 @@
-﻿import fs from "fs";
-import {CharacterList} from "./classes/CharacterList";
+﻿import {CharacterList} from "./classes/CharacterList";
 import {Ground} from "./classes/Ground";
+import data from "../resources/data.json";
+import {Config} from "../Interchange/DataStructures";
 
-export const config = LoadConfig();
+export const config: Config = data;
 export const characterList = new CharacterList();
 export const ground = new Ground();
-
-
-function LoadConfig() {
-    var filebuff = fs.readFileSync("./data.json");
-    return <Config>JSON.parse(filebuff.toString());
-}

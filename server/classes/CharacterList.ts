@@ -2,10 +2,6 @@
 import {Player} from "./Player";
 import {Character, CharacterDataToSync} from "./Character";
 
-
-enum Rotation { Down, Top, Right, Left };
-const enum ObjType { Mob, Player };
-
 export class CharacterList {
     private moblist = new Array<Mob>();
     private plrlist = new Array<Player>();

@@ -1,6 +1,7 @@
 ﻿import {Player} from "./classes/Player";
 import {characterList} from "./GameState";
 import {socketServer} from "./Server";
+import {MoveData} from "../Interchange/DataStructures";
 
 
 
